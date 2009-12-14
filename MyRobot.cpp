@@ -10,6 +10,7 @@ class RobotDemo : public SimpleRobot
 {
 	RobotDrive myRobot; // robot drive system
 	Joystick stick; // only joystick
+	Joystick stick2; // Only testing
 
 public:
 	RobotDemo(void):
