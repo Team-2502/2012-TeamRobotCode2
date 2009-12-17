@@ -8,14 +8,11 @@
  */ 
 class RobotDemo : public SimpleRobot
 {
-	RobotDrive myRobot; // robot drive system
-	Joystick stick; // only joystick
-	Joystick stick2; // Only testing
 
 public:
 	RobotDemo(void):
-		myRobot(1, 2),	// these must be initialized in the same order
-		stick(1)		// as they are declared above.
+		team2502Bot(1, 2),	// these must be initialized in the same order
+		driveStick(1)		// as they are declared above.
 	{
 		GetWatchdog().SetExpiration(0.1);
 	}
@@ -25,10 +22,10 @@ public:
 	 */
 	void Autonomous(void)
 	{
-		GetWatchdog().SetEnabled(false);
-		myRobot.Drive(0.5, 0.0); 	// drive forwards half speed
-		Wait(2.0); 				//    for 2 seconds
-		myRobot.Drive(0.0, 0.0); 	// stop robot
+//		GetWatchdog().SetEnabled(false);
+//		myRobot.Drive(0.5, 0.0); 	// drive forwards half speed
+//		Wait(2.0); 				//    for 2 seconds
+//		myRobot.Drive(0.0, 0.0); 	// stop robot
 	}
 
 	/**
@@ -40,10 +37,13 @@ public:
 		while (IsOperatorControl())
 		{
 			GetWatchdog().Feed();
-			myRobot.ArcadeDrive(stick); // drive with arcade style (use right stick)
+			team2502Bot.ArcadeDrive(driveStick); // drive with arcade style (use right stick)
 			Wait(0.005);				// wait for a motor update time
 		}
 	}
+private:
+	RobotDrive team2502Bot; // robot drive system
+		Joystick driveStick; // only joystick
 };
 
 START_ROBOT_CLASS(RobotDemo);
