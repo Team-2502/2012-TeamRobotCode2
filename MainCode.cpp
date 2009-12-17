@@ -37,13 +37,17 @@ public:
 		while (IsOperatorControl())
 		{
 			GetWatchdog().Feed();
-			team2502Bot.ArcadeDrive(driveStick); // drive with arcade style (use right stick)
+			float speed = driveStick.GetY();
+			float speed2 = driveStick2.GetY();
+			team2502Bot.TankDrive(speed,speed2);
+			//team2502Bot.ArcadeDrive(driveStick); // drive with arcade style (use right stick)
 			Wait(0.005);				// wait for a motor update time
 		}
 	}
 private:
 	RobotDrive team2502Bot; // robot drive system
 		Joystick driveStick; // only joystick
+		Joystick driveStick2;
 };
 
 START_ROBOT_CLASS(RobotDemo);
