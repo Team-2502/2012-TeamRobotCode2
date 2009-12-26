@@ -1,5 +1,5 @@
-SimpleTemplate_partialImage/Debug/Objects/Team2502Code/MainCode.o:  \
- C:/cygwin/home/Keehun/Development/Team2502Code/MainCode.cpp \
+SimpleTemplate_partialImage/Debug/Objects/Team2502Code/Onyx.o:  \
+ C:/cygwin/home/Keehun/Development/Team2502Code/Onyx.cpp \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/WPILib.h \
   C:/WindRiver/vxworks-6.3/target/h/string.h \
   C:/WindRiver/vxworks-6.3/target/h/types/vxANSI.h \
