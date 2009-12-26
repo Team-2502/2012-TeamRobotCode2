@@ -11,6 +11,16 @@ class Onyx : public IterativeRobot //Onyx is our Code Name for 2009 year.
 	Joystick *o_rightStick; // joystick 1 (lower brushes)
 	Joystick *o_leftStick; // joystick 2 (upper brushes)
 	Joystick *d_driveStick; // joystick 3 (driving w/ Twist)
+	
+	// Local Variables to keep track of Joystick postitions
+	// TODO: See if the set of variables can be optimized
+	float o_rightStick_x;
+	float o_rightStick_y;
+	float o_leftStick_x;
+	float o_leftStick_y;
+	float d_driveStick_x;
+	float d_driveStick_y;
+	float d_driveStick_z;
 
 	// Create an array of joystick buttons so that we can store on/off positions in them
 	static const int NUM_JOYSTICK_BUTTONS = 16; //This is depending on the joystick model
@@ -108,7 +118,7 @@ public:
 		if (GetClock() > printSec) {
 			// Move the cursor back to the previous line and clear it.
 			printf("\x1b[1A\x1b[2K"); //Move up one line, delete the line
-			printf("Disabled seconds: %d\r\n", printSec - startSec); //Since we deleted the last line, we reprint it again.		
+			printf("Disabled seconds: %d\r\n", printSec - startSec);	
 			printSec++;
 		}
 	}
@@ -122,7 +132,8 @@ public:
 		/* BELOW CODE IS COMMENTED OUT FOR SAFETY.
 		 * BUT DO UNDERSTAND IT. WHAT IT DOES AND HOW.
 		 if (r_autoPeriodicLoops == 1) {
-		 // When on the first periodic loop in autonomous mode, start driving forwards at half speed
+		 // When on the first periodic loop in autonomous mode,
+		 // start driving forwards at half speed
 		 r_robotDrive->Drive(0.5, 0.0);			// drive forwards at half speed
 		 }
 		 if (r_autoPeriodicLoops == (2 * GetLoopsPerSec())) {
@@ -135,18 +146,21 @@ public:
 	void TeleopPeriodic(void) {
 		// feed the user watchdog at every period when in autonomous
 		GetWatchdog().Feed();
+		
+		d_driveStick_x = d_driveStick->GetX();
+		d_driveStick_y = d_driveStick->GetY();
 
 		// increment the number of teleop periodic loops completed
 		r_telePeriodicLoops++;
-
-		//r_dsPacketsReceivedInCurrentSecond++; // increment DS packets received
 
 		/* Do some actual Joystick driving here
 		 * As we have more driving modes, we just add more "else if"s.
 		 * */
 		if (r_driveMode == MAGIC_DRIVE) { // Logitech Attack3 has z-polarity reversed; up is negative
 			// use Magic Drive mode
-			r_robotDrive->ArcadeDrive(d_driveStick); // drive with arcade style (use right stick)
+			r_robotDrive->SetLeftRightMotorSpeeds(
+					d_driveStick_y-d_driveStick_x,
+					-d_driveStick_y+d_driveStick_x); //Negated becase that's how the joystick behaves
 		}
 
 	} // TeleopPeriodic(void)
