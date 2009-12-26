@@ -2,11 +2,16 @@
 
 class RobotDemo : public SimpleRobot
 {
-
+private:
+	RobotDrive team2502Bot; // robot drive system
+	Joystick driveStick; // only joystick
+	Joystick driveStick2;
+	
 public:
 	RobotDemo(void):
 		team2502Bot(1, 2),	// these must be initialized in the same order
-		driveStick(1)		// as they are declared above.
+		driveStick(1),		// as they are declared above.
+		driveStick2(2)
 	{
 		GetWatchdog().SetExpiration(0.1);
 	}
@@ -38,10 +43,7 @@ public:
 			Wait(0.005);				// wait for a motor update time
 		}
 	}
-private:
-	RobotDrive team2502Bot; // robot drive system
-		Joystick driveStick; // only joystick
-		Joystick driveStick2;
+	
 };
 
 START_ROBOT_CLASS(RobotDemo);
