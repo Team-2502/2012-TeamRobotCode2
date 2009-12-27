@@ -1,3 +1,9 @@
+/*************************************************************************
+ * Proud production of Team 2502
+ * Written for 2009 FIRST FRC Season
+ * Licensed under the MIT License (Subject to Change)
+ *************************************************************************/
+
 #include "WPILib.h"
 class Onyx : public IterativeRobot //Onyx is our Code Name for 2009 year.
 {
