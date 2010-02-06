@@ -27,14 +27,9 @@ public:
 	void TeleopContinuous(void) {}
 
 private:
-	static const int NUM_JOYSTICK_BUTTONS = 16;
 	static const int COMPUTATION = 400000000;
 	static const int HZ = 10;
 	static const int REP = 10;
-
-	bool rightStickButtonState[(NUM_JOYSTICK_BUTTONS+1)];
-	bool leftStickButtonState[(NUM_JOYSTICK_BUTTONS+1)];
-	bool driveStickButtonState[(NUM_JOYSTICK_BUTTONS+1)];
 
 	RobotDrive *robotDrive;
 	Joystick *driveStick;
