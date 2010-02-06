@@ -15,16 +15,16 @@ public:
 	Onyx(void);
 	void RobotInit(void);
 	void DisabledInit(void);
-	void AutonomousInit(void);
+	void AutonomousInit(void) {}
 	void TeleopInit(void);
 
-	void DisabledPeriodic(void);
+	void DisabledPeriodic(void) {}
 	void AutonomousPeriodic(void);
 	void TeleopPeriodic(void);
 
-	void DisabledContinuous(void);
-	void AutonomousContinuous(void);
-	void TeleopContinuous(void);
+	void DisabledContinuous(void) {}
+	void AutonomousContinuous(void) {}
+	void TeleopContinuous(void) {}
 
 private:
 	static const int NUM_JOYSTICK_BUTTONS = 16;

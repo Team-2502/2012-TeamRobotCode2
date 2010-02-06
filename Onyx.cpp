@@ -36,6 +36,11 @@ void Onyx::AutonomousPeriodic()
 	GetWatchdog().Feed();
 }
 
+void Onyx::TeleopInit()
+{
+	pSystem->start();
+}
+
 void Onyx::TeleopPeriodic()
 {
 	GetWatchdog().Feed();

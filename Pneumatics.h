@@ -2,6 +2,11 @@
 #define PNEUMATICS_H
 
 #include "WPILib.h"
+class Compressor;
+class DigitalInput;
+class Solenoid;
+class Relay;
+class Joystick;
 
 struct PneumaticsButtons {
 	int kickButton;
