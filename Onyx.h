@@ -6,6 +6,7 @@
 #ifndef ONYX_H
 #define ONYX_H
 
+#include <Dashboard.h>
 #include "Pneumatics.h"
 #include "WPILib.h"
 
@@ -33,9 +34,9 @@ private:
 
 	RobotDrive *robotDrive;
 	Joystick *driveStick;
-	Dashboard *dash;
+	DriverStationLCD *driverStationLCD;
 	PneumaticSystem *pSystem;
-	
+
 
 	float rightStickX;
 	float rightStickY;

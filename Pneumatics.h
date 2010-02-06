@@ -32,7 +32,7 @@ private:
 	static DigitalInput *pressureSensor;
 	
 	Task* loopingTask;
-	static Joystick *ds;
+	static Joystick *driveStick;
 	
 	static bool autocompressing;
 	static PneumaticsButtons btns;
