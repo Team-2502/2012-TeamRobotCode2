@@ -39,8 +39,6 @@ void Onyx::TeleopPeriodic()
 	driveStickX = driveStick->GetX();
 	driveStickY = driveStick->GetY();
 	robotDrive->SetLeftRightMotorSpeeds(driveStickY-driveStickX,driveStickX-driveStickY);
-	driverStationLCD->Printf(DriverStationLCD::kUser_Line1,1,"Funky Monkey");
-	driverStationLCD->UpdateLCD();
 }
 
 START_ROBOT_CLASS(Onyx);

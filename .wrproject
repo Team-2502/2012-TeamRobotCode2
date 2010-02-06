@@ -246,12 +246,12 @@
     <buildtargets>
         <buildtarget buildtool="Linker" name="SimpleTemplate" passed="false" targetname="SimpleTemplate">
             <contents>
-                <buildtargetreference name="/Team2502Code/SimpleTemplate_partialImage"/>
+                <buildtargetreference name="/SimpleTemplate/SimpleTemplate_partialImage"/>
             </contents>
         </buildtarget>
         <buildtarget buildtool="Partial Image Linker" name="SimpleTemplate_partialImage" passed="true" targetname="SimpleTemplate_partialImage">
             <contents>
-                <folder name="/Team2502Code" recursive="true"/>
+                <folder name="/SimpleTemplate" recursive="true"/>
             </contents>
         </buildtarget>
     </buildtargets>
