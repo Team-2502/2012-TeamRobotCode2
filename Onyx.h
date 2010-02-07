@@ -1,8 +1,3 @@
-/*************************************************************************
- * Proud production of Team 2502
- * Written for 2009 FIRST FRC Season
- * Licensed under the MIT License (Subject to Change)
- *************************************************************************/
 #ifndef ONYX_H
 #define ONYX_H
 
