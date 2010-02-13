@@ -39,4 +39,3 @@ void Output::errorCode(int error)
 {
 }
 
-

@@ -11,6 +11,8 @@ void _GLOBAL__I__ZN15PneumaticSystem15autocompressingE();
 
 void _GLOBAL__I__ZN4OnyxC2Ev();
 
+void _GLOBAL__I__ZN6Output15autoCompressingE();
+
 void _GLOBAL__I__ZN9ErrorBase16globalErrorMutexE();
 
 void _GLOBAL__I__ZN9RobotBase10m_instanceE();
@@ -26,6 +28,7 @@ void (*_ctors[])() =
     {
     _GLOBAL__I__ZN15PneumaticSystem15autocompressingE,
     _GLOBAL__I__ZN4OnyxC2Ev,
+    _GLOBAL__I__ZN6Output15autoCompressingE,
     _GLOBAL__I__ZN9ErrorBase16globalErrorMutexE,
     _GLOBAL__I__ZN9RobotBase10m_instanceE,
     _GLOBAL__I__ZN10Ultrasonic6m_taskE,
@@ -37,6 +40,8 @@ void (*_ctors[])() =
 void _GLOBAL__D__ZN15PneumaticSystem15autocompressingE();
 
 void _GLOBAL__D__ZN4OnyxC2Ev();
+
+void _GLOBAL__D__ZN6Output15autoCompressingE();
 
 void _GLOBAL__D__ZN9ErrorBase16globalErrorMutexE();
 
@@ -51,6 +56,7 @@ void (*_dtors[])() =
     {
     _GLOBAL__D__ZN15PneumaticSystem15autocompressingE,
     _GLOBAL__D__ZN4OnyxC2Ev,
+    _GLOBAL__D__ZN6Output15autoCompressingE,
     _GLOBAL__D__ZN9ErrorBase16globalErrorMutexE,
     _GLOBAL__D__ZN9RobotBase10m_instanceE,
     _GLOBAL__D__ZN10Ultrasonic6m_taskE,

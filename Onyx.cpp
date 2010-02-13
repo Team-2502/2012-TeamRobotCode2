@@ -1,16 +1,17 @@
 #include "Onyx.h"
 #include "Pneumatics.h"
+//#include "Vision.h"
 
 Onyx::Onyx(void)
 {
-	robotDrive = new RobotDrive(1,3,2,4);
+	robotDrive = new RobotDrive(4,1,3,2);
 	driveStick = new Joystick(1);
-	driverStationLCD = DriverStationLCD::GetInstance();
 	PneumaticsButtons buttons;
 	buttons.autoButton = 12;
 	buttons.kickButton = 1;
 	buttons.manualButton = 11;
 	pSystem = new PneumaticSystem(buttons, driveStick);
+//	visionSystem = new Vision();
 }
 
 void Onyx::RobotInit()
@@ -31,14 +32,20 @@ void Onyx::AutonomousPeriodic()
 void Onyx::TeleopInit()
 {
 	pSystem->start();
+	robotDrive->SetInvertedMotor(robotDrive->kFrontRightMotor, true);
+	robotDrive->SetInvertedMotor(robotDrive->kRearLeftMotor, true);
+	robotDrive->SetInvertedMotor(robotDrive->kFrontLeftMotor, true);
+	robotDrive->SetInvertedMotor(robotDrive->kRearRightMotor, true);
+//	visionSystem->start();
 }
 
 void Onyx::TeleopPeriodic()
 {
 	GetWatchdog().Feed();
-	driveStickX = driveStick->GetX();
-	driveStickY = driveStick->GetY();
-	robotDrive->SetLeftRightMotorSpeeds(driveStickY-driveStickX,driveStickX-driveStickY);
+	robotDrive->ArcadeDrive(driveStick,false);
+//	driveStickX = driveStick->GetX();
+//	driveStickY = driveStick->GetY();
+//	robotDrive->SetLeftRightMotorSpeeds((driveStickY-driveStickX),(driveStickX-driveStickY));
 }
 
 START_ROBOT_CLASS(Onyx);

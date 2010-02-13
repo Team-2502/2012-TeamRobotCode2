@@ -1,6 +1,6 @@
 SimpleTemplate_partialImage/Debug/Objects/SimpleTemplate/Onyx.o:  \
- C:/windriver/workspace/SimpleTemplate/Onyx.cpp \
-  C:/windriver/workspace/SimpleTemplate/Onyx.h \
+ C:/WindRiver/workspace/SimpleTemplate/Onyx.cpp \
+  C:/WindRiver/workspace/SimpleTemplate/Onyx.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Dashboard.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/ErrorBase.h \
   C:/WindRiver/vxworks-6.3/target/h/VxWorks.h \
@@ -134,7 +134,7 @@ SimpleTemplate_partialImage/Debug/Objects/SimpleTemplate/Onyx.o:  \
   c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/deque \
   c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/memory \
   c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/vector \
-  C:/windriver/workspace/SimpleTemplate/Pneumatics.h \
+  C:/WindRiver/workspace/SimpleTemplate/Pneumatics.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/WPILib.h \
   c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/iostream.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Accelerometer.h \
@@ -224,7 +224,7 @@ SimpleTemplate_partialImage/Debug/Objects/SimpleTemplate/Onyx.o:  \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Victor.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/WPIStatus.h
 
-C:/windriver/workspace/SimpleTemplate/Onyx.h:
+C:/WindRiver/workspace/SimpleTemplate/Onyx.h:
 
 C:/WindRiver/vxworks-6.3/target/h/WPILib/Dashboard.h:
 
@@ -492,7 +492,7 @@ c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/
 
 c:/windriver/gnu/3.4.4-vxworks-6.3/x86-win32/lib/gcc/../../../x86-win32/include/c++/3.4.4/vector:
 
-C:/windriver/workspace/SimpleTemplate/Pneumatics.h:
+C:/WindRiver/workspace/SimpleTemplate/Pneumatics.h:
 
 C:/WindRiver/vxworks-6.3/target/h/WPILib/WPILib.h:
 

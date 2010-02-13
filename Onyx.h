@@ -4,6 +4,7 @@
 #include <Dashboard.h>
 #include "Pneumatics.h"
 #include "WPILib.h"
+//#include "Vision.h"
 
 class Onyx : public IterativeRobot
 {
@@ -31,6 +32,7 @@ private:
 	Joystick *driveStick;
 	DriverStationLCD *driverStationLCD;
 	PneumaticSystem *pSystem;
+//	Vision* visionSystem;
 
 
 	float rightStickX;

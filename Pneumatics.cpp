@@ -65,10 +65,8 @@ int PneumaticSystem::loop()
 		}
 		if(driveStick->GetRawButton(btns.manualButton) == true) {
 			autocompressing = false;
-			if(!fullyPressurized) {
-				relay->Set(Relay::kOn);
-				Output::setCompressing(true);
-			}
+			relay->Set(Relay::kOn);
+			Output::setCompressing(true);
 			Output::setAutocompressing(autocompressing);
 		} else {
 			relay->Set(Relay::kOff);
