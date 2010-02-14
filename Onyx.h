@@ -4,6 +4,7 @@
 #include <Dashboard.h>
 #include "Pneumatics.h"
 #include "WPILib.h"
+#include "Output.h"
 //#include "Vision.h"
 
 class Onyx : public IterativeRobot
@@ -45,8 +46,12 @@ private:
 
 	bool kicking;
 	int counter;
-	bool button12Held;
-	bool autocompress;
+//	bool button12Held;
+//	bool autocompress;
+//	bool lifting;
+	bool motors;
+	bool lastStateMotor;
+	int motorToggleButton;
 
 	char* autocompressState;
 	char* kickerState;

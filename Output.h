@@ -16,12 +16,16 @@ public:
 	static void setCompressing(bool a){compressing=a; print();}
 	static void setFullyPressurized(bool a){fullyPressurized=a; print();}
 	static void setKicking(bool a){kicking=a; print();}
+	static void setLifting(bool a){lifting=a; print();}
+	static void setMotors(bool a){motors=a; print();}
 private:
 	static DriverStationLCD *driverStationLCD;
 	static bool autoCompressing;
 	static bool compressing;
 	static bool fullyPressurized;
 	static bool kicking;
+	static bool lifting;
+	static bool motors;
 	
 	static void print();
 	static void clear();

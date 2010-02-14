@@ -12,6 +12,7 @@ struct PneumaticsButtons {
 	int kickButton;
 	int manualButton;
 	int autoButton;
+	int liftButton;
 };
 
 class PneumaticSystem
@@ -27,6 +28,8 @@ private:
 	static int loop();
 	
 	static Solenoid *ballKicker;
+	static Solenoid *ballKicker2;
+	static Solenoid *Lifter;
 	static Compressor *compressor;
 	static Relay *relay;
 	static DigitalInput *pressureSensor;
@@ -34,8 +37,10 @@ private:
 	Task* loopingTask;
 	static Joystick *driveStick;
 	
+	static bool lifting;
 	static bool autocompressing;
 	static PneumaticsButtons btns;
+	
 };
 
 #endif

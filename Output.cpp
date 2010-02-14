@@ -4,6 +4,9 @@ bool Output::autoCompressing=false;
 bool Output::compressing=false;
 bool Output::fullyPressurized=true;
 bool Output::kicking=false;
+bool Output::lifting=true;
+bool Output::motors=true;
+
 DriverStationLCD* Output::driverStationLCD = DriverStationLCD::GetInstance();
 
 Output::Output()
@@ -16,6 +19,8 @@ void Output::clear()
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line2,C_WIDTH,"        ");
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line3,C_WIDTH,"        ");
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line4,C_WIDTH,"        ");
+	driverStationLCD->Printf(DriverStationLCD::kUser_Line5,C_WIDTH,"        ");
+	driverStationLCD->Printf(DriverStationLCD::kUser_Line6,C_WIDTH,"        ");
 }
 void Output::print()
 {
@@ -25,6 +30,8 @@ void Output::print()
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line2,1,"Compressing:        ");
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line3,1,"Full Pressure:      ");
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line4,1,"Kicking:            ");
+		driverStationLCD->Printf(DriverStationLCD::kUser_Line5,1,"ArmLifting:         ");
+		driverStationLCD->Printf(DriverStationLCD::kUser_Line6,1,"Motors enabled:     ");
 		hasPrintedFirstTime = true;
 	}
 	clear();
@@ -32,6 +39,8 @@ void Output::print()
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line2,C_WIDTH,boolToString(compressing).c_str());
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line3,C_WIDTH,boolToString(fullyPressurized).c_str());
 	driverStationLCD->Printf(DriverStationLCD::kUser_Line4,C_WIDTH,boolToString(kicking).c_str());
+	driverStationLCD->Printf(DriverStationLCD::kUser_Line5,C_WIDTH,boolToString(lifting).c_str());
+	driverStationLCD->Printf(DriverStationLCD::kUser_Line6,C_WIDTH,boolToString(motors).c_str());
 	driverStationLCD->UpdateLCD();
 }
 
