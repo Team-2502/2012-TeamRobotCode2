@@ -44,7 +44,7 @@ bool PneumaticSystem::isFullyPressurized()
 int PneumaticSystem::loop()
 {
 	ballKicker->Set(true);
-	ballKicker2->Set(true);
+	ballKicker2->Set(false);
 	Lifter->Set(false);
 	lifting = false;
 	Output::setLifting(true);
