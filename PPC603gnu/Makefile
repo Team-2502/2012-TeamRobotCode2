@@ -31,7 +31,7 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-PRJ_ROOT_DIR := C:/WindRiver/workspace/SimpleTemplate
+PRJ_ROOT_DIR := C:/WindRiver/workspace/Team2502Code
 WS_ROOT_DIR := C:/WindRiver/workspace
 
 
@@ -77,120 +77,120 @@ endif
 
 
 #Project Targets
-PROJECT_TARGETS = SimpleTemplate/$(MODE_DIR)/SimpleTemplate.out \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o
+PROJECT_TARGETS = Team2502Code/$(MODE_DIR)/Team2502Code.out \
+	 Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage.o
 
 
 #Rules
 
-# SimpleTemplate
+# Team2502Code
 ifeq ($(DEBUG_MODE),1)
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+Team2502Code/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-SimpleTemplate/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
-SimpleTemplate/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-SimpleTemplate/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-SimpleTemplate/$(MODE_DIR)/% : DEFINES = 
-SimpleTemplate/$(MODE_DIR)/% : EXPAND_DBG = 0
-SimpleTemplate/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-SimpleTemplate/$(MODE_DIR)/% : CPU = PPC603
-SimpleTemplate/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-SimpleTemplate/$(MODE_DIR)/% : TOOL = gnu
-SimpleTemplate/$(MODE_DIR)/% : TOOL_PATH = 
-SimpleTemplate/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-SimpleTemplate/$(MODE_DIR)/% : LIBPATH = 
-SimpleTemplate/$(MODE_DIR)/% : LIBS = 
-SimpleTemplate/$(MODE_DIR)/% : OBJ_DIR := SimpleTemplate/$(MODE_DIR)
+Team2502Code/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
+Team2502Code/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
+Team2502Code/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+Team2502Code/$(MODE_DIR)/% : DEFINES = 
+Team2502Code/$(MODE_DIR)/% : EXPAND_DBG = 0
+Team2502Code/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+Team2502Code/$(MODE_DIR)/% : CPU = PPC603
+Team2502Code/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+Team2502Code/$(MODE_DIR)/% : TOOL = gnu
+Team2502Code/$(MODE_DIR)/% : TOOL_PATH = 
+Team2502Code/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
+Team2502Code/$(MODE_DIR)/% : LIBPATH = 
+Team2502Code/$(MODE_DIR)/% : LIBS = 
+Team2502Code/$(MODE_DIR)/% : OBJ_DIR := Team2502Code/$(MODE_DIR)
 
-OBJECTS_SimpleTemplate = SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o
+OBJECTS_Team2502Code = Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage.o
 
-SimpleTemplate/$(MODE_DIR)/SimpleTemplate.out : $(OBJECTS_SimpleTemplate)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_SimpleTemplate) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_SimpleTemplate) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
+Team2502Code/$(MODE_DIR)/Team2502Code.out : $(OBJECTS_Team2502Code)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_Team2502Code) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_Team2502Code) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-SimpleTemplate/$(MODE_DIR)/SimpleTemplate_compile_file : $(FILE) ;
+Team2502Code/$(MODE_DIR)/Team2502Code_compile_file : $(FILE) ;
 
-_clean :: SimpleTemplate/$(MODE_DIR)/SimpleTemplate_clean
+_clean :: Team2502Code/$(MODE_DIR)/Team2502Code_clean
 
-SimpleTemplate/$(MODE_DIR)/SimpleTemplate_clean : 
-	$(TRACE_FLAG)if [ -d "SimpleTemplate" ]; then cd "SimpleTemplate"; rm -rf $(MODE_DIR); fi
+Team2502Code/$(MODE_DIR)/Team2502Code_clean : 
+	$(TRACE_FLAG)if [ -d "Team2502Code" ]; then cd "Team2502Code"; rm -rf $(MODE_DIR); fi
 
 
-# SimpleTemplate_partialImage
+# Team2502Code_partialImage
 ifeq ($(DEBUG_MODE),1)
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+Team2502Code_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-SimpleTemplate_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEFINES = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
-SimpleTemplate_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-SimpleTemplate_partialImage/$(MODE_DIR)/% : CPU = PPC603
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL = gnu
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-SimpleTemplate_partialImage/$(MODE_DIR)/% : LIBPATH = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : LIBS = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : OBJ_DIR := SimpleTemplate_partialImage/$(MODE_DIR)
+Team2502Code_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
+Team2502Code_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
+Team2502Code_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+Team2502Code_partialImage/$(MODE_DIR)/% : DEFINES = 
+Team2502Code_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
+Team2502Code_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+Team2502Code_partialImage/$(MODE_DIR)/% : CPU = PPC603
+Team2502Code_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+Team2502Code_partialImage/$(MODE_DIR)/% : TOOL = gnu
+Team2502Code_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
+Team2502Code_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
+Team2502Code_partialImage/$(MODE_DIR)/% : LIBPATH = 
+Team2502Code_partialImage/$(MODE_DIR)/% : LIBS = 
+Team2502Code_partialImage/$(MODE_DIR)/% : OBJ_DIR := Team2502Code_partialImage/$(MODE_DIR)
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Onyx.o : C:/WindRiver/workspace/SimpleTemplate/Onyx.cpp
+Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Onyx.o : C:/WindRiver/workspace/Team2502Code/Onyx.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Output.o : C:/WindRiver/workspace/SimpleTemplate/Output.cpp
+Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Output.o : C:/WindRiver/workspace/Team2502Code/Output.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Pneumatics.o : C:/WindRiver/workspace/SimpleTemplate/Pneumatics.cpp
+Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Pneumatics.o : C:/WindRiver/workspace/Team2502Code/Pneumatics.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.o : C:/WindRiver/workspace/SimpleTemplate/Vision.cpp
+Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Vision.o : C:/WindRiver/workspace/Team2502Code/Vision.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-OBJECTS_SimpleTemplate_partialImage = SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Onyx.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Output.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Pneumatics.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.o
+OBJECTS_Team2502Code_partialImage = Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Onyx.o \
+	 Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Output.o \
+	 Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Pneumatics.o \
+	 Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Vision.o
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o : $(OBJECTS_SimpleTemplate_partialImage)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_SimpleTemplate_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
+Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage.o : $(OBJECTS_Team2502Code_partialImage)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_Team2502Code_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_compile_file : $(FILE) ;
+Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage_compile_file : $(FILE) ;
 
-_clean :: SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_clean
+_clean :: Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage_clean
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_clean : 
-	$(TRACE_FLAG)if [ -d "SimpleTemplate_partialImage" ]; then cd "SimpleTemplate_partialImage"; rm -rf $(MODE_DIR); fi
+Team2502Code_partialImage/$(MODE_DIR)/Team2502Code_partialImage_clean : 
+	$(TRACE_FLAG)if [ -d "Team2502Code_partialImage" ]; then cd "Team2502Code_partialImage"; rm -rf $(MODE_DIR); fi
 
-DEP_FILES := SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Onyx.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Output.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Pneumatics.d \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.d
+DEP_FILES := Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Onyx.d Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Output.d Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Pneumatics.d \
+	 Team2502Code_partialImage/$(MODE_DIR)/Objects/Team2502Code/Vision.d
 -include $(DEP_FILES)
 
 
