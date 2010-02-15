@@ -47,7 +47,7 @@ int PneumaticSystem::loop()
 	ballKicker2->Set(false);
 	Lifter->Set(false);
 	lifting = false;
-	Output::setLifting(true);
+	Output::setLifting(false);
 	bool fullyPressurized = false;
 	bool lastStateAuto = driveStick->GetRawButton(btns.autoButton);
 	bool lastStateKick = driveStick->GetRawButton(btns.kickButton);
