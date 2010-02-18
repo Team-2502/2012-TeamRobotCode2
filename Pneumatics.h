@@ -23,13 +23,14 @@ public:
 	bool isFullyPressurized();
 	void start();
 	void stop();
+	static void kick();
 	
 private:
 	static int loop();
 	
 	static Solenoid *ballKicker;
 	static Solenoid *ballKicker2;
-	static Solenoid *Lifter;
+	static Solenoid *lifter;
 	static Compressor *compressor;
 	static Relay *relay;
 	static DigitalInput *pressureSensor;

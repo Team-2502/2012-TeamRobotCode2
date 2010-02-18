@@ -5,7 +5,7 @@
 #include "Pneumatics.h"
 #include "WPILib.h"
 #include "Output.h"
-//#include "Vision.h"
+#include "Vision.h"
 
 class Onyx : public IterativeRobot
 {
@@ -13,7 +13,7 @@ public:
 	Onyx(void);
 	void RobotInit(void);
 	void DisabledInit(void);
-	void AutonomousInit(void) {}
+	void AutonomousInit(void);
 	void TeleopInit(void);
 
 	void DisabledPeriodic(void) {}
@@ -33,30 +33,14 @@ private:
 	Joystick *driveStick;
 	DriverStationLCD *driverStationLCD;
 	PneumaticSystem *pSystem;
-//	Vision* visionSystem;
+	Ultrasonic *rangeFinder;
+	Vision* visionSystem;
+	
+	enum { LocateBall, TurnToBall, KickBall, Done } state;
 
-
-	float rightStickX;
-	float rightStickY;
-	float leftStickX;
-	float leftStickY;
-	float driveStickX;
-	float driveStickY;
-	float driveStickZ;
-
-	bool kicking;
-	int counter;
-//	bool button12Held;
-//	bool autocompress;
-//	bool lifting;
-	bool motors;
+	bool motorsOn;
 	bool lastStateMotor;
 	int motorToggleButton;
-
-	char* autocompressState;
-	char* kickerState;
-	char* pressureizationState;
-	char* compressionState;
 };
 
 #endif

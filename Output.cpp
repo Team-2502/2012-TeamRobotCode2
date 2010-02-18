@@ -30,7 +30,7 @@ void Output::print()
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line2,1,"Compressing:        ");
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line3,1,"Full Pressure:      ");
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line4,1,"Kicking:            ");
-		driverStationLCD->Printf(DriverStationLCD::kUser_Line5,1,"ArmLifting:         ");
+		driverStationLCD->Printf(DriverStationLCD::kUser_Line5,1,"Arm Lifting:        ");
 		driverStationLCD->Printf(DriverStationLCD::kUser_Line6,1,"Motors enabled:     ");
 		hasPrintedFirstTime = true;
 	}

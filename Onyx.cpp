@@ -2,23 +2,24 @@
 #include "Onyx.h"
 #include "Pneumatics.h"
 #include "Output.h"
-//#include "Vision.h"
+#include "Vision.h"
 
 Onyx::Onyx(void)
 {
 	lastStateMotor = true;
-	motors = false;
+	motorsOn = false;
 	Output::setMotors(false);
 	robotDrive = new RobotDrive(4,1,3,2);
 	driveStick = new Joystick(1);
 	PneumaticsButtons buttons;
 	buttons.autoButton = 12;
-	buttons.kickButton = 1;
+	buttons.kickButton = 1; //Trigger
 	buttons.manualButton = 11;
 	buttons.liftButton = 7;
 	motorToggleButton = 8;
 	pSystem = new PneumaticSystem(buttons, driveStick);
-//	visionSystem = new Vision();
+//	rangeFinder = new Ultrasonic(2,2);
+	visionSystem = new Vision();
 }
 
 void Onyx::RobotInit()
@@ -31,9 +32,43 @@ void Onyx::DisabledInit()
 	pSystem->stop();
 }
 
+void Onyx::AutonomousInit()
+{
+	state = LocateBall;
+	rangeFinder->SetAutomaticMode(true);
+}
+
 void Onyx::AutonomousPeriodic()
 {
 	GetWatchdog().Feed();
+//	static unsigned int direction = 1;
+//	switch(state)
+//	{
+//	case LocateBall:
+//		robotDrive->Drive(0.3*(direction*2-1),0.0);
+//		if(rangeFinder->GetRangeInches() <= 2)
+//			state = KickBall;
+//		else if(rangeFinder->GetRangeInches() <= 6)
+//			state = TurnToBall;
+//		break;
+//	case TurnToBall:
+//		if(direction&1) {
+//			robotDrive->Drive(0.0,0.4); //left
+//		} else {
+//			robotDrive->Drive(0.0,-0.4); //right
+//		}
+//		Wait(0.2);
+//		state=LocateBall;
+//		break;
+//	case KickBall:
+//		PneumaticSystem::kick();
+//		state = Done;
+//		break;
+//	case Done:
+//	default:
+//		direction = 1;
+//		break;
+//	}
 }
 
 void Onyx::TeleopInit()
@@ -43,29 +78,26 @@ void Onyx::TeleopInit()
 	robotDrive->SetInvertedMotor(robotDrive->kRearLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kFrontLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kRearRightMotor, true);
-//	visionSystem->start();
+	visionSystem->startServer();
 }
 
 void Onyx::TeleopPeriodic()
 {
 	GetWatchdog().Feed();
-	if(motors)
+	if(motorsOn)
 	{
 		robotDrive->ArcadeDrive(driveStick,false);
 	}
-	if(driveStick->GetRawButton(motorToggleButton)&&lastStateMotor== false&&motors==false)
+	if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor && !motorsOn)
 	{
 		Output::setMotors(true);
-		motors = true;
+		motorsOn = true;
 	}
-	else if(driveStick->GetRawButton(motorToggleButton)&&lastStateMotor== false&&motors==true)
+	else if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor && motorsOn)
 	{
 		Output::setMotors(false);
-		motors = false;
+		motorsOn = false;
 	}
-//	driveStickX = driveStick->GetX();
-//	driveStickY = driveStick->GetY();
-//	robotDrive->SetLeftRightMotorSpeeds((driveStickY-driveStickX),(driveStickX-driveStickY));
 	lastStateMotor = driveStick->GetRawButton(motorToggleButton);
 }
 
