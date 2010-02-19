@@ -30,6 +30,8 @@ private:
 	
 	static Solenoid *ballKicker;
 	static Solenoid *ballKicker2;
+	static Solenoid *ballAntiKicker;
+	static Solenoid *ballAntiKicker2;
 	static Solenoid *lifter;
 	static Compressor *compressor;
 	static Relay *relay;
@@ -40,6 +42,7 @@ private:
 	
 	static bool lifting;
 	static bool autocompressing;
+	static bool twoSecondsUp;
 	static PneumaticsButtons btns;
 	
 };

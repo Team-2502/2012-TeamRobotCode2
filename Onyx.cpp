@@ -86,17 +86,13 @@ void Onyx::TeleopPeriodic()
 	GetWatchdog().Feed();
 	if(motorsOn)
 	{
-		robotDrive->ArcadeDrive(driveStick,false);
+		robotDrive->ArcadeDrive(driveStick, driveStick->GetAxisChannel(Joystick::kYAxis),
+								driveStick, driveStick->GetAxisChannel(Joystick::kTwistAxis));
 	}
-	if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor && !motorsOn)
+	if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor)
 	{
-		Output::setMotors(true);
-		motorsOn = true;
-	}
-	else if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor && motorsOn)
-	{
-		Output::setMotors(false);
-		motorsOn = false;
+		Output::setMotors(!motorsOn);
+		motorsOn = !motorsOn;
 	}
 	lastStateMotor = driveStick->GetRawButton(motorToggleButton);
 }
