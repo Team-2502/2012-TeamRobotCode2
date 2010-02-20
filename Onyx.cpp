@@ -19,7 +19,7 @@ Onyx::Onyx(void)
 	motorToggleButton = 8;
 	pSystem = new PneumaticSystem(buttons, driveStick);
 //	rangeFinder = new Ultrasonic(2,2);
-	visionSystem = new Vision();
+	visionSystem = new Vision(0,driveStick);
 }
 
 void Onyx::RobotInit()
@@ -78,7 +78,7 @@ void Onyx::TeleopInit()
 	robotDrive->SetInvertedMotor(robotDrive->kRearLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kFrontLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kRearRightMotor, true);
-	visionSystem->startServer();
+	visionSystem->start();
 }
 
 void Onyx::TeleopPeriodic()
@@ -86,8 +86,8 @@ void Onyx::TeleopPeriodic()
 	GetWatchdog().Feed();
 	if(motorsOn)
 	{
-		robotDrive->ArcadeDrive(driveStick, driveStick->GetAxisChannel(Joystick::kYAxis),
-								driveStick, driveStick->GetAxisChannel(Joystick::kTwistAxis));
+		robotDrive->ArcadeDrive(driveStick->GetRawAxis(Joystick::kZAxis),
+				                driveStick->GetRawAxis(Joystick::kTwistAxis),true);
 	}
 	if(driveStick->GetRawButton(motorToggleButton) && !lastStateMotor)
 	{

@@ -6,12 +6,12 @@ bool Output::fullyPressurized=true;
 bool Output::kicking=false;
 bool Output::lifting=true;
 bool Output::motors=true;
-
 DriverStationLCD* Output::driverStationLCD = DriverStationLCD::GetInstance();
 
 Output::Output()
 {
 }
+
 #define C_WIDTH 19
 void Output::clear()
 {

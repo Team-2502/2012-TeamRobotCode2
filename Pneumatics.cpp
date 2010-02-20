@@ -64,13 +64,14 @@ void PneumaticSystem::kick()
 	ballKicker->Set(false);
 	ballAntiKicker->Set(true);
 	ballAntiKicker2->Set(true);
-
 }
 
 int PneumaticSystem::loop()
 {
-	ballKicker->Set(true);
+	ballKicker->Set(false);
 	ballKicker2->Set(false);
+	ballAntiKicker->Set(true);
+	ballAntiKicker2->Set(true);
 	lifter->Set(false);
 	lifting = false;
 	Output::setLifting(false);
@@ -98,18 +99,12 @@ int PneumaticSystem::loop()
 			Output::setKicking(true);
 			relay->Set(Relay::kOff);
 			Output::setCompressing(false);
-			ballKicker->Set(false);
-			ballKicker2->Set(true);
-
-			Wait(KICK_WAIT);
-
-			ballKicker2->Set(false);
-			ballKicker->Set(true);
+			kick();
 			Output::setKicking(false);
-			
 			time.Start();
 			twoSecondsUp = false;
 		}
+
 		//Tries to keep the system fully pressurized.
 		if(autocompressing) {
 			if(fullyPressurized) {
