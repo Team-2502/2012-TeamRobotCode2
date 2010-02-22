@@ -16,7 +16,8 @@ Solenoid* PneumaticSystem::ballAntiKicker2 = new Solenoid(8,2);
 Solenoid* PneumaticSystem::ballKicker = new Solenoid(8,3);
 Solenoid* PneumaticSystem::ballKicker2 = new Solenoid(8,4);
 Solenoid* PneumaticSystem::lifter = new Solenoid(8,5);
-Relay* PneumaticSystem::relay = new Relay(1,Relay::kForwardOnly);
+Relay* PneumaticSystem::relay = new Relay(4,1,Relay::kForwardOnly);
+
 Joystick* PneumaticSystem::driveStick = 0;
 PneumaticsButtons PneumaticSystem::btns = {0,0,0};
 
@@ -41,6 +42,16 @@ void PneumaticSystem::start()
 void PneumaticSystem::stop()
 {
 	loopingTask->Stop();
+	ballKicker->Set(false);
+	ballKicker2->Set(false);
+	ballAntiKicker->Set(true);
+	ballAntiKicker2->Set(true);
+	lifter->Set(false);
+	lifting = false;
+	Output::setLifting(false);
+	relay->Set(Relay::kOff);
+	Output::setCompressing(false);
+	autocompressing = false;
 }
 
 //Convenience function for determening pressurization of the system.
@@ -54,6 +65,7 @@ void PneumaticSystem::kick()
 {
 	if(!twoSecondsUp)
 		return;
+	Output::setWinching(true);
 	relay->Set(Relay::kOff);
 	ballAntiKicker->Set(false);
 	ballAntiKicker2->Set(false);
@@ -64,6 +76,7 @@ void PneumaticSystem::kick()
 	ballKicker->Set(false);
 	ballAntiKicker->Set(true);
 	ballAntiKicker2->Set(true);
+	Output::setWinching(false);
 }
 
 int PneumaticSystem::loop()
@@ -86,27 +99,12 @@ int PneumaticSystem::loop()
 			twoSecondsUp = true;
 			time.Reset();
 		}
-		fullyPressurized = !(pressureSensor->Get() == 0);
-		Output::setFullyPressurized(fullyPressurized);
-		Output::setAutocompressing(autocompressing);
-		//Toggles autocompression based on Joystick input.
-		if(!driveStick->GetRawButton(btns.autoButton) && lastStateAuto) {
-			autocompressing = !autocompressing;
-			Output::setAutocompressing(autocompressing);
-		}
-		//Perform a kick. Blocks the thread for KICK_WAIT seconds.
-		if(driveStick->GetRawButton(btns.kickButton) && !lastStateKick && twoSecondsUp) {
-			Output::setKicking(true);
-			relay->Set(Relay::kOff);
-			Output::setCompressing(false);
-			kick();
-			Output::setKicking(false);
-			time.Start();
-			twoSecondsUp = false;
-		}
-
-		//Tries to keep the system fully pressurized.
-		if(autocompressing) {
+//		fullyPressurized = !(pressureSensor->Get() == 0);
+		Output::setFullyPressurized(fullyPressurized = !(pressureSensor->Get() == 0));
+		//Controls compression depending on whether the autocompression feature is enabled.
+		switch(autocompressing)
+		{
+		case true:
 			if(fullyPressurized) {
 				relay->Set(Relay::kOff);
 				Output::setCompressing(false);
@@ -114,26 +112,47 @@ int PneumaticSystem::loop()
 				relay->Set(Relay::kOn);
 				Output::setCompressing(true);
 			}
+			break;
+		case false:
+			if(driveStick->GetRawButton(btns.manualButton)) {
+				if(!fullyPressurized || true) {
+					autocompressing = false;
+					relay->Set(Relay::kOn);
+					Output::setCompressing(true);
+					Output::setAutocompressing(autocompressing);
+				}
+			} else {
+				relay->Set(Relay::kOff);
+				Output::setCompressing(false);
+			}
+			break;
+		default:
+			break;
 		}
-		//Toggles the actuator.
-		if(driveStick->GetRawButton(btns.liftButton) && !lastStateLift/* && !lifting*/)
+		Output::setAutocompressing(autocompressing);
+		
+		//The following sections respond to Joystick input.
+		//Performs a kick.
+		if(driveStick->GetRawButton(btns.kickButton) && !lastStateKick && twoSecondsUp) {
+			relay->Set(Relay::kOff);
+			Output::setCompressing(false);
+			kick();
+			time.Start();
+			twoSecondsUp = false;
+		}
+		//Toggles the arm.
+		if(driveStick->GetRawButton(btns.liftButton) && !lastStateLift)
 		{
 			Output::setLifting(!lifting);
 			lifter->Set(!lifting);
 			lifting = !lifting;
 		}
-		//Look for the manual compression button. However, it will not allow for over-pressurization
-		//of the pneumatics system. This limit is set at 120psi.
-		if(driveStick->GetRawButton(btns.manualButton) && !fullyPressurized) {
-			autocompressing = false;
-			relay->Set(Relay::kOn);
-			Output::setCompressing(true);
+		//Toggles autocompression
+		if(!driveStick->GetRawButton(btns.autoButton) && lastStateAuto) {
+			autocompressing = !autocompressing;
 			Output::setAutocompressing(autocompressing);
-		} else if(!autocompressing && !driveStick->GetRawButton(btns.manualButton)) {
-			relay->Set(Relay::kOff);
-			Output::setCompressing(false);
 		}
-
+		
 		lastStateAuto = driveStick->GetRawButton(btns.autoButton);
 		lastStateKick = driveStick->GetRawButton(btns.kickButton);
 		lastStateLift = driveStick->GetRawButton(btns.liftButton);

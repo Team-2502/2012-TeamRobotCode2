@@ -15,7 +15,7 @@ public:
 	static void setAutocompressing(bool a){autoCompressing=a; print();}
 	static void setCompressing(bool a){compressing=a; print();}
 	static void setFullyPressurized(bool a){fullyPressurized=a; print();}
-	static void setKicking(bool a){kicking=a; print();}
+	static void setWinching(bool a){winching=a; print();}
 	static void setLifting(bool a){lifting=a; print();}
 	static void setMotors(bool a){motors=a; print();}
 private:
@@ -23,7 +23,7 @@ private:
 	static bool autoCompressing;
 	static bool compressing;
 	static bool fullyPressurized;
-	static bool kicking;
+	static bool winching;
 	static bool lifting;
 	static bool motors;
 	

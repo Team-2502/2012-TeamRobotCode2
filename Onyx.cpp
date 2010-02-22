@@ -20,16 +20,23 @@ Onyx::Onyx(void)
 	pSystem = new PneumaticSystem(buttons, driveStick);
 //	rangeFinder = new Ultrasonic(2,2);
 	visionSystem = new Vision(0,driveStick);
+	
+	winch = new Jaguar(4,5);
+	winch->Set(0);
+	reverseButton = 10;
+	forwardButton = 9;
 }
 
 void Onyx::RobotInit()
 {
 	pSystem->start();
+	pneumaticsOn = true;
 }
 
 void Onyx::DisabledInit()
 {
 	pSystem->stop();
+	pneumaticsOn = false;
 }
 
 void Onyx::AutonomousInit()
@@ -78,7 +85,9 @@ void Onyx::TeleopInit()
 	robotDrive->SetInvertedMotor(robotDrive->kRearLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kFrontLeftMotor, true);
 	robotDrive->SetInvertedMotor(robotDrive->kRearRightMotor, true);
-	visionSystem->start();
+//	visionSystem->start();
+	winch->Set(0);
+	Output::setWinching(false);
 }
 
 void Onyx::TeleopPeriodic()
@@ -93,6 +102,17 @@ void Onyx::TeleopPeriodic()
 	{
 		Output::setMotors(!motorsOn);
 		motorsOn = !motorsOn;
+	}
+	//Winch stuff
+	if(driveStick->GetRawButton(forwardButton) && !driveStick->GetRawButton(reverseButton)) {
+		winch->Set(1);
+		Output::setWinching(true);
+	} else if(driveStick->GetRawButton(reverseButton) && !driveStick->GetRawButton(forwardButton)) {
+		winch->Set(-1);
+		Output::setWinching(true);
+	} else {
+		winch->Set(0);
+		Output::setWinching(false);
 	}
 	lastStateMotor = driveStick->GetRawButton(motorToggleButton);
 }

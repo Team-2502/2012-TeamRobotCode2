@@ -35,12 +35,17 @@ private:
 	PneumaticSystem *pSystem;
 	Ultrasonic *rangeFinder;
 	Vision* visionSystem;
+	Jaguar *winch;
 	
 	enum { LocateBall, TurnToBall, KickBall, Done } state;
 
 	bool motorsOn;
 	bool lastStateMotor;
 	int motorToggleButton;
+	
+	bool pneumaticsOn;
+	int reverseButton;
+	int forwardButton;
 };
 
 #endif
