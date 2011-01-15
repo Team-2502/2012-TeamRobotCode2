@@ -1,0 +1,27 @@
+This is the code that we can use to control the 2010 Robot's Pneumatic System, and Mecanum Drive Train.
+There is some debugging code left, and is an example of a crude hack. //It was written in an afternoon.
+Use for testing your build system only.
+
+Change this README when real code is committed. 
+
+Here are instructions for setting up a build system on Linux:
+
+1) Download "build_system.zip" from the repository page on GitHub.
+2) Unzip its contents into a folder at the same level as this repository's folder on your HD.
+   Your directory structure should look like:
+		./build_system
+          |-gnu
+          |-WPILib
+		  |-etc..
+		./TeamRobotCode
+		  |-[Code]
+3) Open a terminal and go to the TeamRobotCode directory.
+4) Run the commands:
+	a) cp ../build_system/scripts/build .
+	b) cp ../build_system/scripts/deploy .
+	c) chmod +x build deploy
+5) Ensure that WINE is installed (check your distro's repository.)
+6) To compile run: ./build
+7) To upload to the robot run: ./deploy
+
+Easy! :D
