@@ -6,6 +6,7 @@ Change this README when real code is committed.
 
 Here are instructions for setting up a build system on Linux:
 
+0) Make sure your $PROJECT_BASE environment variable is set to this directory.
 1) Download "build_system.zip" from the repository page on GitHub.
 2) Unzip its contents into a folder at the same level as this repository's folder on your HD.
    Your directory structure should look like:

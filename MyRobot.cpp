@@ -1,31 +1,28 @@
 #include <math.h>
-#include <Dashboard.h>
 #include "WPILib.h"
-#include "Pneumatics.h"
-#define AxisButton 11
-#define ZeroButton 12
+
+enum { AxisButton=11,ZeroButton=12 };
 
 class BetaRobot : public IterativeRobot
 {
 	public:
 		BetaRobot(void)
 		{
-			m_frontLeftMotor = new Jaguar(7);
-			m_frontRightMotor = new Jaguar(3);
-			m_rearLeftMotor = new Jaguar(1);
-			m_rearRightMotor = new Jaguar(2);
+			gyro = new Gyro(1,8);
 			driveStick = new Joystick(1);
-			PneumaticsButtons buttons;
-			buttons.autoButton = 12;
-			buttons.kickButton = 1; //Trigger
-			buttons.manualButton = 11;
-			buttons.liftButton = 7;
-			pSystem = new PneumaticSystem(buttons, driveStick);
-			#ifdef DEBUG
+			/* m_frontLeftMotor = new Jaguar(4,7);
+			m_frontRightMotor = new Jaguar(4,3);
+			m_rearLeftMotor = new Jaguar(4,1);
+			m_rearRightMotor = new Jaguar(4,2);
+			
+			m_frontLeftMotor->SetSafetyEnabled(false);
+			m_frontRightMotor->SetSafetyEnabled(false);
+			m_rearLeftMotor->SetSafetyEnabled(false);
+			m_rearRightMotor->SetSafetyEnabled(false); */
+			
 			driverStationLCD = DriverStationLCD::GetInstance();
 			showingSpeeds = true;
 			lastStateTrigger = driveStick->GetRawButton(AxisButton);
-			#endif
 		}
 		
 		void Normalize(double *wheelSpeeds)
@@ -46,10 +43,22 @@ class BetaRobot : public IterativeRobot
 			}
 		}
 		
+		void RotateVector(double &x, double &y, double angle)
+		{
+			double cosA = cos(angle * (3.14159 / 180.0));
+			double sinA = sin(angle * (3.14159 / 180.0));
+			double xOut = x * cosA - y * sinA;
+			double yOut = x * sinA + y * cosA;
+			x = xOut;
+			y = yOut;
+		}
+		
 		void Drive(float x, float y, float rotation)
 		{
 			double xIn = x;
 			double yIn = -y; // Negate y for the joystick.
+			
+			//RotateVector(xIn,yIn,gyro->GetAngle());
 			
 			double wheelSpeeds[4];
 			wheelSpeeds[RobotDrive::kFrontLeftMotor] = xIn + yIn + rotation;
@@ -61,73 +70,57 @@ class BetaRobot : public IterativeRobot
 			
 			m_frontLeftMotor->Set(wheelSpeeds[RobotDrive::kFrontLeftMotor]);
 			m_frontRightMotor->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
-			m_rearLeftMotor->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
-			m_rearRightMotor->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
-			#ifdef DEBUG
-			sendDataToDS();
-			#endif
+			m_rearLeftMotor->Set(-1*wheelSpeeds[RobotDrive::kRearLeftMotor]);
+			m_rearRightMotor->Set(wheelSpeeds[RobotDrive::kRearRightMotor]);
+			
+			
 		}
 		
-		
-		void RobotInit(void) {pSystem->start();}
-		void DisabledInit(void) {pSystem->stop();}
-		void AutonomousInit(void) {pSystem->setCompressor(true);}
-		void TeleopInit(void) {pSystem->start();}
-		
-		void AutonomousPeriodic(void) { GetWatchdog().Feed(); }
+		void AutonomousPeriodic(void) { /*Drive(0,0,0);*/ }
 		void TeleopPeriodic(void)
 		{
-			GetWatchdog().Feed();
-			Drive(driveStick->GetRawAxis(Joystick::kYAxis),
-				  driveStick->GetRawAxis(Joystick::kZAxis),
-				  driveStick->GetRawAxis(Joystick::kTwistAxis));
-			#ifdef DEBUG
-			if(driveStick->GetRawButton(AxisButton) && !lastStateTrigger) {
+			sendDataToDS();
+			//Drive(driveStick->GetRawAxis(Joystick::kYAxis),
+			//	  driveStick->GetRawAxis(Joystick::kZAxis),
+			//	  driveStick->GetRawAxis(Joystick::kTwistAxis));
+			if(driveStick->GetRawButton(AxisButton) && lastStateTrigger != driveStick->GetRawButton(AxisButton))
+			{
 				showingSpeeds = !showingSpeeds;
 			}
 			lastStateTrigger = driveStick->GetRawButton(AxisButton);
-			#endif
 		}
 		
-		/** Unused functions */
-		void DisabledPeriodic(void) {}
-		void DisabledContinuous(void) {}
-		void AutonomousContinuous(void) {}
-		void TeleopContinuous(void) {}
-		
-		#ifdef DEBUG
 		void sendDataToDS() {
-			if(showingSpeeds) {
-				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line1,"Speed FL: %f",m_frontLeftMotor->Get());
-				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line2,"Speed FR: %f",m_frontRightMotor->Get());
-				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line3,"Speed RL: %f",m_rearLeftMotor->Get());
-				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line4,"Speed RR: %f",m_rearRightMotor->Get());
+			/*if(showingSpeeds) {
+				//driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line1,"Speed FL: %f",m_frontLeftMotor->Get());
+				//driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line2,"Speed FR: %f",m_frontRightMotor->Get());
+				//driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line3,"Speed RL: %f",m_rearLeftMotor->Get());
+				//driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line4,"Speed RR: %f",m_rearRightMotor->Get());
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line5,"");
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line6,"");
-			} else {
-				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line1,"Joystick X: %f",0.0);
+			}
+			else {*/
+				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line1,"Joystick X: %f",driveStick->GetRawAxis(Joystick::kXAxis));
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line2,"Joystick Y: %f",driveStick->GetRawAxis(Joystick::kYAxis));
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line3,"Joystick Z: %f",driveStick->GetRawAxis(Joystick::kZAxis));
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line4,"Joystick T: %f",driveStick->GetRawAxis(Joystick::kTwistAxis));
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line5,"");
 				driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line6,"");
-			}
+		//	}
+			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line5,"Gyro Angle: %f", gyro->GetAngle());
 			driverStationLCD->UpdateLCD();
 		}
-		#endif
 		
 	private:
-		#ifdef DEBUG
+		Gyro *gyro;
+		Joystick *driveStick;
 		DriverStationLCD* driverStationLCD;
 		bool showingSpeeds;
 		bool lastStateTrigger;
-		#endif
-		Joystick *driveStick;
-		PneumaticSystem *pSystem;
-		SpeedController *m_frontLeftMotor;
-		SpeedController *m_frontRightMotor;
-		SpeedController *m_rearLeftMotor;
-		SpeedController *m_rearRightMotor;
+		Jaguar *m_frontLeftMotor;
+		Jaguar *m_frontRightMotor;
+		Jaguar *m_rearLeftMotor;
+		Jaguar *m_rearRightMotor;
 };
 
 START_ROBOT_CLASS(BetaRobot);

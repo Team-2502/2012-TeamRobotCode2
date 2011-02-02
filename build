@@ -1,10 +1,14 @@
 #!/bin/bash
 echo "Cleaning..."
+export PROJECT_BASE="`readlink -f .`"
 export WIND_BASE="$PROJECT_BASE/../build_files"
 export PROJECT_NAME="`basename $PROJECT_BASE`"
 
 rm -f $PROJECT_BASE/PPC603gnu/`echo $PROJECT_NAME`_partialImage/*
 rm -f $PROJECT_BASE/PPC603gnu/$PROJECT_NAME/*
+
+echo "Current Project In: $PROJECT_BASE"
+cd $PROJECT_BASE
 
 find . -name \*.cpp -exec $PROJECT_BASE/../build_files/scripts/build_source_file '{}' \;
 $PROJECT_BASE/../build_files/scripts/build_partial_image

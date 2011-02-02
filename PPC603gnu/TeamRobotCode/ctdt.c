@@ -9,8 +9,6 @@
 
 void _GLOBAL__I__Z20FRC_userClassFactoryv();
 
-void _GLOBAL__I__ZN15PneumaticSystem15autocompressingE();
-
 void _GLOBAL__I__ZN9ErrorBase16globalErrorMutexE();
 
 void _GLOBAL__I__ZN9RobotBase10m_instanceE();
@@ -25,7 +23,6 @@ extern void (*_ctors[])();
 void (*_ctors[])() =
     {
     _GLOBAL__I__Z20FRC_userClassFactoryv,
-    _GLOBAL__I__ZN15PneumaticSystem15autocompressingE,
     _GLOBAL__I__ZN9ErrorBase16globalErrorMutexE,
     _GLOBAL__I__ZN9RobotBase10m_instanceE,
     _GLOBAL__I__ZN14SmartDashboard11BUFFER_SIZEE,
@@ -35,8 +32,6 @@ void (*_ctors[])() =
     };
 
 void _GLOBAL__D__Z20FRC_userClassFactoryv();
-
-void _GLOBAL__D__ZN15PneumaticSystem15autocompressingE();
 
 void _GLOBAL__D__ZN9ErrorBase16globalErrorMutexE();
 
@@ -50,7 +45,6 @@ extern void (*_dtors[])();
 void (*_dtors[])() =
     {
     _GLOBAL__D__Z20FRC_userClassFactoryv,
-    _GLOBAL__D__ZN15PneumaticSystem15autocompressingE,
     _GLOBAL__D__ZN9ErrorBase16globalErrorMutexE,
     _GLOBAL__D__ZN9RobotBase10m_instanceE,
     _GLOBAL__D__ZN10Ultrasonic9kPingTimeE,
