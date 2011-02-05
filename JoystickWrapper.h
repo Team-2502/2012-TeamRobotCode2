@@ -48,6 +48,18 @@ enum StickType
 	DualAction,
 };
 
+enum Direction
+{
+	NORTH = 0,
+	NORTHEAST = 45,
+	EAST = 90,
+	SOUTHEAST = 135,
+	SOUTH = 180,
+	SOUTHWEST = 225,
+	WEST = 270,
+	NORTHWEST = 315,
+};
+
 /**
  * This wraps around the Joystick to provide additional functionality.
  */
@@ -75,6 +87,11 @@ public:
 	 * Get the pov values from the joystick.
 	 */
 	void GetPov(float* xaxis, float* yaxis) const;
+	
+	/**
+	 * Get the angle of the pov from the joystick. North is zero and it progresses clockwise.
+	 */
+	int GetPovAngle() const;
 	
 	/**
 	 * Get a value of both Joystick axis from -1.0 to 1.0. This uses the snapping

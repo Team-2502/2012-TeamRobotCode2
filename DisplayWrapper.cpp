@@ -60,7 +60,7 @@ void DisplayWrapper::Printf(const char* format, ...)
 	char buf[256];
 	va_list args;
 	va_start (args, format);
-	vsprintf (buf,format, args);
+	vsnprintf ( buf, 256, format, args );
 	va_end (args);
 	this->buffer[this->bufferLocation] = buf;
 	this->bufferLocation++;
@@ -75,7 +75,7 @@ void DisplayWrapper::PrintfLine(unsigned int line, const char* format, ...)
 		char buf[256];
 		va_list args;
 		va_start (args, format);
-		vsprintf (buf,format, args);
+		vsnprintf ( buf, 256, format, args);
 		va_end (args);
 		this->buffer[line] = buf;
 	}
