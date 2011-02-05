@@ -2,10 +2,10 @@
 
 #include "JoystickWrapper.h"
 
-JoystickWrapper::JoystickWrapper(StickType type)
+JoystickWrapper::JoystickWrapper(int number, StickType type)
 {
 	//Initialize stuff
-	this->joystick = new Joystick(1);
+	this->joystick = new Joystick(number);
 	
 	this->type = type;
 	SetSnapPoints(8);
@@ -23,6 +23,20 @@ float JoystickWrapper::GetMagnitude() const
 	float x, y;
 	GetRawAxis(&x, &y);
 	return std::sqrt(std::pow(x, 2.0) + std::pow(y, 2.0));
+}
+
+void JoystickWrapper::GetPov(float* x, float* y) const
+{
+	switch( this->type )
+	{
+	case Extreme3DPro:
+		*x = this->joystick->GetRawAxis(5);
+		*y = -1.0 * this->joystick->GetRawAxis(6);
+		return;
+		
+	default:
+		return;
+	}
 }
 
 void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
@@ -47,17 +61,36 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 
 void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const
 {
+	*xaxis = this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
+	*yaxis = -1.0 * this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
+}
+
+float JoystickWrapper::GetRotation() const
+{
 	switch( this->type )
 	{
 	case Extreme3DPro:
-		*xaxis = this->joystick->GetRawAxis(Joystick::kYAxis);
-		*yaxis = this->joystick->GetRawAxis(Joystick::kZAxis);
-		return;
-	
+	case DualAction:
+		return this->joystick->GetRawAxis(Joystick::kDefaultZAxis);
+		
+	case Attack3:
 	default:
-		*xaxis = 0;
-		*yaxis = 0;
-		return;
+		return 0.0;
 	}
 }
 
+float JoystickWrapper::GetThrottle() const
+{
+	switch( this->type )
+	{
+	case Extreme3DPro:
+		return -1.0 * this->joystick->GetRawAxis(Joystick::kDefaultTwistAxis);
+		
+	case Attack3:
+		return -1.0 * this->joystick->GetRawAxis(Joystick::kDefaultZAxis);
+		
+	case DualAction:
+	default:
+		return 0.0;
+	}
+}

@@ -10,6 +10,7 @@ enum StickType
 {
 	Extreme3DPro,
 	Attack3,
+	DualAction,
 };
 
 /**
@@ -18,7 +19,7 @@ enum StickType
 class JoystickWrapper
 {
 public:
-	JoystickWrapper(StickType type);
+	JoystickWrapper(int number, StickType type);
 	
 	/**
 	 * Get the angle of the joystick in degrees.
@@ -36,6 +37,11 @@ public:
 	float GetMagnitude() const;
 	
 	/**
+	 * Get the pov values from the joystick.
+	 */
+	void GetPov(float* xaxis, float* yaxis) const;
+	
+	/**
 	 * Get a value of both Joystick axis from -1.0 to 1.0. This uses the snapping
 	 * feature and also only works for the x and y axis.
 	 */
@@ -45,6 +51,16 @@ public:
 	 * This gets the raw axis from the joystick without snapping.
 	 */
 	void GetRawAxis(float* xaxis, float* yaxis) const;
+	
+	/**
+	 * This returns the rotation value of the joystick.
+	 */
+	float GetRotation() const;
+	
+	/**
+	 * Get the value of the throttle. It goes from -1.0 at the bottom to 1.0 at the top.
+	 */
+	float GetThrottle() const;
 	
 	/**
 	 * Set the number of snap points on the joystick. The higher the number,
