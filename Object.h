@@ -1,8 +1,0 @@
-
-
-class Object
-{
-
-private:
-
-};
