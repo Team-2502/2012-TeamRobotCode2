@@ -1,4 +1,5 @@
 #include "DriverWrapper.h"
+#include "config.h"
 
 DriverWrapper::DriverWrapper(DriveType type)
 {
