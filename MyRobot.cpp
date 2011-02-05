@@ -1,12 +1,11 @@
 #include <math.h>
-
 #include <Dashboard.h>
-#include <WPILib.h>
-
+#include "WPILib.h"
 #include "DisplayWrapper.h"
 #include "DriverWrapper.h"
 #include "JoystickWrapper.h"
 #include "VisionRoutines.h"
+#include "Vision/PCVideoServer.h"
 
 class BetaRobot : public IterativeRobot
 {
@@ -19,13 +18,14 @@ class BetaRobot : public IterativeRobot
 			vis = Vision::GetInstance();
 			driver = new DriverWrapper(Mecanum, 7, 2, 3, 1);
 			driver->GetRobotDrive()->SetSafetyEnabled(false);
-			display = new DisplayWrapper();
+			display = new DisplayWrapper;
+			pcvs = new PCVideoServer;
 		}
 	
 		void RobotInit(void) {}
-		void DisabledInit(void) {}
+		void DisabledInit(void) {pcvs->Stop();}
 		void AutonomousInit(void) {}
-		void TeleopInit(void) {}
+		void TeleopInit(void) {pcvs->Start();}
 		void AutonomousPeriodic(void) {}
 		
 		void TeleopPeriodic(void)
@@ -91,6 +91,7 @@ class BetaRobot : public IterativeRobot
 		JoystickWrapper* joystick;
 		Vision* vis;
 		DriverWrapper* driver;
+		PCVideoServer* pcvs;
 };
 
 START_ROBOT_CLASS(BetaRobot);
