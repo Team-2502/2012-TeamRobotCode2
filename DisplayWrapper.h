@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <WPILib.h>
+#include "WPILib.h"
 
 /**
  * This wraps around the LCD Display.

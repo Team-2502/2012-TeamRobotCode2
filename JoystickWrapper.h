@@ -10,7 +10,7 @@ enum StickType
 {
 	Extreme3DPro,
 	Attack3,
-	DualAction,
+	DualAction
 };
 
 /**

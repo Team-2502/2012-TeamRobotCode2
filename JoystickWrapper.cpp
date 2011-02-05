@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "JoystickWrapper.h"
+using std::acos; using std::atan2; using std::atan; using std::pow; using std::sqrt; using std::floor; using std::cos; using std::sin;
 
 JoystickWrapper::JoystickWrapper(int number, StickType type)
 {
@@ -15,14 +16,14 @@ float JoystickWrapper::GetAngle() const
 {
 	float x, y;
 	GetRawAxis(&x, &y);
-	return (180.0 / std::acos(-1.0)) * std::atan2(x, -1.0 * y);
+	return (180.0 / acos(-1.0)) * atan2(x, -1.0 * y);
 }
 
 float JoystickWrapper::GetMagnitude() const
 {
 	float x, y;
 	GetRawAxis(&x, &y);
-	return std::sqrt(std::pow(x, 2.0) + std::pow(y, 2.0));
+	return sqrt(pow(x, 2.0) + pow(y, 2.0));
 }
 
 void JoystickWrapper::GetPov(float* x, float* y) const
@@ -44,19 +45,19 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 	float angle = GetAngle();
 	
 	//Calculate the angle that we will snap to:
-	float snapAngle = std::floor((angle / 360.0) * (float)this->snapPoints) * (360.0 / (float)this->snapPoints);
+	float snapAngle = floor((angle / 360.0) * (float)this->snapPoints) * (360.0 / (float)this->snapPoints);
 	snapAngle += 360.0 / (2.0 * (float)this->snapPoints);
 	if( snapAngle > 360.0 )
 		snapAngle -= 360.0;
-	snapAngle *= (4.0 * std::atan(1.0)) / 180.0; // convert back to radians
+	snapAngle *= (4.0 * atan(1.0)) / 180.0; // convert back to radians
 	
 	//Snap the magnitude to an exponential filter
 	float magnitude = this->joystick->GetMagnitude();
 	//magnitude = std::pow(magnitude, 2.0);
-	magnitude = std::pow(1.5,magnitude)-1;
+	magnitude = pow(1.5,magnitude)-1;
 	//Create a new axis based on the new angle and the magnitude of the previous axis vector	
-	*xaxis = std::cos(snapAngle) * magnitude;
-	*yaxis = std::sin(snapAngle) * magnitude;
+	*xaxis = cos(snapAngle) * magnitude;
+	*yaxis = sin(snapAngle) * magnitude;
 }
 
 void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const

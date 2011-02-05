@@ -7,13 +7,13 @@ typedef enum Region {
 	NorthWest, North,  NorthEast,
 	West,      Center, East,
 	SouthWest, South,  SouthEast
-}
+};
 
 struct TargetReport
 {
 	Region region;
 	double area;
-}
+};
 
 class Vision
 {
@@ -27,7 +27,7 @@ class Vision
 		static Vision* visionInstance;
 		HSLImage *constantImage;
 		BinaryImage *particleImage;
-		AxisCamera &camera;
+		AxisCamera *camera;
 };
 
 #endif
