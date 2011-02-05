@@ -3,6 +3,7 @@
 #include <Dashboard.h>
 #include "WPILib.h"
 
+#include "DisplayWrapper.h"
 #include "JoystickWrapper.h"
 //#include "Pneumatics.h"
 
@@ -23,7 +24,8 @@ class BetaRobot : public IterativeRobot
 			joystick->SetSnapPoints(4);
 			drive = new RobotDrive(7, 2, 3, 1);
 			drive->SetSafetyEnabled(false);
-			driverStationLCD = DriverStationLCD::GetInstance();
+			display = new DisplayWrapper();
+			//driverStationLCD = DriverStationLCD::GetInstance();
 			//m_frontLeftMotor->SetSafetyEnabled(false);
 			//m_frontRightMotor->SetSafetyEnabled(false);
 			//m_rearLeftMotor->SetSafetyEnabled(false);
@@ -96,7 +98,6 @@ class BetaRobot : public IterativeRobot
 		void TeleopPeriodic(void)
 		{
 			GetWatchdog().Feed();
-#if 1
 			/*
 			Drive(driveStick->GetRawAxis(Joystick::kYAxis),
 				  driveStick->GetRawAxis(Joystick::kZAxis),
@@ -106,35 +107,20 @@ class BetaRobot : public IterativeRobot
 			float x, y;
 			joystick->GetRawAxis(&x, &y);
 			//Drive(x, y, joystick->GetJoystick()->GetRawAxis(Joystick::kTwistAxis));
-			drive->MecanumDrive_Cartesian(x, y, joystick->GetJoystick()->GetRawAxis(Joystick::kTwistAxis));
+			//drive->MecanumDrive_Cartesian(x, y, joystick->GetJoystick()->GetRawAxis(Joystick::kTwistAxis));
+			display->PrintfLine(0, "Joystick Angle:     %f", joystick->GetAngle());
+			display->PrintfLine(1, "Joystick Throttle:  %f", joystick->GetThrottle());
+			display->PrintfLine(2, "Joystick X:         %f", x);
+			display->PrintfLine(3, "Joystick Y:         %f", y);
+			display->PrintfLine(4, "Joystick Magnitude: %f", joystick->GetMagnitude());
+			display->PrintfLine(5, "Joystick Rotation:  %f", joystick->GetRotation());
+			joystick->GetPov(&x, &y);
+			display->PrintfLine(6, "Joystick POV X:     %f", x);
+			display->PrintfLine(7, "Joystick POV Y:     %f", y);
+			float t = -1.0 * joystick->GetThrottle();
+			display->SetScrollLocation(t);
+			display->Output();
 			
-			/*
-			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line1,"Joystick X Axis: %f",joystick->GetJoystick()->GetRawAxis(Joystick::kDefaultXAxis));
-			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line2,"Joystick Y Axis: %f",joystick->GetJoystick()->GetRawAxis(Joystick::kDefaultYAxis));
-			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line3,"Joystick Z Axis: %f",joystick->GetJoystick()->GetRawAxis(Joystick::kDefaultZAxis));
-			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line4,"Joystick W Axis: %f",joystick->GetJoystick()->GetRawAxis(Joystick::kDefaultTwistAxis));
-			driverStationLCD->PrintfLine(DriverStationLCD::kUser_Line5,"Joystick T Axis: %f",joystick->GetJoystick()->GetRawAxis(Joystick::kDefaultThrottleAxis));
-			*/
-			
-			driverStationLCD->UpdateLCD();
-#else
-			if(driveStick->GetRawButton(5))
-				m_frontLeftMotor->Set(0.1);
-			else
-				m_frontLeftMotor->Set(0.0);
-			if(driveStick->GetRawButton(6))
-				m_frontRightMotor->Set(0.1);
-			else
-				m_frontRightMotor->Set(0);
-			if(driveStick->GetRawButton(3))
-				m_rearLeftMotor->Set(0.1);
-			else
-				m_rearLeftMotor->Set(0);
-			if(driveStick->GetRawButton(4))
-				m_rearRightMotor->Set(0.1);
-			else
-				m_rearRightMotor->Set(0);
-#endif
 			#ifdef DEBUG
 			if(driveStick->GetRawButton(AxisButton) && !lastStateTrigger) {
 				showingSpeeds = !showingSpeeds;
@@ -176,9 +162,10 @@ class BetaRobot : public IterativeRobot
 		bool showingSpeeds;
 		bool lastStateTrigger;
 		#endif
-		DriverStationLCD* driverStationLCD;
+		//DriverStationLCD* driverStationLCD;
 		//Joystick *driveStick;
 		//PneumaticSystem *pSystem;
+		DisplayWrapper* display;
 		RobotDrive* drive;
 		JoystickWrapper* joystick;
 		Victor *m_frontLeftMotor;
