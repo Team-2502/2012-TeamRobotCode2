@@ -3,16 +3,15 @@
 
 #include <WPILib.h>
 #include "VisionRoutines.h"
-enum level
-{
+
+typedef enum Level {
 	sideFirst=29375,
 	middleFirst=37275,
 	loadingLevel=54600,
 	sideSecond=64625,
 	middleSecond=72625
 };
-enum shape
-{
+typedef enum Shape {
 	triangle,
 	square,
 	circle
@@ -21,19 +20,19 @@ enum shape
 class Arm
 {
 public:
-	Arm(int liftJagPort, int liftEncPort, int rightClawJag, int rightClawJag, int leftClawJag, int leftClawEnc);
+	Arm();
 	void snapToPeg();
 	void setHeight(double height);
-	void setHorizontal(double horizontal);
-	void setWidth(double width);
+	void setHorizontal(float horizontal);
+	void setWidth(float width);
 	void setShape(int shape);
-	void setLeftRod(double left);
-	void setRightRod(double right);
+	void setLeftRod(float left);
+	void setRightRod(float right);
 	bool getClawState();
-	double getHeight();
-	double getHorizontal();
-	double getWidth();
-	double getShape();
+	float getHeight();
+	float getHorizontal();
+	float getWidth();
+	float getShape();
 private:
 	Vision* camera;
 	Encoder* liftEnc,rightClawEnc,leftClawEnc;
