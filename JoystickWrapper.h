@@ -5,12 +5,59 @@
 
 /**
  * Stick types.
+ *
+ * Extreme3D
+ *	Direction			Channel		Value
+ *	Left				1	X		-
+ *	Right				1	X		+
+ *	Forward 			2	Y		-
+ *	Backward			2	Y		+
+ *	Counterclockwise	3	Z		-
+ *	Clockwise			3	Z		+
+ *	Throttle Up			4	Tw		-
+ *	Throttle Down		4	Tw		+
+ *	POV Left			5	NA		-
+ *	POV Right			5	NA		+
+ *	POV	Up				6	NA		-
+ *	POV Down			6	NA		+
+ *
+ * Attack3
+ *	Direction			Channel		Value
+ *	Left				1	X		-
+ *	Right				1	X		+
+ *	Forward 			2	Y		-
+ *	Backward			2	Y		+
+ *	Throttle Up			4	Z/Th	-
+ *	Throttle Down		4	Z/Th	+
+ *
+ * Dual Action
+ *	Direction			Channel		Value
+ *	Leftstick Left		1	X		-
+ *	Leftstick Right		1	X		+
+ *	Leftstick Forward 	2	Y		-
+ *	Leftstick Backward	2	Y		+
+ *	Rightstick Left		3	Z/Th	-
+ *	Rightstick Right	3	Z/Th	+
+ *	Rightstick Forward 	4	Tw		-
+ *	Rightstick Backward 4	Tw		+
  */
 enum StickType
 {
 	Extreme3DPro,
 	Attack3,
 	DualAction
+};
+
+enum Direction
+{
+	NORTH = 0,
+	NORTHEAST = 45,
+	EAST = 90,
+	SOUTHEAST = 135,
+	SOUTH = 180,
+	SOUTHWEST = 225,
+	WEST = 270,
+	NORTHWEST = 315,
 };
 
 /**
@@ -40,6 +87,11 @@ public:
 	 * Get the pov values from the joystick.
 	 */
 	void GetPov(float* xaxis, float* yaxis) const;
+	
+	/**
+	 * Get the angle of the pov from the joystick. North is zero and it progresses clockwise.
+	 */
+	int GetPovAngle() const;
 	
 	/**
 	 * Get a value of both Joystick axis from -1.0 to 1.0. This uses the snapping

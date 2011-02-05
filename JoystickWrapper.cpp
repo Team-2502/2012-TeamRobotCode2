@@ -36,8 +36,51 @@ void JoystickWrapper::GetPov(float* x, float* y) const
 		return;
 		
 	default:
+		*x = 0.0;
+		*y = 0.0;
 		return;
 	}
+}
+
+int JoystickWrapper::GetPovAngle() const
+{
+	float x, y;
+	GetPov(&x, &y);
+	int a = (int)x;
+	int b = (int)y;
+	switch(a)
+	{
+	case -1:
+		switch(b)
+		{
+		case -1:
+			return SOUTHWEST;
+		case 0:
+			return WEST;
+		case 1:
+			return NORTHWEST;
+		}
+	case 0:
+		switch(b)
+		{
+		case -1:
+			return SOUTH;
+		case 1:
+			return NORTH;
+		}
+	case 1:
+		switch(b)
+		{
+		case -1:
+			return SOUTHEAST;
+		case 0:
+			return EAST;
+		case 1:
+			return NORTHEAST;
+		}
+	}
+	
+	return 0;
 }
 
 void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const

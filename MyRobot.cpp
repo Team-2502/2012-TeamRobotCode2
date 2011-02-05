@@ -1,11 +1,15 @@
 #include <math.h>
 
 #include <Dashboard.h>
-#include "WPILib.h"
+#include <WPILib.h>
 
 #include "DisplayWrapper.h"
+#include "DriverWrapper.h"
 #include "JoystickWrapper.h"
+<<<<<<< HEAD
 #include "VisionRoutines.h"
+=======
+>>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
 
 class BetaRobot : public IterativeRobot
 {
@@ -14,6 +18,7 @@ class BetaRobot : public IterativeRobot
 		{
 			joystick = new JoystickWrapper(1, Extreme3DPro);
 			joystick->SetSnapPoints(4);
+<<<<<<< HEAD
 			display = new DisplayWrapper;
 			vis = Vision::GetInstance();
 		}
@@ -24,6 +29,22 @@ class BetaRobot : public IterativeRobot
 		void TeleopInit(void) {/*pSystem->start();*/}
 		
 		void AutonomousPeriodic(void) {display->PrintfLine(8, "We're in autonomous mode!");}
+=======
+			driver = new DriverWrapper(Mecanum, 7, 2, 3, 1);
+			driver->GetRobotDrive()->SetSafetyEnabled(false);
+			display = new DisplayWrapper();
+		}
+	
+		void RobotInit(void) {}
+		void DisabledInit(void) {}
+		void AutonomousInit(void) {}
+		void TeleopInit(void) {}
+		
+		void AutonomousPeriodic(void) 
+		{
+		}
+		
+>>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
 		void TeleopPeriodic(void)
 		{
 			float x, y;
@@ -73,6 +94,10 @@ class BetaRobot : public IterativeRobot
 			float t = -1.0 * joystick->GetThrottle();
 			display->SetScrollLocation(t);
 			display->Output();
+<<<<<<< HEAD
+=======
+			driver->Drive(x, y, joystick->GetRotation());
+>>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
 		}
 		
 		/** Unused functions */
@@ -80,11 +105,18 @@ class BetaRobot : public IterativeRobot
 		void DisabledContinuous(void) {}
 		void AutonomousContinuous(void) {}
 		void TeleopContinuous(void) {}
+<<<<<<< HEAD
 	private:
 		DisplayWrapper* display;
 		JoystickWrapper* joystick;
 		Vision* vis;
+=======
+		
+	private:
+		DisplayWrapper* display;
+		DriverWrapper* driver;
+		JoystickWrapper* joystick;
+>>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
 };
 
 START_ROBOT_CLASS(BetaRobot);
-
