@@ -11,6 +11,7 @@ typedef enum Level {
 	sideSecond=64625,
 	middleSecond=72625
 };
+
 typedef enum Shape {
 	triangle,
 	square,

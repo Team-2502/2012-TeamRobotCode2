@@ -15,8 +15,7 @@ enum DriveType
 class DriverWrapper
 {
 public:
-	DriverWrapper(DriveType type, UINT32 frontLeftMotorChannel, 
-			UINT32 rearLeftMotorChannel, UINT32 frontRightMotorChannel, UINT32 rearRightMotorChannel);
+	DriverWrapper(DriveType type);
 	
 	/**
 	 * Drive. X, Y, and Rotation come from the joystick and the gyroAngle

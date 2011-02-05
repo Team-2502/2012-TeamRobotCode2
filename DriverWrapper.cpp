@@ -1,10 +1,9 @@
 #include "DriverWrapper.h"
 
-DriverWrapper::DriverWrapper(DriveType type, UINT32 frontLeftMotorChannel, 
-		UINT32 rearLeftMotorChannel, UINT32 frontRightMotorChannel, UINT32 rearRightMotorChannel)
+DriverWrapper::DriverWrapper(DriveType type)
 {
 	this->type = type;
-	this->driver = new RobotDrive(frontLeftMotorChannel, rearLeftMotorChannel, frontRightMotorChannel, rearRightMotorChannel);
+	this->driver = new RobotDrive(FRONT_LEFT_CHANNEL, REAR_LEFT_CHANNEL, FRONT_RIGHT_CHANNEL, REAR_RIGHT_CHANNEL);
 }
 
 void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)

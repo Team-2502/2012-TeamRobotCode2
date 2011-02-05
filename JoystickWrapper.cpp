@@ -1,12 +1,13 @@
 #include <cmath>
 
 #include "JoystickWrapper.h"
+#include "config.h"
 using std::acos; using std::atan2; using std::atan; using std::pow; using std::sqrt; using std::floor; using std::cos; using std::sin;
 
-JoystickWrapper::JoystickWrapper(int number, StickType type)
+JoystickWrapper::JoystickWrapper(StickType type)
 {
 	//Initialize stuff
-	this->joystick = new Joystick(number);
+	this->joystick = new Joystick(JOYSTICK_PORT);
 	
 	this->type = type;
 	SetSnapPoints(8);

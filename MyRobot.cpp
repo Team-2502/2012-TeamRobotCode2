@@ -12,11 +12,11 @@ class BetaRobot : public IterativeRobot
 	public:
 		BetaRobot(void)
 		{
-			joystick = new JoystickWrapper(1, Extreme3DPro);
+			joystick = new JoystickWrapper(Extreme3DPro);
 			joystick->SetSnapPoints(4);
 			display = new DisplayWrapper;
 			vis = Vision::GetInstance();
-			driver = new DriverWrapper(Mecanum, 7, 2, 3, 1);
+			driver = new DriverWrapper(Mecanum);
 			driver->GetRobotDrive()->SetSafetyEnabled(false);
 			display = new DisplayWrapper;
 			pcvs = new PCVideoServer;
