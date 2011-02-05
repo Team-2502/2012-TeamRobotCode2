@@ -1,9 +1,0 @@
-#!/bin/bash
-ftp << EOF
-open 10.25.2.2
-alex
-alex
-cd ni-rt/system
-delete FRC_UserProgram.out
-exit
-EOF
