@@ -5,6 +5,41 @@
 
 /**
  * Stick types.
+ *
+ * Extreme3D
+ *	Direction			Channel		Value
+ *	Left				1	X		-
+ *	Right				1	X		+
+ *	Forward 			2	Y		-
+ *	Backward			2	Y		+
+ *	Counterclockwise	3	Z		-
+ *	Clockwise			3	Z		+
+ *	Throttle Up			4	Tw		-
+ *	Throttle Down		4	Tw		+
+ *	POV Left			5	NA		-
+ *	POV Right			5	NA		+
+ *	POV	Up				6	NA		-
+ *	POV Down			6	NA		+
+ *
+ *Attack3
+ *	Direction			Channel		Value
+ *	Left				1	X		-
+ *	Right				1	X		+
+ *	Forward 			2	Y		-
+ *	Backward			2	Y		+
+ *	Throttle Up			4	Z/Th	-
+ *	Throttle Down		4	Z/Th	+
+ *
+ *	Dual Action
+ *	Direction			Channel		Value
+ *	Leftstick Left		1	X		-
+ *	Leftstick Right		1	X		+
+ *	Leftstick Forward 	2	Y		-
+ *	Leftstick Backward	2	Y		+
+ *	Rightstick Left		3	Z/Th	-
+ *	Rightstick Right	3	Z/Th	+
+ *	Rightstick Forward 	4	Tw		-
+ *	Rightstick Backward 4	Tw		+
  */
 enum StickType
 {
