@@ -25,10 +25,10 @@ public:
 	void setFieldOrientedDrive(bool b) { useFOD = b; }
 	
 private:
-	Victor* frontLeft;
-	Victor* frontRight;
-	Victor* rearLeft;
-	Victor* rearRight;
+	Jaguar* frontLeft;
+	Jaguar* frontRight;
+	Jaguar* rearLeft;
+	Jaguar* rearRight;
 	DriveType type;
 	
 	void MecanumDrive(float x, float y, float rotation, float gyroAngle);

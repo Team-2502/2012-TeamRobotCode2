@@ -24,7 +24,7 @@ class BetaRobot : public IterativeRobot
 			display = new DisplayWrapper;
 			vis = Vision::GetInstance();
 			display = new DisplayWrapper();
-			driver = new DriverWrapper(Mecanum, 3, 1, 4, 2);
+			driver = new DriverWrapper(Mecanum);
 			//pcvs = new PCVideoServer;
 		}
 	

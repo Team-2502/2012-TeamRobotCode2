@@ -30,13 +30,12 @@ void RotateVector(double &x, double &y, double angle)
 	y = yOut;
 }
 
-DriverWrapper::DriverWrapper(DriveType type, UINT32 frontLeftMotorChannel, 
-		UINT32 rearLeftMotorChannel, UINT32 frontRightMotorChannel, UINT32 rearRightMotorChannel)
+DriverWrapper::DriverWrapper(DriveType type)
 {
-	this->frontLeft = new Victor(FRONT_LEFT_CHANNEL);
-	this->rearLeft = new Victor(REAR_LEFT_CHANNEL);
-	this->frontRight = new Victor(FRONT_RIGHT_CHANNEL);
-	this->rearRight = new Victor(REAR_RIGHT_CHANNEL);
+	this->frontLeft = new Jaguar(FRONT_LEFT_CHANNEL);
+	this->rearLeft = new Jaguar(REAR_LEFT_CHANNEL);
+	this->frontRight = new Jaguar(FRONT_RIGHT_CHANNEL);
+	this->rearRight = new Jaguar(REAR_RIGHT_CHANNEL);
 	this->frontLeft->SetSafetyEnabled(false);
 	this->rearLeft->SetSafetyEnabled(false);
 	this->frontRight->SetSafetyEnabled(false);
@@ -72,7 +71,7 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 	double yIn = y;
 	
 	// Compenstate for gyro angle.
-	//RotateVector(xIn, yIn, gyroAngle);
+	RotateVector(xIn, yIn, gyroAngle);
 
 	double wheelSpeeds[4];
 
