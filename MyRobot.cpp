@@ -21,8 +21,7 @@ class BetaRobot : public IterativeRobot
 			{
 				joystick[i]->SetSnapPoints(4);
 			}
-			display = new DisplayWrapper;
-			vis = Vision::GetInstance();
+			//vis = Vision::GetInstance();
 			display = new DisplayWrapper();
 			driver = new DriverWrapper(Mecanum);
 			//pcvs = new PCVideoServer;
@@ -102,9 +101,9 @@ class BetaRobot : public IterativeRobot
 		int joy;
 		DisplayWrapper* display;
 		JoystickWrapper* joystick[3];
-		Vision* vis;
+		//Vision* vis;
 		DriverWrapper* driver;
-		PCVideoServer* pcvs;
+		//PCVideoServer* pcvs;
 };
 
 START_ROBOT_CLASS(BetaRobot);
