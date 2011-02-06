@@ -33,18 +33,27 @@ void RotateVector(double &x, double &y, double angle)
 DriverWrapper::DriverWrapper(DriveType type, UINT32 frontLeftMotorChannel, 
 		UINT32 rearLeftMotorChannel, UINT32 frontRightMotorChannel, UINT32 rearRightMotorChannel)
 {
-	this->frontLeft = new Victor(frontLeftMotorChannel);
-	this->rearLeft = new Victor(rearLeftMotorChannel);
-	this->frontRight = new Victor(frontRightMotorChannel);
-	this->rearRight = new Victor(rearRightMotorChannel);
+	this->frontLeft = new Victor(FRONT_LEFT_CHANNEL);
+	this->rearLeft = new Victor(REAR_LEFT_CHANNEL);
+	this->frontRight = new Victor(FRONT_RIGHT_CHANNEL);
+	this->rearRight = new Victor(REAR_RIGHT_CHANNEL);
 	this->frontLeft->SetSafetyEnabled(false);
 	this->rearLeft->SetSafetyEnabled(false);
 	this->frontRight->SetSafetyEnabled(false);
 	this->rearRight->SetSafetyEnabled(false);
+	useFOD = true;
+	#ifdef USE_GYRO
+	gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
+	#endif
 }
 
-void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
+void DriverWrapper::Drive(float x, float y, float rotation)
 {
+	static float gyroAngle = 0.0;
+	#ifdef USE_GYRO
+	if(useFOD)
+		gyroAngle = gyro->GetAngle() * GYRO_MULT;
+	#endif
 	switch(static_cast<int>(this->type))
 	{
 	case Mecanum:
