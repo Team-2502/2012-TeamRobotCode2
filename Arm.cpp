@@ -1,4 +1,4 @@
-Arm::Arm()
+/*Arm::Arm()
 {
 	camera=Vision.GetInstance();
 	liftEnc=new Encoder
@@ -17,3 +17,4 @@ float Arm::getHeight();
 float Arm::getHorizontal();
 float Arm::getWidth();
 float Arm::getShape();
+*/
