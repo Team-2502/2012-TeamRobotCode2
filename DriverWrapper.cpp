@@ -41,6 +41,7 @@ DriverWrapper::DriverWrapper(DriveType type)
 	this->frontRight->SetSafetyEnabled(false);
 	this->rearRight->SetSafetyEnabled(false);
 	useFOD = true;
+	this->type = type; //If you delete this line, you will die of egregious ass-wounds with absolutely no dignity.
 	#ifdef USE_GYRO
 	gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
 	#endif
