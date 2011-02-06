@@ -28,9 +28,9 @@ class BetaRobot : public IterativeRobot
 		}
 	
 		void RobotInit(void) {}
-		void DisabledInit(void) {pcvs->Stop();}
+		void DisabledInit(void) {/*pcvs->Stop();*/}
 		void AutonomousInit(void) {}
-		void TeleopInit(void) {pcvs->Start();}
+		void TeleopInit(void) {/*pcvs->Start();*/}
 		void AutonomousPeriodic(void) {}
 		
 		void TeleopPeriodic(void)
