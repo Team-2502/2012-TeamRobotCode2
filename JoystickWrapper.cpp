@@ -4,10 +4,10 @@
 #include "config.h"
 using std::acos; using std::atan2; using std::atan; using std::pow; using std::sqrt; using std::floor; using std::cos; using std::sin;
 
-JoystickWrapper::JoystickWrapper(StickType type)
+JoystickWrapper::JoystickWrapper(int port, StickType type)
 {
 	//Initialize stuff
-	this->joystick = new Joystick(JOYSTICK_PORT);
+	this->joystick = new Joystick(port);
 	
 	this->type = type;
 	SetSnapPoints(8);
