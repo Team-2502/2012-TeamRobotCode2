@@ -1,7 +1,7 @@
 #include <math.h>
 
 #include <Dashboard.h>
-#include <WPILib.h>
+#include "WPILib.h"
 
 #include "DisplayWrapper.h"
 #include "DriverWrapper.h"
@@ -13,13 +13,18 @@ class BetaRobot : public IterativeRobot
 	public:
 		BetaRobot(void)
 		{
-			joystick = new JoystickWrapper(1, Extreme3DPro);
-			joystick->SetSnapPoints(4);
+			joystick[0] = new JoystickWrapper(1, Extreme3DPro);
+			joystick[1] = new JoystickWrapper(2, Attack3);
+			joystick[2] = new JoystickWrapper(3, DualAction);
+			joy = 0;
+			for(int i = 0; i < 3; i++)
+			{
+				joystick[i]->SetSnapPoints(4);
+			}
 			display = new DisplayWrapper;
 			vis = Vision::GetInstance();
-			driver = new DriverWrapper(Mecanum, 7, 2, 3, 1);
-			driver->GetRobotDrive()->SetSafetyEnabled(false);
 			display = new DisplayWrapper();
+			driver = new DriverWrapper(Mecanum, 3, 1, 4, 2);
 		}
 	
 		void RobotInit(void) {}
@@ -31,16 +36,21 @@ class BetaRobot : public IterativeRobot
 		void TeleopPeriodic(void)
 		{
 			float x, y;
-			joystick->GetRawAxis(&x, &y);
-			display->PrintfLine(0, "Joystick Angle:     %f", joystick->GetAngle());
-			display->PrintfLine(1, "Joystick Throttle:  %f", joystick->GetThrottle());
-			display->PrintfLine(2, "Joystick X:         %f", x);
-			display->PrintfLine(3, "Joystick Y:         %f", y);
-			display->PrintfLine(4, "Joystick Magnitude: %f", joystick->GetMagnitude());
-			display->PrintfLine(5, "Joystick Rotation:  %f", joystick->GetRotation());
-			joystick->GetPov(&x, &y);
-			display->PrintfLine(6, "Joystick POV X:     %f", x);
-			display->PrintfLine(7, "Joystick POV Y:     %f", y);
+			joystick[joy]->GetRawAxis(&x, &y);
+			
+			display->PrintfLine(0, "Joystick Angle:     %f", joystick[joy]->GetAngle());
+			display->PrintfLine(1, "Joystick Throttle:  %f", joystick[joy]->GetThrottle());
+			display->PrintfLine(2, "Joystick X: %f", x);
+			display->PrintfLine(3, "Joystick Y: %f", y);
+			display->PrintfLine(4, "Joystick Magnitude: %f", joystick[joy]->GetMagnitude());
+			display->PrintfLine(5, "Joystick Rotation:  %f", joystick[joy]->GetRotation());
+			if(joystick[0]->GetJoystick()->GetRawButton(7))
+				joy = 0;
+			else if(joystick[0]->GetJoystick()->GetRawButton(9))
+				joy = 1;
+			else if(joystick[0]->GetJoystick()->GetRawButton(11))
+				joy = 2;
+			/*
 			TargetReport target = vis->getNearestPeg();
 			switch(target.region) {
 				case NorthWest:
@@ -74,10 +84,11 @@ class BetaRobot : public IterativeRobot
 					display->PrintfLine(8, "Target region:     ERR");
 			}
 			display->PrintfLine(9, "Target area:        %f", (float)target.area);
-			float t = -1.0 * joystick->GetThrottle();
+			*/
+			float t = -1.0 * joystick[0]->GetThrottle();
 			display->SetScrollLocation(t);
+			driver->Drive(x, y, joystick[joy]->GetRotation());
 			display->Output();
-			driver->Drive(x, y, joystick->GetRotation());
 		}
 		
 		/** Unused functions */
@@ -87,8 +98,9 @@ class BetaRobot : public IterativeRobot
 		void TeleopContinuous(void) {}
 		
 	private:
+		int joy;
 		DisplayWrapper* display;
-		JoystickWrapper* joystick;
+		JoystickWrapper* joystick[3];
 		Vision* vis;
 		DriverWrapper* driver;
 };

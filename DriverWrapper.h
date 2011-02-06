@@ -24,11 +24,14 @@ public:
 	 */
 	void Drive(float x, float y, float rotation, float gyroAngle = 0.0);
 	
-	RobotDrive* GetRobotDrive() {return this->driver;}
-	
 private:
-	RobotDrive* driver;
+	Victor* frontLeft;
+	Victor* frontRight;
+	Victor* rearLeft;
+	Victor* rearRight;
 	DriveType type;
+	
+	void MecanumDrive(float x, float y, float rotation, float gyroAngle);
 };
 
 #endif // DRIVERWRAPPER_H
