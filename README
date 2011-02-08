@@ -1,8 +1,6 @@
-This is the code that we can use to control the 2010 Robot's Pneumatic System, and Mecanum Drive Train.
-There is some debugging code left, and is an example of a crude hack. //It was written in an afternoon.
-Use for testing your build system only.
-
-Change this README when real code is committed. 
+This is the code for Team 2502's robot. It still needs some structure, but is beginning to take shape.
+Our code natively supoprts three different kinds of joysticks, and (soon) two drive trains.
+We've also got a nice scrolling Driver Station LCD.
 
 Here are instructions for setting up a build system on Linux:
 
