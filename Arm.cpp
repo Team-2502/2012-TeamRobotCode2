@@ -11,7 +11,6 @@ Arm::Arm(float armHeight, float clawWidth)
 	liftJag = new Jaguar(WINCH_CHANNEL);
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
-	*/
 	setShape(circle);
 	setHeight(armHeight);
 	setRightRod(-circle/100./2);
@@ -94,3 +93,5 @@ float Arm::getShape()
 {
 	return shape;
 }
+=======
+*/

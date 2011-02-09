@@ -1,3 +1,4 @@
+/*
 #ifndef ARMCLASS_H
 #define ARMCLASS_H
 
@@ -48,3 +49,4 @@ private:
 };
 
 #endif // ARM
+*/
