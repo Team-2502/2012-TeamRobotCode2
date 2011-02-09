@@ -20,8 +20,8 @@ public:
 	
 	ErrorLevel getErrorLevel()             { return lvl; }
 	void       setErrorLevel(ErrorLevel l) { lvl = l;    }
-	string getErrorMessage()               { return msg; }
-	void   setErrorMessage(string str)     { msg = str;  }
+	string     getErrorMessage()           { return msg; }
+	void       setErrorMessage(string str) { msg = str;  }
 	
 	static RobotError* NoError() { return new RobotError(None, "No errors have occurred."); }
 	

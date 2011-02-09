@@ -42,18 +42,10 @@ DriverWrapper::DriverWrapper(DriveType type)
 	this->rearRight->SetSafetyEnabled(false);
 	useFOD = true;
 	this->type = type; //If you delete this line, you will die of egregious ass-wounds with absolutely no dignity.
-	#ifdef USE_GYRO
-	gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
-	#endif
 }
 
-void DriverWrapper::Drive(float x, float y, float rotation)
+void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
 {
-	static float gyroAngle = 0.0;
-	#ifdef USE_GYRO
-	if(useFOD)
-		gyroAngle = gyro->GetAngle() * GYRO_MULT;
-	#endif
 	switch(static_cast<int>(this->type))
 	{
 	case Mecanum:

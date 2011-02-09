@@ -21,7 +21,7 @@ public:
 	 * Drive. X, Y, and Rotation come from the joystick and the gyroAngle
 	 * should be passed in from the Gyro.
 	 */
-	void Drive(float x, float y, float rotation);
+	void Drive(float x, float y, float rotation, float gyroAngle = 0.0);
 	void setFieldOrientedDrive(bool b) { useFOD = b; }
 	
 private:
@@ -33,9 +33,6 @@ private:
 	
 	void MecanumDrive(float x, float y, float rotation, float gyroAngle);
 	bool useFOD;
-	#ifdef USE_GYRO
-	Gyro *gyro;
-	#endif
 };
 
 #endif // DRIVERWRAPPER_H

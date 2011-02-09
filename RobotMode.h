@@ -1,8 +1,8 @@
 #ifndef ROBOTMODE
 #define ROBOTMODE
 
-class Event;
-class RobotError;
+#include "Event.h"
+#include "RobotError.h"
 
 class RobotMode
 {

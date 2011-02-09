@@ -8,16 +8,15 @@ class EventDispatcher : public IterativeRobot
 		EventDispatcher(void)
 		{
 			robot = new DisabledRobot();
-			joystickListener = new JoystickListener(Extreme3DPro); //has default port
-#ifdef USE_GYRO
-			gyroListener = new GyroListener(); //has default port
-#endif
+			//listeners.push_back(new GyroListener());
 		}
-	
+		
 		void RobotInit(void) {}
 		
 		void DisabledInit(void)
 		{
+			if(robot)
+				delete robot;
 			robot = new DisabledRobot();
 		}
 		void DisabledPeriodic(void) {}
@@ -25,6 +24,8 @@ class EventDispatcher : public IterativeRobot
 		
 		void AutonomousInit(void)
 		{
+			if(robot)
+				delete robot;
 			robot = new AutonomousRobot();
 		}
 		void AutonomousPeriodic(void) {}
@@ -32,24 +33,43 @@ class EventDispatcher : public IterativeRobot
 		
 		void TeleopInit(void)
 		{
+			if(robot)
+				delete robot;
 			robot = new TeleoperatedRobot();
+			deleteAllListeners();
+			listeners.push_back(new JoystickListener(Extreme3DPro));
 		}
 		void TeleopPeriodic(void) {}
 		void TeleopContinuous(void)
 		{
-#ifdef USE_GYRO
-			robot->handle(gyroListener->getEvent());
-#endif
-			robot->handle(joytickListener->getPositionEvent());
-			robot->handle(joytickListener->getButtonEvent());
+			static bool active = true;
+			if(active)
+			{
+				for(int j = 0; j < listeners.size(); j++) {
+					EventListener* listener = listeners[j];
+					for(int i = 0; i < listener->getMessageQuantity(); i++) {
+						if(!robot->handle(listener->getEvent(i)))
+						{
+							RobotError* err = robot->lastError();
+							if(err->getErrorLevel() == Fatal)
+								active = false;
+						}
+					}
+				}
+			}
+		}
+		
+		void deleteAllListeners()
+		{
+			for(int i = 0; i < listeners.size(); i++) {
+				delete listeners[i];
+			}
+			listeners.clear();
 		}
 		
 	private:
 		RobotMode *robot;
-		JoystickListener *joystickListener;
-#ifdef USE_GYRO
-		GyroListener *gyroListener;
-#endif
+		vector<EventListener*> listeners;
 };
 
 START_ROBOT_CLASS(EventDispatcher);
