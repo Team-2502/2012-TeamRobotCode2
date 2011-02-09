@@ -19,7 +19,7 @@ class BetaRobot : public IterativeRobot
 			joy = 0;
 			for(int i = 0; i < 3; i++)
 			{
-				joystick[i]->SetSnapPoints(4);
+				joystick[i]->SetSnapPoints(8);
 			}
 			//vis = Vision::GetInstance();
 			display = new DisplayWrapper();
@@ -36,7 +36,7 @@ class BetaRobot : public IterativeRobot
 		void TeleopPeriodic(void)
 		{
 			float x, y;
-			joystick[joy]->GetRawAxis(&x, &y);
+			joystick[joy]->GetAxis(&x, &y);
 			
 			display->PrintfLine(0, "Joystick Angle:     %f", joystick[joy]->GetAngle());
 			display->PrintfLine(1, "Joystick Throttle:  %f", joystick[joy]->GetThrottle());
@@ -87,7 +87,7 @@ class BetaRobot : public IterativeRobot
 			*/
 			float t = -1.0 * joystick[0]->GetThrottle();
 			display->SetScrollLocation(t);
-			driver->Drive(x, y, joystick[joy]->GetRotation());
+			driver->Drive(x, y, joystick[0]->GetRotation());
 			display->Output();
 		}
 		

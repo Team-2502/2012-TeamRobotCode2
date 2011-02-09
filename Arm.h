@@ -1,4 +1,5 @@
-/*#ifndef ARMCLASS_H
+/*
+#ifndef ARMCLASS_H
 #define ARMCLASS_H
 
 #include <WPILib.h>
@@ -13,31 +14,38 @@ typedef enum Level {
 };
 
 typedef enum Shape {
-	triangle,
-	square,
-	circle
+	triangle=950,
+	square=1000,
+	circle=1250
 };
 
 class Arm
 {
 public:
-	Arm();
+	Arm(float armHeight, float clawWidth);
 	void snapToPeg();
-	void setHeight(double height);
-	void setHorizontal(float horizontal);
+	void grab();
+	void ungrab();
+	void toggle();
+	void setHeight(float armHeight);
+	void setCenter(float center);
 	void setWidth(float width);
-	void setShape(int shape);
+	void setShape(Shape shape);
 	void setLeftRod(float left);
 	void setRightRod(float right);
 	bool getClawState();
 	float getHeight();
-	float getHorizontal();
+	float getCenter();
 	float getWidth();
 	float getShape();
 private:
 	Vision* camera;
 	Encoder* liftEnc,rightClawEnc,leftClawEnc;
 	Jaguar* liftJag,rightClawJag,leftClawJag;
+	Shape shape;
+	float leftClawPos, rightClawPos, height;
+	float leftClawPos, rightClawPos, height;
+	void updatePID();
 };
 
 #endif // ARM
