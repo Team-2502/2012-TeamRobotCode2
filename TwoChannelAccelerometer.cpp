@@ -9,6 +9,7 @@
 #include "AnalogModule.h"
 #include "Utility.h"
 #include "WPIStatus.h"
+#include "config.h"
 
 /**
  * Common function for initializing the accelerometer.
@@ -27,10 +28,10 @@ void TwoChannelAccelerometer::InitAccelerometer()
  * Make a new instance of the accelerometer given a module and channel. The constructor allocates
  * the desired analog channel from the specified module
  */
-TwoChannelAccelerometer::TwoChannelAccelerometer(UINT32 slot, UINT32 channelX, UINT32 channelY)
+TwoChannelAccelerometer::TwoChannelAccelerometer()
 {
-	m_analogChannelX = new AnalogChannel(slot, channelX);
-	m_analogChannelY = new AnalogChannel(slot, channelY);
+	m_analogChannelX = new AnalogChannel(TWO_CHANNEL_ACCEL_SLOT, TWO_CHANNEL_ACCEL_X);
+	m_analogChannelY = new AnalogChannel(TWO_CHANNEL_ACCEL_SLOT, TWO_CHANNEL_ACCEL_Y);
 	m_allocatedChannel = true;
 	InitAccelerometer();
 }

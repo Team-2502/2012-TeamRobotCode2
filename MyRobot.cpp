@@ -1,105 +1,55 @@
-#include <math.h>
+#include "WPILib.h"
+#include "Robots.h"
+#include "config.h"
 
-#include <Dashboard.h>
-#include <WPILib.h>
-
-#include "DisplayWrapper.h"
-#include "DriverWrapper.h"
-#include "JoystickWrapper.h"
-<<<<<<< HEAD
-#include "VisionRoutines.h"
-=======
->>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
-
-class BetaRobot : public IterativeRobot
+class EventDispatcher : public IterativeRobot
 {
 	public:
-		BetaRobot(void)
+		EventDispatcher(void)
 		{
-			joystick = new JoystickWrapper(1, Extreme3DPro);
-			joystick->SetSnapPoints(4);
-			display = new DisplayWrapper;
-			vis = Vision::GetInstance();
+			robot = new DisabledRobot();
+			joystickListener = new JoystickListener(Extreme3DPro); //has default port
+#ifdef USE_GYRO
+			gyroListener = new GyroListener(); //has default port
+#endif
 		}
+	
+		void RobotInit(void) {}
 		
-		void RobotInit(void) {/*pSystem->start();*/}
-		void DisabledInit(void) {/*pSystem->stop();*/}
-		void AutonomousInit(void) {/*pSystem->setCompressor(true);*/}
-		void TeleopInit(void) {/*pSystem->start();*/}
-		
-		void AutonomousPeriodic(void) {display->PrintfLine(8, "We're in autonomous mode!");}
-		void TeleopPeriodic(void)
+		void DisabledInit(void)
 		{
-			float x, y;
-			joystick->GetRawAxis(&x, &y);
-			display->PrintfLine(0, "Joystick Angle:     %f", joystick->GetAngle());
-			display->PrintfLine(1, "Joystick Throttle:  %f", joystick->GetThrottle());
-			display->PrintfLine(2, "Joystick X:         %f", x);
-			display->PrintfLine(3, "Joystick Y:         %f", y);
-			display->PrintfLine(4, "Joystick Magnitude: %f", joystick->GetMagnitude());
-			display->PrintfLine(5, "Joystick Rotation:  %f", joystick->GetRotation());
-			joystick->GetPov(&x, &y);
-			display->PrintfLine(6, "Joystick POV X:     %f", x);
-			display->PrintfLine(7, "Joystick POV Y:     %f", y);
-			TargetReport target = vis->getNearestPeg();
-			switch(target.region) {
-				case NorthWest:
-					display->PrintfLine(8, "Target region:      NW");
-					break;
-				case North:
-					display->PrintfLine(8, "Target region:       N");
-					break;
-				case NorthEast:
-					display->PrintfLine(8, "Target region:      NE");
-					break;
-				case West:
-					display->PrintfLine(8, "Target region:       W");
-					break;
-				case Center:
-					display->PrintfLine(8, "Target region:       C");
-					break;
-				case East:
-					display->PrintfLine(8, "Target region:       E");
-					break;
-				case SouthWest:
-					display->PrintfLine(8, "Target region:      SW");
-					break;
-				case South:
-					display->PrintfLine(8, "Target region:       S");
-					break;
-				case SouthEast:
-					display->PrintfLine(8, "Target region:       E");
-					break;
-				default:
-					display->PrintfLine(8, "Target region:     ERR");
-			}
-			display->PrintfLine(9, "Target area:        %f", (float)target.area);
-			float t = -1.0 * joystick->GetThrottle();
-			display->SetScrollLocation(t);
-			display->Output();
-<<<<<<< HEAD
-=======
-			driver->Drive(x, y, joystick->GetRotation());
->>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
+			robot = new DisabledRobot();
 		}
-		
-		/** Unused functions */
 		void DisabledPeriodic(void) {}
 		void DisabledContinuous(void) {}
+		
+		void AutonomousInit(void)
+		{
+			robot = new AutonomousRobot();
+		}
+		void AutonomousPeriodic(void) {}
 		void AutonomousContinuous(void) {}
-		void TeleopContinuous(void) {}
-<<<<<<< HEAD
-	private:
-		DisplayWrapper* display;
-		JoystickWrapper* joystick;
-		Vision* vis;
-=======
+		
+		void TeleopInit(void)
+		{
+			robot = new TeleoperatedRobot();
+		}
+		void TeleopPeriodic(void) {}
+		void TeleopContinuous(void)
+		{
+#ifdef USE_GYRO
+			robot->handle(gyroListener->getEvent());
+#endif
+			robot->handle(joytickListener->getPositionEvent());
+			robot->handle(joytickListener->getButtonEvent());
+		}
 		
 	private:
-		DisplayWrapper* display;
-		DriverWrapper* driver;
-		JoystickWrapper* joystick;
->>>>>>> c0cc8be37dc7ea7c4bbbdc524ac8a1082b3629c4
+		RobotMode *robot;
+		JoystickListener *joystickListener;
+#ifdef USE_GYRO
+		GyroListener *gyroListener;
+#endif
 };
 
-START_ROBOT_CLASS(BetaRobot);
+START_ROBOT_CLASS(EventDispatcher);

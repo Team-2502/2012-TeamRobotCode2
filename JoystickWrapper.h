@@ -66,7 +66,7 @@ enum Direction
 class JoystickWrapper
 {
 public:
-	JoystickWrapper(int number, StickType type);
+	JoystickWrapper(int port, StickType type);
 	
 	/**
 	 * Get the angle of the joystick in degrees.

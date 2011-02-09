@@ -2,9 +2,9 @@
 #define DRIVERWRAPPER_H
 
 #include <WPILib.h>
+#include "config.h"
 
-enum DriveType
-{
+enum DriveType {
 	Mecanum,
 	Tank,
 };
@@ -15,20 +15,27 @@ enum DriveType
 class DriverWrapper
 {
 public:
-	DriverWrapper(DriveType type, UINT32 frontLeftMotorChannel, 
-			UINT32 rearLeftMotorChannel, UINT32 frontRightMotorChannel, UINT32 rearRightMotorChannel);
+	DriverWrapper(DriveType type);
 	
 	/**
 	 * Drive. X, Y, and Rotation come from the joystick and the gyroAngle
 	 * should be passed in from the Gyro.
 	 */
-	void Drive(float x, float y, float rotation, float gyroAngle = 0.0);
-	
-	RobotDrive* GetRobotDrive() {return this->driver;}
+	void Drive(float x, float y, float rotation);
+	void setFieldOrientedDrive(bool b) { useFOD = b; }
 	
 private:
-	RobotDrive* driver;
+	Jaguar* frontLeft;
+	Jaguar* frontRight;
+	Jaguar* rearLeft;
+	Jaguar* rearRight;
 	DriveType type;
+	
+	void MecanumDrive(float x, float y, float rotation, float gyroAngle);
+	bool useFOD;
+	#ifdef USE_GYRO
+	Gyro *gyro;
+	#endif
 };
 
 #endif // DRIVERWRAPPER_H

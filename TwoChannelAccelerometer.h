@@ -11,11 +11,6 @@
 #include "SensorBase.h"
 #include "PIDSource.h"
 
-struct PolarPoint {
-	float r;
-	float theta;
-};
-
 /** 
  * Handle operation of the accelerometer.
  * The accelerometer reads acceleration directly through the sensor. Many sensors have
@@ -25,7 +20,7 @@ struct PolarPoint {
 class TwoChannelAccelerometer : public SensorBase
 {
 public:
-	explicit TwoChannelAccelerometer(UINT32 slot, UINT32 channelX, UINT32 channelY);
+	explicit TwoChannelAccelerometer();
 	virtual ~TwoChannelAccelerometer();
 
 	float GetAccelerationX();
