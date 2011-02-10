@@ -1,9 +1,10 @@
-#ifndef ROBOTERROR
-#define ROBOTERROR
+#ifndef ROBOTERROR_H
+#define ROBOTERROR_H
 
 #include <string>
+using namespace std;
 
-enum ErrorLevel { None, Warning, Critical, Fatal }; 
+enum ErrorLevel { None, Warning, Critical, Fatal };
 //Warning  | something went wrong that was then recovered.
 //Critical | something went wrong that can not be recovered.
 //Fatal    | something went wrong that needs the robot stopped.

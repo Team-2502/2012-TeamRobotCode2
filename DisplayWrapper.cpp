@@ -91,7 +91,7 @@ void DisplayWrapper::SetBufferSize(unsigned size)
 
 void DisplayWrapper::SetScrollLocation(float location)
 {
-	this->outputLocation = (unsigned)std::floor(((location + 1.0) / 2.0) * (float)(this->bufferSize - 7));
+	this->outputLocation = (unsigned)floor(((location + 1.0) / 2.0) * (float)(this->bufferSize - 7));
 }
 
 void DisplayWrapper::Shift()

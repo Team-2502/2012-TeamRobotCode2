@@ -1,9 +1,10 @@
 #include "JoystickListener.h"
 #include "JoystickPositionEvent.h"
+#include "config.h"
 
 JoystickListener::JoystickListener(StickType type)
 {
-	stick = new JoystickWrapper(type);
+	stick = new JoystickWrapper(JOYSTICK_PORT,type);
 }
 
 JoystickListener::~JoystickListener()

@@ -2,12 +2,11 @@
 
 JoystickPositionEvent::JoystickPositionEvent(float x, float y, float twist, EventListener* l)
 {
-	this->x = x;
-	this->y = y;
-	this->twist = twist;
+	this->m_x = x;
+	this->m_y = y;
+	this->m_twist = twist;
 	listen = l;
 }
-
 
 EventListener* JoystickPositionEvent::sender()
 {
@@ -16,15 +15,15 @@ EventListener* JoystickPositionEvent::sender()
 
 float JoystickPositionEvent::x()
 {
-	return x;
+	return m_x;
 }
 
 float JoystickPositionEvent::y()
 {
-	return y;
+	return m_y;
 }
 
 float JoystickPositionEvent::twist()
 {
-	return twist;
+	return m_twist;
 }

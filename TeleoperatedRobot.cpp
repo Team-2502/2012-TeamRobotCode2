@@ -1,4 +1,6 @@
 #include "TeleoperatedRobot.h"
+#include "JoystickPositionEvent.h"
+#include "RobotError.h"
 
 TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 {
@@ -25,7 +27,7 @@ bool TeleoperatedRobot::handle(Event *e)
 						 lastGyroReading);
 			break;
 		case GyroAngle:
-			lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
+			//lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
 			break;
 		default:
 			if(myError) {

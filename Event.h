@@ -2,7 +2,7 @@
 #define EVENT_H
 
 enum EventType {
-	None,
+	NoEvent,
 	JoystickPosition,
 	GyroAngle
 };
@@ -13,8 +13,8 @@ class Event
 {
 	public:
 		virtual ~Event() {}
-		virtual EventType type() { return None; }
-		EventListener* sender() = 0;
+		virtual EventType type() { return NoEvent; }
+		virtual EventListener* sender() = 0;
 };
 
 #endif

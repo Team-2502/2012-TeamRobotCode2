@@ -18,7 +18,7 @@ class JoystickPositionEvent : public Event
 		float twist();
 		
 	private:
-		float x,y,twist;
+		float m_x,m_y,m_twist;
 		EventListener *listen;
 };
 

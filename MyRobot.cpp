@@ -1,5 +1,6 @@
 #include "WPILib.h"
 #include "Robots.h"
+#include "JoystickListener.h"
 #include "config.h"
 
 class EventDispatcher : public IterativeRobot
@@ -46,7 +47,7 @@ class EventDispatcher : public IterativeRobot
 			static bool active = true;
 			if(active)
 			{
-				for(int j = 0; j < listeners.size(); j++) {
+				for(unsigned int j = 0; j < listeners.size(); j++) {
 					EventListener* listener = listeners[j];
 					for(int i = 0; i < listener->getMessageQuantity(); i++) {
 						if(!robot->handle(listener->getEvent(i)))
@@ -62,7 +63,7 @@ class EventDispatcher : public IterativeRobot
 		
 		void deleteAllListeners()
 		{
-			for(int i = 0; i < listeners.size(); i++) {
+			for(unsigned int i = 0; i < listeners.size(); i++) {
 				delete listeners[i];
 			}
 			listeners.clear();

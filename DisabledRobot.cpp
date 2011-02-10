@@ -1,7 +1,7 @@
 #include "DisabledRobot.h"
 #include "RobotError.h"
 
-DiabledRobot::DisabledRobot()
+DisabledRobot::DisabledRobot()
 {
 	err = RobotError::NoError();
 }
@@ -16,7 +16,7 @@ bool DisabledRobot::handle(Event*)
 	return true;
 }
 
-RobotError* lastError()
+RobotError* DisabledRobot::lastError()
 {
 	return err;
 }
