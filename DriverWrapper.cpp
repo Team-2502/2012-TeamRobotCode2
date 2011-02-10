@@ -1,5 +1,4 @@
-#include <cmath>
-
+#include <math.h>
 #include "DriverWrapper.h"
 
 void Normalize(double *wheelSpeeds)

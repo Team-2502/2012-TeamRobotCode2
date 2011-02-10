@@ -26,7 +26,8 @@ class EventDispatcher : public IterativeRobot
 		{
 			if(robot)
 				delete robot;
-			robot = new AutonomousRobot();
+			//robot = new AutonomousRobot();
+			robot = new DisabledRobot();
 		}
 		void AutonomousPeriodic(void) {}
 		void AutonomousContinuous(void) {}

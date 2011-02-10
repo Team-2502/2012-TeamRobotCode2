@@ -2,15 +2,15 @@
 #define DISABLED_ROBOT
 
 #include "RobotMode.h"
-#include "RobotError.h"
+class RobotError;
 
 class DisabledRobot : public RobotMode
 {
 public:
-	DisabledRobot() { err = RobotError::NoError(); }
-	~DisabledRobot() { delete err; }
-	bool handle(Event *) { return true; }
-	RobotError* lastError() { return err; }
+	DisabledRobot();
+	~DisabledRobot();
+	bool handle(Event *);
+	RobotError* lastError();
 	
 private:
 	RobotError* err;

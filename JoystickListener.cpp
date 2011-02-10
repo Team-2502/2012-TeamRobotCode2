@@ -1,5 +1,5 @@
 #include "JoystickListener.h"
-#include "JoystickEvents.h"
+#include "JoystickPositionEvent.h"
 
 JoystickListener::JoystickListener(StickType type)
 {
@@ -19,7 +19,7 @@ Event* JoystickListener::getEvent(int index)
 	{
 		case 0: //Position
 			stick->GetAxis(&x,&y);
-			ret = new JoystickPositionEvent(x,y,stick->GetRotation());
+			ret = new JoystickPositionEvent(x,y,stick->GetRotation(), this);
 			break;
 		case 1: //Button
 			break;

@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in $(WIND_BASE)/WPILib.  */
 /*----------------------------------------------------------------------------*/
 
-#include <cmath>
+#include <math.h>
 #include "TwoChannelAccelerometer.h"
 #include "AnalogModule.h"
 #include "Utility.h"
