@@ -50,12 +50,15 @@ class EventDispatcher : public IterativeRobot
 				for(unsigned int j = 0; j < listeners.size(); j++) {
 					EventListener* listener = listeners[j];
 					for(int i = 0; i < listener->getMessageQuantity(); i++) {
-						if(!robot->handle(listener->getEvent(i)))
+						Event* e = listener->getEvent(i);
+						if(!robot->handle(e))
 						{
 							RobotError* err = robot->lastError();
 							if(err->getErrorLevel() == Fatal)
 								active = false;
 						}
+						delete e;
+						e = 0;
 					}
 				}
 			}

@@ -11,13 +11,18 @@ TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 
 TeleoperatedRobot::~TeleoperatedRobot()
 {
-	delete drive;
-	delete myError;
+	delete drive; drive = 0;
+	delete myError; myError = 0;
 }
 
 bool TeleoperatedRobot::handle(Event *e)
 {
 	bool ret = false;
+	if(!e) {
+		if(myError) delete myError;
+		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
+		return false;
+	}
 	switch(static_cast<int>(e->type()))
 	{
 		case JoystickPosition:
@@ -31,10 +36,15 @@ bool TeleoperatedRobot::handle(Event *e)
 			break;
 		default:
 			if(myError) {
-				delete myError;
+				delete myError; myError = 0;
 				myError = new RobotError(Warning, "TeleoperatedRobot received unknown event.");
 			}
 			break;
 	}
 	return ret;
+}
+
+RobotError* TeleoperatedRobot::lastError()
+{
+	return myError;
 }

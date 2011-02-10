@@ -4,12 +4,12 @@
 
 JoystickListener::JoystickListener(StickType type)
 {
-	stick = new JoystickWrapper(JOYSTICK_PORT,type);
+	stick = new JoystickWrapper(JOYSTICK_PORT,type); //check
 }
 
 JoystickListener::~JoystickListener()
 {
-	delete stick;
+	delete stick; stick = 0;
 }
 
 Event* JoystickListener::getEvent(int index)

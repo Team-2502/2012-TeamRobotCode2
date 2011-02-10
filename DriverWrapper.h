@@ -16,6 +16,7 @@ class DriverWrapper
 {
 public:
 	DriverWrapper(DriveType type);
+	~DriverWrapper();
 	
 	/**
 	 * Drive. X, Y, and Rotation come from the joystick and the gyroAngle

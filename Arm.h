@@ -1,7 +1,7 @@
-/*#ifndef ARMCLASS_H
+#ifndef ARMCLASS_H
 #define ARMCLASS_H
 
-#include <WPILib.h>
+#include "WPILib.h"
 #include "VisionRoutines.h"
 
 typedef enum Level {
@@ -13,32 +13,41 @@ typedef enum Level {
 };
 
 typedef enum Shape {
-	triangle,
-	square,
-	circle
+	triangle=950,
+	square=1000,
+	circle=1250
 };
 
 class Arm
 {
-public:
-	Arm();
-	void snapToPeg();
-	void setHeight(double height);
-	void setHorizontal(float horizontal);
-	void setWidth(float width);
-	void setShape(int shape);
-	void setLeftRod(float left);
-	void setRightRod(float right);
-	bool getClawState();
-	float getHeight();
-	float getHorizontal();
-	float getWidth();
-	float getShape();
-private:
-	Vision* camera;
-	Encoder* liftEnc,rightClawEnc,leftClawEnc;
-	Jaguar* liftJag,rightClawJag,leftClawJag;
+	public:
+		Arm(float armHeight, float clawWidth);
+		void snapToPeg();
+		void grab();
+		void ungrab();
+		void toggle();
+		void setHeight(float armHeight);
+		void setCenter(float center);
+		void setWidth(float width);
+		void setShape(Shape shape);
+		void setLeftRod(float left);
+		void setRightRod(float right);
+		bool getClawState();
+		float getHeight();
+		float getCenter();
+		float getWidth();
+		float getShape();
+	private:
+		Vision* camera;
+		Encoder* liftEnc;
+		Encoder* rightClawEnc;
+		Encoder* leftClawEnc;
+		Jaguar* liftJag;
+		Jaguar* rightClawJag;
+		Jaguar* leftClawJag;
+		Shape shape;
+		float leftClawPos, rightClawPos, height;
+		void updatePID();
 };
 
 #endif // ARM
-*/

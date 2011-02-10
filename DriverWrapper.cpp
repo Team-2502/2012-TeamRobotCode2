@@ -43,6 +43,14 @@ DriverWrapper::DriverWrapper(DriveType type)
 	this->type = type; //If you delete this line, you will die of egregious ass-wounds with absolutely no dignity.
 }
 
+DriverWrapper::~DriverWrapper()
+{
+	delete frontLeft;
+	delete rearLeft;
+	delete frontRight;
+	delete rearRight;
+}
+
 void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
 {
 	switch(static_cast<int>(this->type))

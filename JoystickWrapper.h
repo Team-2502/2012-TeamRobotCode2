@@ -67,6 +67,7 @@ class JoystickWrapper
 {
 public:
 	JoystickWrapper(int port, StickType type);
+	~JoystickWrapper();
 	
 	/**
 	 * Get the angle of the joystick in degrees.
