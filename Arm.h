@@ -1,8 +1,7 @@
-/*
 #ifndef ARMCLASS_H
 #define ARMCLASS_H
 
-#include <WPILib.h>
+#include "WPILib.h"
 #include "VisionRoutines.h"
 
 typedef enum Level {
@@ -40,13 +39,15 @@ public:
 	float getShape();
 private:
 	Vision* camera;
-	Encoder* liftEnc,rightClawEnc,leftClawEnc;
-	Jaguar* liftJag,rightClawJag,leftClawJag;
+	Encoder* liftEnc;
+	Encoder* rightClawEnc;
+	Encoder* leftClawEnc;
+	Jaguar* liftJag;
+	Jaguar* rightClawJag;
+	Jaguar* leftClawJag;
 	Shape shape;
-	float leftClawPos, rightClawPos, height;
 	float leftClawPos, rightClawPos, height;
 	void updatePID();
 };
 
 #endif // ARM
-*/

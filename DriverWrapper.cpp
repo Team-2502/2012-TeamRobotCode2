@@ -61,7 +61,7 @@ void DriverWrapper::Drive(float x, float y, float rotation)
 		break;
 		
 	case Tank:
-		TankDriver(x, y, rotation);
+		TankDrive(x, y, rotation);
 		break;
 	}
 }
@@ -83,11 +83,6 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 
 	Normalize(wheelSpeeds);
 
-#define e display
-	e->PrintfLine(7, "fl%f", wheelSpeeds[RobotDrive::kFrontLeftMotor]);
-	e->PrintfLine(8, "fr%f", -1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
-	e->PrintfLine(9, "bl%f", wheelSpeeds[RobotDrive::kRearLeftMotor]);
-	e->PrintfLine(10, "br%f", -1*wheelSpeeds[RobotDrive::kRearRightMotor]);
 	frontLeft->Set(wheelSpeeds[RobotDrive::kFrontLeftMotor]);
 	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
 	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);

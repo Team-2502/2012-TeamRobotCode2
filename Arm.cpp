@@ -1,22 +1,22 @@
 #include "Arm.h"
-#include "VisionRoutines.cpp"
+#include "config.h"
 
 Arm::Arm(float armHeight, float clawWidth)
 {
-	/*
-	camera=Vision.GetInstance();
-	liftEnc=new Encoder(LIFT_CHAIN_ENCODER_A_CHANNEL,LIFT_CHAIN_ENCODER_B_CHANNEL);
-	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL,RIGHT_CLAW_ENCODER_B_CHANNEL);
-	leftClawEnc = new Encoder(LEFT_CLAW_ENCODER_A_CHANNEL,LEFT_CLAW_ENCODER_B_CHANNEL);
-	liftJag = new Jaguar(WINCH_CHANNEL);
-	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
-	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
+	camera= Vision::GetInstance();
+	liftEnc=new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
+	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL, RIGHT_CLAW_ENCODER_B_CHANNEL);
+	leftClawEnc = new Encoder(LEFT_CLAW_ENCODER_A_CHANNEL, LEFT_CLAW_ENCODER_B_CHANNEL);
+	liftJag = new Jaguar((UINT32)WINCH_CHANNEL);
+	rightClawJag = new Jaguar((UINT32)RIGHT_CLAW_CHANNEL);
+	leftClawJag = new Jaguar((UINT32)LEFT_CLAW_CHANNEL);
 	setShape(circle);
 	setHeight(armHeight);
 	setRightRod(-circle/100./2);
 	setLeftRod(circle/100./2);
 	//start PID
 }
+
 void Arm::snapToPeg()
 {
 	//implement
@@ -93,5 +93,3 @@ float Arm::getShape()
 {
 	return shape;
 }
-=======
-*/
