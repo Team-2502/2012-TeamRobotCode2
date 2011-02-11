@@ -22,6 +22,7 @@ class Arm
 {
 public:
 	Arm(float armHeight, float clawWidth);
+	~Arm();
 	void snapToPeg();
 	void grab();
 	void ungrab();
@@ -37,6 +38,8 @@ public:
 	float getCenter();
 	float getWidth();
 	float getShape();
+	float getLeftRod();
+	float getRightRod();
 private:
 	Vision* camera;
 	Encoder* liftEnc;
@@ -45,6 +48,9 @@ private:
 	Jaguar* liftJag;
 	Jaguar* rightClawJag;
 	Jaguar* leftClawJag;
+	PIDController* liftPID;
+	PIDController* rightClawPID;
+	PIDController* leftClawPID;
 	Shape shape;
 	float leftClawPos, rightClawPos, height;
 	void updatePID();

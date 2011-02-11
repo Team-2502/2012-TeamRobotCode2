@@ -29,6 +29,9 @@
 
 #define INIT_ARM_HEIGHT 314159 //dummy
 #define INIT_CLAW_WIDTH 314159 //dummy
+#define PID_P 20
+#define PID_I 7
+#define PID_D 20
 
 
 #endif
