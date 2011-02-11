@@ -4,6 +4,7 @@
 #include "RobotMode.h"
 #include "Event.h"
 #include "DriverWrapper.h"
+#include "DisplayWrapper.h"
 
 class TeleoperatedRobot : public RobotMode
 {
@@ -16,6 +17,7 @@ class TeleoperatedRobot : public RobotMode
 		
 	private:
 		DriverWrapper *drive;
+		DisplayWrapper *display;
 		RobotError *myError;
 		float lastGyroReading;
 };

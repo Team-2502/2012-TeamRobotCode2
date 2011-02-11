@@ -82,8 +82,8 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 
 	Normalize(wheelSpeeds);
 
-	frontLeft->Set(wheelSpeeds[RobotDrive::kFrontLeftMotor]);
+	frontLeft->Set(-1*wheelSpeeds[RobotDrive::kFrontLeftMotor]);
 	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
-	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
+	rearLeft->Set(-1*wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
 }

@@ -41,10 +41,10 @@ TwoChannelAccelerometer::TwoChannelAccelerometer()
  */
 TwoChannelAccelerometer::~TwoChannelAccelerometer()
 {
-	if (m_allocatedChannelX)
-		delete my_allocatedChannelX;
-	if (m_allocatedChannelY)
-		delete my_allocatedChannelY;
+	if (m_allocatedChannel) {
+		delete m_analogChannelX;
+		delete m_analogChannelY;
+	}
 }
 
 /**
