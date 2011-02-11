@@ -25,6 +25,9 @@ Arm::Arm(float armHeight, float clawWidth)
 Arm::~Arm()
 {
 	delete camera;
+	delete liftPID;
+	delete rightClawPID;
+	delete leftClawPID;
 	delete liftEnc;
 	delete rightClawEnc;
 	delete leftClawEnc;
