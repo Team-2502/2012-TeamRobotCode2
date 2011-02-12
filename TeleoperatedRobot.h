@@ -20,6 +20,7 @@ class TeleoperatedRobot : public RobotMode
 		DisplayWrapper *display;
 		RobotError *myError;
 		float lastGyroReading;
+		Servo* servo;
 };
 
 #endif

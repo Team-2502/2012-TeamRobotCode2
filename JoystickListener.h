@@ -3,6 +3,7 @@
 
 #include "EventListener.h"
 #include "JoystickWrapper.h"
+#include "JoystickButtonEvent.h"
 
 class JoystickListener : public EventListener
 {
@@ -14,7 +15,9 @@ class JoystickListener : public EventListener
 		int getMessageQuantity() { return 2; }
 		
 	private:
+		vector<ButtonEvent> getButtonStates();
 		JoystickWrapper *stick;
+		vector<ButtonEvent> lastButtonStates;
 };
 
 #endif

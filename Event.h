@@ -4,7 +4,8 @@
 enum EventType {
 	NoEvent,
 	JoystickPosition,
-	GyroAngle
+	GyroAngle,
+	JoystickButton,
 };
 
 class EventListener;

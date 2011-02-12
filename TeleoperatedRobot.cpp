@@ -1,6 +1,8 @@
 #include "TeleoperatedRobot.h"
 #include "JoystickPositionEvent.h"
+#include "JoystickButtonEvent.h"
 #include "RobotError.h"
+#include "config.h"
 
 TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 {
@@ -8,6 +10,8 @@ TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 	myError = RobotError::NoError();
 	display = new DisplayWrapper;
 	lastGyroReading = 0.0;
+	servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL);
+	servo->SetSafetyEnabled(false);
 }
 
 TeleoperatedRobot::~TeleoperatedRobot()
@@ -19,6 +23,9 @@ TeleoperatedRobot::~TeleoperatedRobot()
 
 bool TeleoperatedRobot::handle(Event *e)
 {
+	JoystickPositionEvent *jpe = 0;
+	JoystickButtonEvent *jbe = 0;
+	vector<ButtonEvent> buttons;
 	bool ret = false;
 	if(!e) {
 		if(myError) delete myError;
@@ -28,17 +35,31 @@ bool TeleoperatedRobot::handle(Event *e)
 	switch(static_cast<int>(e->type()))
 	{
 		case JoystickPosition:
-			drive->Drive(static_cast<JoystickPositionEvent*>(e)->x(),
-						 static_cast<JoystickPositionEvent*>(e)->y(),
-						 static_cast<JoystickPositionEvent*>(e)->twist(),
+			jpe = static_cast<JoystickPositionEvent*>(e);
+			drive->Drive(jpe->x(),
+						 jpe->y(),
+						 jpe->twist(),
 						 lastGyroReading);
-			display->PrintfLine(1,"Joystick X: %f",static_cast<JoystickPositionEvent*>(e)->x());
-			display->PrintfLine(2,"Joystick Y: %f",static_cast<JoystickPositionEvent*>(e)->y());
-			display->PrintfLine(3,"Joystick T: %f",static_cast<JoystickPositionEvent*>(e)->twist());
+			display->PrintfLine(1,"Joystick X: %f",jpe->x());
+			display->PrintfLine(2,"Joystick Y: %f",jpe->y());
+			display->PrintfLine(3,"Joystick T: %f",jpe->twist());
 			display->Output();
 			break;
 		case GyroAngle:
 			//lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
+			break;
+		case JoystickButton:
+			jbe = static_cast<JoystickButtonEvent*>(e);
+			buttons = jbe->buttonEvents();
+			for(int i = 0; i < buttons.size(); i++)
+			{
+				ButtonEvent ev = buttons[i];
+				if(ev.button == 5 && ev.state) {
+					servo->Set(1.0);
+				} else if(ev.button == 3 && ev.state) {
+					servo->Set(0.0);
+				}
+			}
 			break;
 		default:
 			if(myError) {
