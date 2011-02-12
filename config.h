@@ -36,4 +36,9 @@
 #define XRESOLUTION 314 //IDK what this should be
 #define YRESOLUTION 314 //IDK what this should be
 
+#define ROT_EXPONENTIAL 50 // Tweak this
+#define MAG_EXPONENTIAL 10
+
+const float PIE = 3.141592653897;
+
 #endif

@@ -4,6 +4,9 @@
 Arm::Arm(float armHeight, float clawWidth)
 {
 	camera = Vision::GetInstance();
+	pidCameraDistance = new PIDCamera(camera, distanceAxis);
+	pidCameraVertical = new PIDCamera(camera, verticalAxis);
+	pidCameraHorizontal = new PIDCamera(camera, horizontalAxis);
 	
 	liftEnc = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL, RIGHT_CLAW_ENCODER_B_CHANNEL);
@@ -28,10 +31,13 @@ Arm::Arm(float armHeight, float clawWidth)
 }
 Arm::~Arm()
 {
-	delete camera;
 	delete liftPID;
 	delete rightClawPID;
 	delete leftClawPID;
+	delete pidCameraDistance;
+	delete pidCameraVertical;
+	delete pidCameraHorizontal;
+	delete camera;
 	delete liftEnc;
 	delete rightClawEnc;
 	delete leftClawEnc;
@@ -39,9 +45,10 @@ Arm::~Arm()
 	delete rightClawJag;
 	delete leftClawJag;
 }
-void Arm::snapToPeg()
+ErrorReport Arm::snapToPeg()
 {
-	//implement
+	ErrorReport error;
+	return error;
 }
 void Arm::grab()
 {

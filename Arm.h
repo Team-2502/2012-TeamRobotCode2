@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 #include "VisionRoutines.h"
+#include "PIDCamera.h"
 
 typedef enum Level {
 	sideFirst=29375,
@@ -18,12 +19,18 @@ typedef enum Shape {
 	circle=1250
 };
 
+struct ErrorReport
+{
+	double vertical;
+	double horizontal;
+	double distance;
+};
 class Arm
 {
 public:
 	Arm(float armHeight, float clawWidth);
 	~Arm();
-	void snapToPeg();
+	ErrorReport snapToPeg();
 	void grab();
 	void ungrab();
 	void toggle();
@@ -51,6 +58,9 @@ private:
 	PIDController* liftPID;
 	PIDController* rightClawPID;
 	PIDController* leftClawPID;
+	PIDCamera* pidCameraHorizontal;
+	PIDCamera* pidCameraVertical;
+	PIDCamera* pidCameraDistance;
 	Shape shape;
 	float leftClawPos, rightClawPos, height;
 	void updatePID();

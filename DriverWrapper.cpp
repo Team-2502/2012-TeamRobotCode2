@@ -1,6 +1,8 @@
 #include <cmath>
-
 #include "DriverWrapper.h"
+#include "config.h"
+
+using namespace std;
 
 void Normalize(double *wheelSpeeds)
 {
@@ -22,8 +24,8 @@ void Normalize(double *wheelSpeeds)
 
 void RotateVector(double &x, double &y, double angle)
 {
-	double cosA = cos(angle * (3.14159 / 180.0));
-	double sinA = sin(angle * (3.14159 / 180.0));
+	double cosA = cos(angle * (PIE/ 180.0));
+	double sinA = sin(angle * (PIE/ 180.0));
 	double xOut = x * cosA - y * sinA;
 	double yOut = x * sinA + y * cosA;
 	x = xOut;

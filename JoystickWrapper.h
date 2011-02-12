@@ -110,6 +110,11 @@ public:
 	float GetRotation() const;
 	
 	/**
+	 * This returns the raw rotation value of the joystick without filtering.
+	 */
+	float GetRawRotation() const;
+	
+	/**
 	 * Get the value of the throttle. It goes from -1.0 at the bottom to 1.0 at the top.
 	 */
 	float GetThrottle() const;
