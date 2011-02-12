@@ -100,7 +100,7 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 	float magnitude = this->joystick->GetMagnitude();
 	//magnitude = std::pow(magnitude, 2.0);
 	//
-	magnitude = pow(1.5,magnitude)-1;
+	magnitude = pow(2,magnitude)-1;
 	//Create a new axis based on the new angle and the magnitude of the previous axis vector	
 	*xaxis = cos(snapAngle) * magnitude;
 	*yaxis = sin(snapAngle) * magnitude;
@@ -108,8 +108,8 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 
 void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const
 {
-	*yaxis = -1.0 * this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
-	*xaxis = -1.0 * this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
+	*yaxis = /*-1.0 **/ this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
+	*xaxis = /*-1.0 **/ this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
 }
 
 float JoystickWrapper::GetRotation() const
