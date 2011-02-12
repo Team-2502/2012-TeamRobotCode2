@@ -21,8 +21,8 @@
 
 //#define USE_GYRO
 #ifdef USE_GYRO
-	#define GYRO_SLOT 1
-	#define GYRO_CHANNEL 1
+	#define GYRO_SLOT 0
+	#define GYRO_CHANNEL 0
 	#define GYRO_HEAT_CHANNEL 2
 	#define GYRO_MULT -1
 #endif

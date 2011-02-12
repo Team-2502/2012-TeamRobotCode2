@@ -22,7 +22,7 @@ class BetaRobot : public IterativeRobot
 				joystick[i]->SetSnapPoints(8);
 			}
 			//vis = Vision::GetInstance();
-			display = new DisplayWrapper();
+			//display = new DisplayWrapper();
 			driver = new DriverWrapper(Mecanum);
 			//pcvs = new PCVideoServer;
 		}
@@ -38,12 +38,12 @@ class BetaRobot : public IterativeRobot
 			float x, y;
 			joystick[joy]->GetAxis(&x, &y);
 			
-			display->PrintfLine(0, "Joystick Angle:     %f", joystick[joy]->GetAngle());
-			display->PrintfLine(1, "Joystick Throttle:  %f", joystick[joy]->GetThrottle());
-			display->PrintfLine(2, "Joystick X: %f", x);
-			display->PrintfLine(3, "Joystick Y: %f", y);
-			display->PrintfLine(4, "Joystick Magnitude: %f", joystick[joy]->GetMagnitude());
-			display->PrintfLine(5, "Joystick Rotation:  %f", joystick[joy]->GetRotation());
+			DisplayWrapper::GetInstance()->PrintfLine(0, "Joystick Angle:     %f", joystick[joy]->GetAngle());
+			DisplayWrapper::GetInstance()->PrintfLine(1, "Joystick Throttle:  %f", joystick[joy]->GetThrottle());
+			DisplayWrapper::GetInstance()->PrintfLine(2, "Joystick X: %f", x);
+			DisplayWrapper::GetInstance()->PrintfLine(3, "Joystick Y: %f", y);
+			DisplayWrapper::GetInstance()->PrintfLine(4, "Joystick Magnitude: %f", joystick[joy]->GetMagnitude());
+			DisplayWrapper::GetInstance()->PrintfLine(5, "Joystick Rotation:  %f", joystick[joy]->GetRotation());
 			if(joystick[0]->GetJoystick()->GetRawButton(7))
 				joy = 0;
 			else if(joystick[0]->GetJoystick()->GetRawButton(9))
@@ -86,9 +86,9 @@ class BetaRobot : public IterativeRobot
 			display->PrintfLine(9, "Target area:        %f", (float)target.area);
 			*/
 			float t = -1.0 * joystick[0]->GetThrottle();
-			display->SetScrollLocation(t);
+			DisplayWrapper::GetInstance()->SetScrollLocation(t);
 			driver->Drive(x, y, joystick[0]->GetRotation());
-			display->Output();
+			DisplayWrapper::GetInstance()->Output();
 		}
 		
 		/** Unused functions */
@@ -99,7 +99,7 @@ class BetaRobot : public IterativeRobot
 		
 	private:
 		int joy;
-		DisplayWrapper* display;
+		//DisplayWrapper* display;
 		JoystickWrapper* joystick[3];
 		//Vision* vis;
 		DriverWrapper* driver;

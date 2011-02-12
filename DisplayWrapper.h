@@ -20,6 +20,11 @@ public:
 	void Clear();
 	
 	/**
+	 * Get the instance of the display wrapper.
+	 */
+	static DisplayWrapper* GetInstance();
+	
+	/**
 	 * Update the display with any changes.
 	 */
 	void Output();
@@ -50,6 +55,7 @@ private:
 	unsigned bufferLocation;
 	unsigned outputLocation;
 	DriverStationLCD* display;
+	static DisplayWrapper* instance;
 	
 	void Shift();
 };

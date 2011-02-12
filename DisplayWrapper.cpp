@@ -4,6 +4,8 @@
 
 #include "DisplayWrapper.h"
 
+DisplayWrapper* DisplayWrapper::instance = new DisplayWrapper();
+
 DisplayWrapper::DisplayWrapper()
 {
 	this->bufferSize = 0;
@@ -19,6 +21,11 @@ void DisplayWrapper::Clear()
 		this->buffer[i].clear();
 	}
 	this->bufferLocation = 0;
+}
+
+DisplayWrapper* DisplayWrapper::GetInstance()
+{
+	return instance;
 }
 
 void DisplayWrapper::Output()

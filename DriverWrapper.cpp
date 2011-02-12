@@ -1,4 +1,5 @@
 #include <cmath>
+#include "DisplayWrapper.h"
 #include "DriverWrapper.h"
 #include "config.h"
 
@@ -55,6 +56,7 @@ void DriverWrapper::Drive(float x, float y, float rotation)
 	#ifdef USE_GYRO
 	if(useFOD)
 		gyroAngle = gyro->GetAngle() * GYRO_MULT;
+		DisplayWrapper::GetInstacne()->PrintfLine(7, "Gyro Angle: %f", gyroAngle);
 	#endif
 	switch(static_cast<int>(this->type))
 	{
