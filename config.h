@@ -33,8 +33,8 @@
 #define PID_I 0 //7
 #define PID_D 0 //20
 
-#define XRESOLUTION 314 //IDK what this should be
-#define YRESOLUTION 314 //IDK what this should be
+#define XRESOLUTION 640 //IDK what this should be
+#define YRESOLUTION 480 //IDK what this should be
 
 #define ROT_EXPONENTIAL 50 // Tweak this
 #define MAG_EXPONENTIAL 10
