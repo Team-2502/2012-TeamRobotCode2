@@ -20,7 +20,10 @@ vector<ButtonEvent> JoystickListener::getButtonStates()
 	Joystick* js = stick->GetJoystick();
 	for(int i = 1; i <= 12; i++)
 	{
-		ret.push_back({i,js->GetRawButton(i)});
+		ButtonEvent be;
+		be.button = i;
+		be.state = js->GetRawButton(i);
+		ret.push_back(be);
 	}
 	return ret;
 }
@@ -36,7 +39,7 @@ Event* JoystickListener::getEvent(int index)
 			ret = new JoystickPositionEvent(x,y,stick->GetRotation(), this);
 			break;
 		case 1: //Button
-			if(lastButtonStates != getButtonStates())
+			if(!JoystickButtonEvent::compareButtonEvents(lastButtonStates,getButtonStates()))
 			{
 				lastButtonStates = getButtonStates();
 				ret = new JoystickButtonEvent(lastButtonStates, this);

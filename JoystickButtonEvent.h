@@ -22,6 +22,8 @@ class JoystickButtonEvent : public Event
 		EventListener* sender();
 		vector<ButtonEvent> buttonEvents();
 		
+		static bool compareButtonEvents(vector<ButtonEvent> first, vector<ButtonEvent> second);
+		
 	private:
 		vector<ButtonEvent> m_b;
 		EventListener *listen;

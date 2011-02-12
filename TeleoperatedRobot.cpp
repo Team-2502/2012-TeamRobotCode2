@@ -34,39 +34,39 @@ bool TeleoperatedRobot::handle(Event *e)
 	}
 	switch(static_cast<int>(e->type()))
 	{
-		case JoystickPosition:
-			jpe = static_cast<JoystickPositionEvent*>(e);
-			drive->Drive(jpe->x(),
-						 jpe->y(),
-						 jpe->twist(),
-						 lastGyroReading);
-			display->PrintfLine(1,"Joystick X: %f",jpe->x());
-			display->PrintfLine(2,"Joystick Y: %f",jpe->y());
-			display->PrintfLine(3,"Joystick T: %f",jpe->twist());
-			display->Output();
-			break;
-		case GyroAngle:
-			//lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
-			break;
-		case JoystickButton:
-			jbe = static_cast<JoystickButtonEvent*>(e);
-			buttons = jbe->buttonEvents();
-			for(int i = 0; i < buttons.size(); i++)
-			{
-				ButtonEvent ev = buttons[i];
-				if(ev.button == 5 && ev.state) {
-					servo->Set(1.0);
-				} else if(ev.button == 3 && ev.state) {
-					servo->Set(0.0);
-				}
+	case JoystickPosition:
+		jpe = static_cast<JoystickPositionEvent*>(e);
+		drive->Drive(jpe->x(),
+				jpe->y(),
+				jpe->twist(),
+				lastGyroReading);
+		display->PrintfLine(1,"Joystick X: %f",jpe->x());
+		display->PrintfLine(2,"Joystick Y: %f",jpe->y());
+		display->PrintfLine(3,"Joystick T: %f",jpe->twist());
+		display->Output();
+		break;
+	case GyroAngle:
+		//lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
+		break;
+	case JoystickButton:
+		jbe = static_cast<JoystickButtonEvent*>(e);
+		buttons = jbe->buttonEvents();
+		for(unsigned int i = 0; i < buttons.size(); i++)
+		{
+			ButtonEvent ev = buttons[i];
+			if(ev.button == 12 && ev.state) {
+				servo->Set(1.0);
+			} else if(ev.button == 11 && ev.state) {
+				servo->Set(0.0);
 			}
-			break;
-		default:
-			if(myError) {
-				delete myError; myError = 0;
-				myError = new RobotError(Warning, "TeleoperatedRobot received unknown event.");
-			}
-			break;
+		}
+		break;
+	default:
+		if(myError) {
+			delete myError; myError = 0;
+			myError = new RobotError(Warning, "TeleoperatedRobot received unknown event.");
+		}
+		break;
 	}
 	return ret;
 }

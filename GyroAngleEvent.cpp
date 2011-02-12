@@ -11,7 +11,7 @@ EventListener* GyroAngleEvent::sender()
 	return listen;
 }
 
-float GyroAngleEvent::button()
+float GyroAngleEvent::angle()
 {
 	return m_angle;
 }
