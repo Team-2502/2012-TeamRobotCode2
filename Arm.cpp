@@ -17,6 +17,10 @@ Arm::Arm(float armHeight, float clawWidth)
 	rightClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
 	leftClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
 	
+	liftPID->Enable();		//Do I need these Enable calls?
+	rightClawPID->Enable();
+	leftClawPID->Enable();
+	
 	setShape(circle);
 	setHeight(armHeight);
 	setRightRod(-circle/100./2);
