@@ -3,7 +3,7 @@
 
 #include "WPILib.h"
 
-typedef enum Region {
+/*typedef enum Region {
 	NorthWest, North,  NorthEast,
 	West,      Center, East,
 	SouthWest, South,  SouthEast
@@ -13,14 +13,20 @@ struct TargetReport
 {
 	Region region;
 	double area;
+};*/
+struct TargetReport
+{
+	float x;
+	float y;
+	float area;
 };
-
 class Vision
 {
 	public:
 		static Vision* GetInstance();
 		TargetReport getNearestPeg();
 		~Vision();
+
 		
 	private:
 		Vision();
