@@ -21,13 +21,14 @@
 #define ARM_CHAIN_ENCODER_A_CHANNEL 314159 //dummy
 #define ARM_CHAIN_ENCODER_B_CHANNEL 314159 //dummy
 
-//#define USE_GYRO
+#define USE_GYRO
 #ifdef USE_GYRO
 #define GYRO_SLOT 1
 #define GYRO_CHANNEL 1
 #define GYRO_HEAT_CHANNEL 2
 #define GYRO_MULT -1
 #endif
+
 
 #define INIT_ARM_HEIGHT 314159 //dummy
 #define INIT_CLAW_WIDTH 314159 //dummy

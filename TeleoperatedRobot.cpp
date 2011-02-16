@@ -1,6 +1,8 @@
 #include "TeleoperatedRobot.h"
 #include "JoystickPositionEvent.h"
 #include "JoystickButtonEvent.h"
+#include "GyroAngleEvent.h"
+#include "VisionEvent.h"
 #include "RobotError.h"
 #include "config.h"
 
@@ -25,8 +27,10 @@ bool TeleoperatedRobot::handle(Event *e)
 {
 	JoystickPositionEvent *jpe = 0;
 	JoystickButtonEvent *jbe = 0;
-	vector<ButtonEvent> buttons;
+	VisionEvent *ve = 0;
+	ButtonEvent button;
 	bool ret = false;
+	int region = -1;
 	if(!e) {
 		if(myError) delete myError;
 		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
@@ -40,26 +44,26 @@ bool TeleoperatedRobot::handle(Event *e)
 				jpe->y(),
 				jpe->twist(),
 				lastGyroReading);
-		display->PrintfLine(1,"Joystick X: %f",jpe->x());
-		display->PrintfLine(2,"Joystick Y: %f",jpe->y());
-		display->PrintfLine(3,"Joystick T: %f",jpe->twist());
+		display->PrintfLine(0,"Gyro Angle: %f", lastGyroReading);
 		display->Output();
 		break;
 	case GyroAngle:
-		//lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
+		lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
 		break;
 	case JoystickButton:
 		jbe = static_cast<JoystickButtonEvent*>(e);
-		buttons = jbe->buttonEvents();
-		for(unsigned int i = 0; i < buttons.size(); i++)
-		{
-			ButtonEvent ev = buttons[i];
-			if(ev.button == 12 && ev.state) {
-				servo->Set(1.0);
-			} else if(ev.button == 11 && ev.state) {
-				servo->Set(0.0);
-			}
+		button = jbe->button();
+		if(button.button == 11 && button.state) {
+			servo->Set(1.0);
 		}
+		else if(button.button == 12 && button.state) {
+			servo->Set(0.0);
+		}
+		break;
+	case TargetEvent:
+		ve = static_cast<VisionEvent*>(e);
+		region = static_cast<int>(ve->report().region);
+		display->PrintfLine(1,"Region: %i",region);
 		break;
 	default:
 		if(myError) {

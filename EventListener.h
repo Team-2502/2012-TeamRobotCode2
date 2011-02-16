@@ -1,15 +1,15 @@
 #ifndef EVENTLISTENER_H
 #define EVENTLISTENER_H
 
-#include "Event.h"
-#include "RobotError.h"
+class Event;
+class EventDispatcher;
 
 class EventListener
 {
 	public:
 		virtual ~EventListener() {}
-		virtual Event* getEvent(int) = 0;
-		virtual int getMessageQuantity() = 0;
+		virtual bool update() = 0;
+		virtual void setParent(EventDispatcher *) = 0;
 };
 
 #endif

@@ -3,8 +3,9 @@
 #include "JoystickButtonEvent.h"
 #include "config.h"
 
-JoystickListener::JoystickListener(StickType type)
+JoystickListener::JoystickListener(EventDispatcher* e, StickType type)
 {
+	parent = e;
 	stick = new JoystickWrapper(JOYSTICK_PORT,type); //check
 	lastButtonStates = getButtonStates();
 }
@@ -12,6 +13,24 @@ JoystickListener::JoystickListener(StickType type)
 JoystickListener::~JoystickListener()
 {
 	delete stick; stick = 0;
+}
+
+bool JoystickListener::update()
+{
+	float x,y;
+	stick->GetAxis(&x,&y);
+	parent->sendEvent(new JoystickPositionEvent(x,y,stick->GetRotation(), this));
+	for(int i = 1; i <= 12; i++)
+	{
+		if(stick->GetJoystick()->GetRawButton(i) != lastButtonStates[i-1].state) {
+			ButtonEvent be;
+			be.button = i;
+			be.state = stick->GetJoystick()->GetRawButton(i);
+			lastButtonStates[i-1] = be;
+			parent->sendEvent(new JoystickButtonEvent(be,this));
+		}
+	}
+	return true;
 }
 
 vector<ButtonEvent> JoystickListener::getButtonStates()
@@ -28,25 +47,3 @@ vector<ButtonEvent> JoystickListener::getButtonStates()
 	return ret;
 }
 
-Event* JoystickListener::getEvent(int index)
-{
-	Event* ret = 0;
-	float x,y;
-	switch(index)
-	{
-		case 0: //Position
-			stick->GetAxis(&x,&y);
-			ret = new JoystickPositionEvent(x,y,stick->GetRotation(), this);
-			break;
-		case 1: //Button
-			if(!JoystickButtonEvent::compareButtonEvents(lastButtonStates,getButtonStates()))
-			{
-				lastButtonStates = getButtonStates();
-				ret = new JoystickButtonEvent(lastButtonStates, this);
-			}
-			break;
-		default:
-			break;
-	}
-	return ret;
-}

@@ -6,6 +6,7 @@ enum EventType {
 	JoystickPosition,
 	GyroAngle,
 	JoystickButton,
+	TargetEvent,
 };
 
 class EventListener;

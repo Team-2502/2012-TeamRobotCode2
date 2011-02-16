@@ -15,17 +15,15 @@ struct ButtonEvent {
 class JoystickButtonEvent : public Event
 {
 	public:
-		JoystickButtonEvent(vector<ButtonEvent> button, EventListener* l);
+		JoystickButtonEvent(ButtonEvent button, EventListener* l);
 		~JoystickButtonEvent() {}
 		
 		EventType type() { return JoystickButton; }
 		EventListener* sender();
-		vector<ButtonEvent> buttonEvents();
-		
-		static bool compareButtonEvents(vector<ButtonEvent> first, vector<ButtonEvent> second);
+		ButtonEvent button();
 		
 	private:
-		vector<ButtonEvent> m_b;
+		ButtonEvent m_b;
 		EventListener *listen;
 };
 
