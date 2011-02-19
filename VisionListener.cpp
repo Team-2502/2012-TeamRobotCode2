@@ -17,7 +17,7 @@ VisionListener::~VisionListener()
 bool VisionListener::update()
 {
 	TargetReport rpt = vis->getNearestPeg();
-	if(rpt.area != lastReport.area || rpt.region != lastReport.region)
+	if(rpt.area != lastReport.area || rpt.x != lastReport.x || rpt.y != lastReport.y)
 	{
 		lastReport = rpt;
 		parent->sendEvent(new VisionEvent(rpt,this));

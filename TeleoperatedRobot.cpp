@@ -4,13 +4,13 @@
 #include "GyroAngleEvent.h"
 #include "VisionEvent.h"
 #include "RobotError.h"
+#include "DisplayWrapper.h"
 #include "config.h"
 
 TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 {
 	drive = new DriverWrapper(type);
 	myError = RobotError::NoError();
-	display = new DisplayWrapper;
 	lastGyroReading = 0.0;
 	servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL);
 	servo->SetSafetyEnabled(false);
@@ -20,7 +20,6 @@ TeleoperatedRobot::~TeleoperatedRobot()
 {
 	delete drive; drive = 0;
 	delete myError; myError = 0;
-	delete display; display = 0;
 }
 
 bool TeleoperatedRobot::handle(Event *e)
@@ -30,7 +29,8 @@ bool TeleoperatedRobot::handle(Event *e)
 	VisionEvent *ve = 0;
 	ButtonEvent button;
 	bool ret = false;
-	int region = -1;
+	float vis_x = 0.0;
+	float vis_y = 0.0;
 	if(!e) {
 		if(myError) delete myError;
 		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
@@ -44,8 +44,8 @@ bool TeleoperatedRobot::handle(Event *e)
 				jpe->y(),
 				jpe->twist(),
 				lastGyroReading);
-		display->PrintfLine(0,"Gyro Angle: %f", lastGyroReading);
-		display->Output();
+		DisplayWrapper::GetInstance()->PrintfLine(0,"Gyro Angle: %f", lastGyroReading);
+		DisplayWrapper::GetInstance()->Output();
 		break;
 	case GyroAngle:
 		lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
@@ -62,8 +62,10 @@ bool TeleoperatedRobot::handle(Event *e)
 		break;
 	case TargetEvent:
 		ve = static_cast<VisionEvent*>(e);
-		region = static_cast<int>(ve->report().region);
-		display->PrintfLine(1,"Region: %i",region);
+		vis_x = static_cast<int>(ve->report().x);
+		vis_y = static_cast<int>(ve->report().y);
+		DisplayWrapper::GetInstance()->PrintfLine(1,"Target X: %i",vis_x);
+		DisplayWrapper::GetInstance()->PrintfLine(1,"Target Y: %i",vis_y);
 		break;
 	default:
 		if(myError) {
