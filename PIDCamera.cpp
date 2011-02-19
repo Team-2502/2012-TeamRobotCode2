@@ -4,6 +4,7 @@ PIDCamera::PIDCamera(Vision* cam, Axis dimension)
 {
 	camera=cam;
 	axis=dimension;
+	width=circle;
 }
 double PIDCamera::PIDGet()
 {
@@ -11,10 +12,14 @@ double PIDCamera::PIDGet()
 	switch (axis)
 	{
 	case leftShift:
-		return target.x-CLAW_SPACE/2;
+		return target.x-width/200.;
 	case rightShift:
-		return target.x+CLAW_SPACE/2;
+		return target.x+width/200.;
 	default:
 		return (2*target.y-YRESOLUTION)/YRESOLUTION;
 	}
+}
+void PIDCamera::SetShape(Shape shape)
+{
+	width=shape;
 }
