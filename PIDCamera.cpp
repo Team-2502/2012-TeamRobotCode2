@@ -4,6 +4,7 @@ PIDCamera::PIDCamera(Vision* cam, Axis dimension)
 {
 	camera=cam;
 	axis=dimension;
+	width=circle;
 }
 
 double PIDCamera::PIDGet()
@@ -11,11 +12,15 @@ double PIDCamera::PIDGet()
 	TargetReport target=camera->getNearestPeg();
 	switch (axis)
 	{
-	case horizontalAxis:
-		return (2*target.x-XRESOLUTION)/XRESOLUTION;
-	case verticalAxis:
-		return (2*target.y-YRESOLUTION)/YRESOLUTION;
+	case leftShift:
+		return target.x-width/200.;
+	case rightShift:
+		return target.x+width/200.;
 	default:
-		return 1/(target.area-100);
+		return (2*target.y-YRESOLUTION)/YRESOLUTION;
 	}
+}
+void PIDCamera::SetShape(Shape shape)
+{
+	width=shape;
 }

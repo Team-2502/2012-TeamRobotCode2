@@ -6,9 +6,15 @@
 #include "config.h"
 
 typedef enum Axis {
-	distanceAxis,
+	leftShift,
 	verticalAxis,
-	horizontalAxis
+	rightShift
+};
+
+typedef enum Shape {
+	triangle=950,
+	square=1000,
+	circle=1250
 };
 
 class PIDCamera : public PIDSource
@@ -16,9 +22,11 @@ class PIDCamera : public PIDSource
 public:
 	PIDCamera(Vision* cam, Axis dimension);
 	double PIDGet();
+	void SetShape(Shape shape);
 private:
 	Vision* camera;
 	Axis axis;
+	Shape width;
 };
 
 #endif // PIDCAMERA

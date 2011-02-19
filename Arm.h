@@ -13,12 +13,6 @@ typedef enum Level {
 	middleSecond=72625
 };
 
-typedef enum Shape {
-	triangle=950,
-	square=1000,
-	circle=1250
-};
-
 struct ErrorReport
 {
 	double vertical;
@@ -55,12 +49,15 @@ private:
 	Jaguar* liftJag;
 	Jaguar* rightClawJag;
 	Jaguar* leftClawJag;
-	PIDController* liftPID;
-	PIDController* rightClawPID;
-	PIDController* leftClawPID;
-	PIDCamera* pidCameraHorizontal;
-	PIDCamera* pidCameraVertical;
-	PIDCamera* pidCameraDistance;
+	PIDController* liftEncoderPID;
+	PIDController* rightClawEncoderPID;
+	PIDController* leftClawEncoderPID;
+	PIDController* liftCameraPID;
+	PIDController* rightClawCameraPID;
+	PIDController* leftClawCameraPID;
+	PIDCamera* leftPIDVisionSource;
+	PIDCamera* liftPIDVisionSource;
+	PIDCamera* rightPIDVisionSource;
 	Shape shape;
 	float leftClawPos, rightClawPos, height;
 	void updatePID();
