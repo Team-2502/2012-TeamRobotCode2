@@ -1,9 +1,8 @@
 #include <cmath>
-
 #include "config.h"
 #include "JoystickWrapper.h"
-
-using std::acos; using std::atan2; using std::atan; using std::pow; using std::sqrt; using std::floor; using std::cos; using std::sin;
+#include "config.h"
+using namespace std;
 
 JoystickWrapper::JoystickWrapper(int port, StickType type)
 {

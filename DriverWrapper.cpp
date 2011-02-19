@@ -45,19 +45,18 @@ DriverWrapper::DriverWrapper(DriveType type)
 	this->rearRight->SetSafetyEnabled(false);
 	useFOD = true;
 	this->type = type; //If you delete this line, you will die of egregious ass-wounds with absolutely no dignity.
-	#ifdef USE_GYRO
-	gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
-	#endif
 }
 
-void DriverWrapper::Drive(float x, float y, float rotation)
+DriverWrapper::~DriverWrapper()
 {
-	static float gyroAngle = 0.0;
-	#ifdef USE_GYRO
-	if(useFOD)
-		gyroAngle = gyro->GetAngle() * GYRO_MULT;
-		DisplayWrapper::GetInstance()->PrintfLine(7, "Gyro Angle: %f", gyroAngle);
-	#endif
+	delete frontLeft;
+	delete rearLeft;
+	delete frontRight;
+	delete rearRight;
+}
+
+void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
+{
 	switch(static_cast<int>(this->type))
 	{
 	case Mecanum:
@@ -92,6 +91,7 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
 }
+
 void DriverWrapper::TankDrive(float x, float y, float rotation)
 {
 	double wheelSpeeds[4];

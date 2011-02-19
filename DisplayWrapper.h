@@ -12,8 +12,6 @@
 class DisplayWrapper
 {
 public:
-	DisplayWrapper();
-	
 	/**
 	 * Clear the display buffer.
 	 */
@@ -50,6 +48,7 @@ public:
 	void SetBufferSize(unsigned size);
 	
 private:
+	DisplayWrapper();
 	std::vector<std::string> buffer;
 	unsigned bufferSize;
 	unsigned bufferLocation;
