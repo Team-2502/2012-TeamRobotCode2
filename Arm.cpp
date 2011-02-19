@@ -119,6 +119,8 @@ void Arm::setWidth(float width)
 void Arm::setShape(Shape newShape)
 {
 	shape=newShape;
+	leftPIDVisionSource->SetShape(shape);
+	rightPIDVisionSource->SetShape(shape);
 }
 void Arm::setLeftRod(float left)
 {

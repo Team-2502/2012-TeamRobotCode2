@@ -13,12 +13,6 @@ typedef enum Level {
 	middleSecond=72625
 };
 
-typedef enum Shape {
-	triangle=950,
-	square=1000,
-	circle=1250
-};
-
 struct ErrorReport
 {
 	double vertical;
