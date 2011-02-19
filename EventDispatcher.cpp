@@ -22,8 +22,37 @@ void EventDispatcher::AutonomousInit(void)
 {
 	if(robot)
 		delete robot;
-	//robot = new AutonomousRobot();
-	robot = new DisabledRobot();
+	robot = new AutonomousRobot();
+	deleteAllListeners();
+	visList = new VisionListener(this);
+	listeners.push_back(new JoystickListener(this, Extreme3DPro));
+	listeners.push_back(new GyroListener(this));
+	listeners.push_back(visList);
+}
+
+void EventDispatcher::AutonomousPeriodic()
+{
+	visList->update();
+}
+
+void EventDispatcher::AutonomousContinuous()
+{
+	static bool active = true;
+	if(active) {
+		for(unsigned int i = 0; i < listeners.size(); i++) {
+			EventListener* listener = listeners[i];
+			listener->update();
+		}
+		for(unsigned int i = 0; i < events.size(); i++) {
+			if(!robot->handle(events[i])) {
+				RobotError* err = robot->lastError();
+				if(err->getErrorLevel() == Fatal)
+					active = false;
+			}
+			delete events[i];
+		}
+		events.clear();
+	}
 }
 
 void EventDispatcher::TeleopInit(void)

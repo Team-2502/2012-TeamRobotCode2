@@ -5,6 +5,7 @@ PIDCamera::PIDCamera(Vision* cam, Axis dimension)
 	camera=cam;
 	axis=dimension;
 }
+
 double PIDCamera::PIDGet()
 {
 	TargetReport target=camera->getNearestPeg();
