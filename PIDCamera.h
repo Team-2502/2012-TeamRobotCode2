@@ -6,9 +6,9 @@
 #include "config.h"
 
 typedef enum Axis {
-	distanceAxis,
+	leftShift,
 	verticalAxis,
-	horizontalAxis
+	rightShift
 };
 
 class PIDCamera : public PIDSource

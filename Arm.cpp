@@ -4,9 +4,17 @@
 Arm::Arm(float armHeight, float clawWidth)
 {
 	camera = Vision::GetInstance();
-	pidCameraDistance = new PIDCamera(camera, distanceAxis);
-	pidCameraVertical = new PIDCamera(camera, verticalAxis);
-	pidCameraHorizontal = new PIDCamera(camera, horizontalAxis);
+	leftPIDVisionSource = new PIDCamera(camera, leftShift);
+	liftPIDVisionSource = new PIDCamera(camera, verticalAxis);
+	rightPIDVisionSource = new PIDCamera(camera, rightShift);
+	
+	liftCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftPIDVisionSource,liftJag);
+	rightClawCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightPIDVisionSource,rightClawJag);
+	leftClawCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftPIDVisionSource,leftClawJag);
+	
+	liftCameraPID->Disable();
+	rightClawCameraPID->Disable();
+	leftClawCameraPID->Disable();
 	
 	liftEnc = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL, RIGHT_CLAW_ENCODER_B_CHANNEL);
@@ -16,13 +24,13 @@ Arm::Arm(float armHeight, float clawWidth)
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
 	
-	liftPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftEnc,liftJag);
-	rightClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
-	leftClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
+	liftEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftEnc,liftJag);
+	rightClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
+	leftClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
 	
-	liftPID->Enable();		//Do I need these Enable calls?
-	rightClawPID->Enable();
-	leftClawPID->Enable();
+	liftEncoderPID->Enable();
+	rightClawEncoderPID->Enable();
+	leftClawEncoderPID->Enable();
 	
 	setShape(circle);
 	setHeight(armHeight);
@@ -31,12 +39,15 @@ Arm::Arm(float armHeight, float clawWidth)
 }
 Arm::~Arm()
 {
-	delete liftPID;
-	delete rightClawPID;
-	delete leftClawPID;
-	delete pidCameraDistance;
-	delete pidCameraVertical;
-	delete pidCameraHorizontal;
+	delete liftEncoderPID;
+	delete rightClawEncoderPID;
+	delete leftClawEncoderPID;
+	delete liftCameraPID;
+	delete rightClawCameraPID;
+	delete leftClawCameraPID;
+	delete leftPIDVisionSource;
+	delete liftPIDVisionSource;
+	delete rightPIDVisionSource;
 	delete camera;
 	delete liftEnc;
 	delete rightClawEnc;
@@ -48,6 +59,15 @@ Arm::~Arm()
 ErrorReport Arm::snapToPeg()
 {
 	ErrorReport error;
+	liftEncoderPID->Disable();
+	rightClawEncoderPID->Disable();
+	leftClawEncoderPID->Disable();
+	liftCameraPID->Enable();
+	rightClawCameraPID->Enable();
+	leftClawCameraPID->Enable();
+	error.vertical=liftCameraPID->GetError();
+	error.horizontal=(rightClawCameraPID->GetError()+leftClawCameraPID->GetError())/2;
+	error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
 	return error;
 }
 void Arm::grab()
@@ -67,9 +87,15 @@ void Arm::toggle()
 }
 void Arm::updatePID()
 {
-	liftPID->SetSetpoint(getHeight());
-	rightClawPID->SetSetpoint(getLeftRod());
-	leftClawPID->SetSetpoint(getRightRod());
+	liftEncoderPID->SetSetpoint(getHeight());
+	rightClawEncoderPID->SetSetpoint(getLeftRod());
+	leftClawEncoderPID->SetSetpoint(getRightRod());
+	liftCameraPID->Disable();
+	rightClawCameraPID->Disable();
+	leftClawCameraPID->Disable();
+	liftEncoderPID->Enable();
+	rightClawEncoderPID->Enable();
+	leftClawEncoderPID->Enable();
 }
 void Arm::setHeight(float armHeight)
 {

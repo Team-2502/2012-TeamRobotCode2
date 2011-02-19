@@ -10,11 +10,11 @@ double PIDCamera::PIDGet()
 	TargetReport target=camera->getNearestPeg();
 	switch (axis)
 	{
-	case horizontalAxis:
-		return (2*target.x-XRESOLUTION)/XRESOLUTION;
-	case verticalAxis:
-		return (2*target.y-YRESOLUTION)/YRESOLUTION;
+	case leftShift:
+		return target.x-CLAW_SPACE/2;
+	case rightShift:
+		return target.x+CLAW_SPACE/2;
 	default:
-		return 1/(target.area-100);
+		return (2*target.y-YRESOLUTION)/YRESOLUTION;
 	}
 }
