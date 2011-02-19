@@ -53,7 +53,7 @@ bool TeleoperatedRobot::handle(Event *e)
 		break;
 	case EncoderUpdate:
 		encoderValue = static_cast<EncoderEvent*>(e)->height();
-		DisplayWrapper::GetInstance()->PrintfLine(2,"Clicks: %f", encoderValue);
+		DisplayWrapper::GetInstance()->PrintfLine(3,"Clicks: %f", encoderValue);
 		DisplayWrapper::GetInstance()->Output();
 		break;
 	case JoystickButton:
@@ -71,7 +71,7 @@ bool TeleoperatedRobot::handle(Event *e)
 		vis_x = static_cast<int>(ve->report().x);
 		vis_y = static_cast<int>(ve->report().y);
 		DisplayWrapper::GetInstance()->PrintfLine(1,"Target X: %i",vis_x);
-		DisplayWrapper::GetInstance()->PrintfLine(1,"Target Y: %i",vis_y);
+		DisplayWrapper::GetInstance()->PrintfLine(2,"Target Y: %i",vis_y);
 		break;
 	default:
 		if(myError) {
