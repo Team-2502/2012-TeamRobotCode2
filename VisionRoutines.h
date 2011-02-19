@@ -20,6 +20,7 @@ struct TargetReport
 	float y;
 	float area;
 };
+
 class Vision
 {
 	public:
