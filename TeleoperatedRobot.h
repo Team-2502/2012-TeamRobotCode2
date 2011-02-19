@@ -18,6 +18,7 @@ class TeleoperatedRobot : public RobotMode
 		DriverWrapper *drive;
 		RobotError *myError;
 		float lastGyroReading;
+		int encoderValue;
 		Servo* servo;
 };
 

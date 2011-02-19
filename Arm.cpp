@@ -1,7 +1,10 @@
 #include "Arm.h"
 #include "config.h"
-
-Arm::Arm(float armHeight, float clawWidth)
+Arm::Arm()
+{
+	Arm(0,circle);
+}
+Arm::Arm(int armHeight, int clawWidth)
 {
 	camera = Vision::GetInstance();
 	leftPIDVisionSource = new PIDCamera(camera, leftShift);
@@ -34,8 +37,8 @@ Arm::Arm(float armHeight, float clawWidth)
 	
 	setShape(circle);
 	setHeight(armHeight);
-	setRightRod(-circle/100./2);
-	setLeftRod(circle/100./2);
+	setRightRod(-circle/2);
+	setLeftRod(circle/2);
 }
 Arm::~Arm()
 {
@@ -97,21 +100,21 @@ void Arm::updatePID()
 	rightClawEncoderPID->Enable();
 	leftClawEncoderPID->Enable();
 }
-void Arm::setHeight(float armHeight)
+void Arm::setHeight(int armHeight)
 {
 	height=armHeight;
 	updatePID();
 }
-void Arm::setCenter(float center)
+void Arm::setCenter(int center)
 {
-	float width=getWidth();
+	int width=getWidth();
 	setLeftRod(center-width/2);
 	setRightRod(center+width/2);
 	updatePID();
 }
-void Arm::setWidth(float width)
+void Arm::setWidth(int width)
 {
-	float center=getCenter();
+	int center=getCenter();
 	setLeftRod(center-width/2);
 	setRightRod(center+width/2);
 	updatePID();
@@ -122,12 +125,12 @@ void Arm::setShape(Shape newShape)
 	leftPIDVisionSource->SetShape(shape);
 	rightPIDVisionSource->SetShape(shape);
 }
-void Arm::setLeftRod(float left)
+void Arm::setLeftRod(int left)
 {
 	leftClawPos=left;
 	updatePID();
 }
-void Arm::setRightRod(float right)
+void Arm::setRightRod(int right)
 {
 	rightClawPos=right;
 	updatePID();
@@ -136,27 +139,27 @@ bool Arm::getClawState()
 {
 	return getWidth()>500;
 }
-float Arm::getHeight()
+int Arm::getHeight()
 {
 	return height;
 }
-float Arm::getCenter()
+int Arm::getCenter()
 {
 	return rightClawPos+getWidth()/2;
 }
-float Arm::getWidth()
+int Arm::getWidth()
 {
 	return rightClawPos-leftClawPos;
 }
-float Arm::getShape()
+int Arm::getShape()
 {
 	return shape;
 }
-float Arm::getLeftRod()
+int Arm::getLeftRod()
 {
 	return leftClawPos;
 }
-float Arm::getRightRod()
+int Arm::getRightRod()
 {
 	return rightClawPos;
 

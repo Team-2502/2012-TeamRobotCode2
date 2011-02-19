@@ -7,6 +7,7 @@ enum EventType {
 	GyroAngle,
 	JoystickButton,
 	TargetEvent,
+	EncoderUpdate
 };
 
 class EventListener;

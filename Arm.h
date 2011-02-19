@@ -22,25 +22,26 @@ struct ErrorReport
 class Arm
 {
 public:
-	Arm(float armHeight, float clawWidth);
+	Arm();
+	Arm(int armHeight, int clawWidth);
 	~Arm();
 	ErrorReport snapToPeg();
 	void grab();
 	void ungrab();
 	void toggle();
-	void setHeight(float armHeight);
-	void setCenter(float center);
-	void setWidth(float width);
+	void setHeight(int armHeight);
+	void setCenter(int center);
+	void setWidth(int width);
 	void setShape(Shape shape);
-	void setLeftRod(float left);
-	void setRightRod(float right);
+	void setLeftRod(int left);
+	void setRightRod(int right);
 	bool getClawState();
-	float getHeight();
-	float getCenter();
-	float getWidth();
-	float getShape();
-	float getLeftRod();
-	float getRightRod();
+	int getHeight();
+	int getCenter();
+	int getWidth();
+	int getShape();
+	int getLeftRod();
+	int getRightRod();
 private:
 	Vision* camera;
 	Encoder* liftEnc;
@@ -59,7 +60,7 @@ private:
 	PIDCamera* liftPIDVisionSource;
 	PIDCamera* rightPIDVisionSource;
 	Shape shape;
-	float leftClawPos, rightClawPos, height;
+	int leftClawPos, rightClawPos, height;
 	void updatePID();
 };
 

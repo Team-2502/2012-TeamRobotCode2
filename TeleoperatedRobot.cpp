@@ -5,6 +5,7 @@
 #include "VisionEvent.h"
 #include "RobotError.h"
 #include "DisplayWrapper.h"
+#include "EncoderEvent.h"
 #include "config.h"
 
 TeleoperatedRobot::TeleoperatedRobot(DriveType type)
@@ -31,6 +32,7 @@ bool TeleoperatedRobot::handle(Event *e)
 	bool ret = false;
 	float vis_x = 0.0;
 	float vis_y = 0.0;
+	int encoderValue = 0;
 	if(!e) {
 		if(myError) delete myError;
 		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
@@ -49,6 +51,11 @@ bool TeleoperatedRobot::handle(Event *e)
 		break;
 	case GyroAngle:
 		lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle();
+		break;
+	case EncoderUpdate:
+		encoderValue = static_cast<EncoderEvent*>(e)->height();
+		DisplayWrapper::GetInstance()->PrintfLine(2,"Clicks: %f", encoderValue);
+		DisplayWrapper::GetInstance()->Output();
 		break;
 	case JoystickButton:
 		jbe = static_cast<JoystickButtonEvent*>(e);
