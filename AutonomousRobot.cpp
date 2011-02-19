@@ -43,6 +43,9 @@ bool AutonomousRobot::handle(Event *e)
 					DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Arm down.");
 					DisplayWrapper::GetInstance()->Output();
 				}
+				if(ve->report().area > 0.8*XRESOLUTION*YRESOLUTION) { //If the peg takes up 80% of the camera, then stop.
+					drive->Drive(0,0,0);
+				}
 			}
 			break;
 		default:
