@@ -8,7 +8,7 @@ class EventListener;
 class EncoderEvent : public Event
 {
 	public:
-		EncoderEvent(float angle, EventListener* l);
+		EncoderEvent(int angle, EventListener* l);
 		~EncoderEvent() {}
 		
 		EventType type() { return EncoderUpdate; }
@@ -16,7 +16,7 @@ class EncoderEvent : public Event
 		int height();
 		
 	private:
-		float m_height;
+		int m_height;
 		EventListener *listen;
 };
 
