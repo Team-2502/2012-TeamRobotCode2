@@ -28,7 +28,6 @@ bool TeleoperatedRobot::handle(Event *e)
 	JoystickButtonEvent *jbe = 0;
 	VisionEvent *ve = 0;
 	ButtonEvent button;
-	bool ret = false;
 	float vis_x = 0.0;
 	float vis_y = 0.0;
 	if(!e) {
@@ -72,9 +71,10 @@ bool TeleoperatedRobot::handle(Event *e)
 			delete myError; myError = 0;
 			myError = new RobotError(Warning, "TeleoperatedRobot received unknown event.");
 		}
+		return false;
 		break;
 	}
-	return ret;
+	return true;
 }
 
 RobotError* TeleoperatedRobot::lastError()
