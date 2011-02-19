@@ -8,7 +8,6 @@
 #define FRONT_RIGHT_CHANNEL 4
 #define REAR_RIGHT_CHANNEL 2
 
-#define SERVO_CHANNEL 7
 #define WINCH_CHANNEL 10 //tentative
 #define LEFT_CLAW_CHANNEL 6 //tentative
 #define RIGHT_CLAW_CHANNEL 314159 //tentative
@@ -19,17 +18,19 @@
 #define RIGHT_CLAW_ENCODER_B_CHANNEL 314159 //dummy
 #define LEFT_CLAW_ENCODER_A_CHANNEL 314159 //dummy
 #define LEFT_CLAW_ENCODER_B_CHANNEL 314159 //dummy
+
 #define ARM_CHAIN_ENCODER_A_CHANNEL 1 //dummy
 #define ARM_CHAIN_ENCODER_B_CHANNEL 2 //dummy
+
 #define SERVO_CHANNEL_START 7
 
 #define DIGITAL_SIDECAR_PORT 4
 
 #define USE_GYRO
 #ifdef USE_GYRO
-	#define GYRO_SLOT 1
-	#define GYRO_CHANNEL 1
-	#define GYRO_HEAT_CHANNEL 2
+	#define GYRO_SLOT 0
+	#define GYRO_CHANNEL 0
+	#define GYRO_HEAT_CHANNEL 1
 	#define GYRO_MULT -1
 #endif
 
@@ -46,8 +47,5 @@
 #define MAG_EXPONENTIAL 10
 
 const float PIE = 3.141592653897;
-
-#define INIT_ARM_HEIGHT 314159 //dummy
-#define INIT_CLAW_WIDTH 314159 //dummy
 
 #endif

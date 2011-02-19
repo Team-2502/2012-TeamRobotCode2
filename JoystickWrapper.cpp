@@ -1,5 +1,4 @@
 #include <cmath>
-
 #include "config.h"
 #include "JoystickWrapper.h"
 #include "config.h"

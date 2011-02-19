@@ -91,6 +91,7 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
 }
+
 void DriverWrapper::TankDrive(float x, float y, float rotation)
 {
 	double wheelSpeeds[4];
