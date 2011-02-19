@@ -4,7 +4,7 @@
 #include "RobotMode.h"
 #include "Event.h"
 #include "DriverWrapper.h"
-#include "Arm.h"
+//#include "Arm.h"
 
 enum AutonomousState {
 	TrackLine,
@@ -31,7 +31,7 @@ class AutonomousRobot : public RobotMode
 		DriverWrapper *drive;
 		RobotError *myError;
 		float lastGyroReading;
-		Arm *myArm;
+		//Arm *myArm;
 		LineDirection l;
 		AutonomousState myState;
 };

@@ -9,7 +9,7 @@ AutonomousRobot::AutonomousRobot()
 	drive = new DriverWrapper(Tank);
 	myError = RobotError::NoError();
 	lastGyroReading = 0.0;
-	myArm = new Arm;
+	//myArm = new Arm;
 	l = LeftLine;
 	myState = PlaceTube;
 }
@@ -18,7 +18,7 @@ AutonomousRobot::~AutonomousRobot()
 {
 	delete drive;
 	delete myError;
-	delete myArm;
+	//delete myArm;
 }
 
 bool AutonomousRobot::handle(Event *e)

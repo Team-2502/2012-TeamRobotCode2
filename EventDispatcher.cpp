@@ -4,6 +4,7 @@
 #include "RobotError.h"
 #include "GyroListener.h"
 #include "VisionListener.h"
+#include "EncoderListener.h"
 #include "config.h"
 
 EventDispatcher::EventDispatcher(void)
@@ -25,7 +26,6 @@ void EventDispatcher::AutonomousInit(void)
 	robot = new AutonomousRobot();
 	deleteAllListeners();
 	visList = new VisionListener(this);
-	listeners.push_back(new JoystickListener(this, Extreme3DPro));
 	listeners.push_back(new GyroListener(this));
 	listeners.push_back(visList);
 }
@@ -65,6 +65,7 @@ void EventDispatcher::TeleopInit(void)
 	listeners.push_back(new JoystickListener(this, Extreme3DPro));
 	listeners.push_back(new GyroListener(this));
 	listeners.push_back(visList);
+	listeners.push_back(new EncoderListener(this));
 }
 
 void EventDispatcher::TeleopPeriodic()

@@ -16,7 +16,7 @@ class EncoderListener : public EventListener
 		
 	private:
 		Encoder* lift;
-		float lastCount;
+		int lastCount;
 		EventDispatcher *parent;
 };
 

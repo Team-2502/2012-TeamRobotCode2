@@ -1,4 +1,4 @@
-#ifndef ARMCLASS_H
+/*#ifndef ARMCLASS_H
 #define ARMCLASS_H
 
 #include "WPILib.h"
@@ -66,3 +66,4 @@ private:
 };
 
 #endif // ARM
+*/

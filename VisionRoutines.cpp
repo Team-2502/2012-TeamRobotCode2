@@ -1,5 +1,6 @@
 #include "VisionRoutines.h"
-#include "Vision2009/VisionAPI.h"
+#include "nivision.h"
+#include <cmath>
 
 Vision* Vision::visionInstance = NULL;
 
@@ -20,7 +21,8 @@ Vision::Vision()
 
 Vision::~Vision()
 {
-	delete constantImage;
+	if(particleImage)
+		delete constantImage;
 	if(particleImage)
 		delete particleImage;
 }
@@ -33,14 +35,6 @@ TargetReport Vision::getNearestPeg()
 	ret.area = 0;
 	camera->GetImage(constantImage);
 	particleImage = constantImage->ThresholdHSL(0,255,0,255,225,255);
-	Image* img = particleImage->GetImaqImage();
-	ParticleFilterCriteria2 *filterCriteria = new ParticleFilterCriteria2;
-	filterCriteria->parameter = IMAQ_MT_AREA;
-	filterCriteria->lower = 850.00;
-	filterCriteria->upper = 9001.0; //It's over 9000!!!!1!one!
-	filterCriteria->calibrated = 0;
-	filterCriteria->exclude = 1;
-	imaqParticleFilter2(img,img,filterCriteria,1,false,false,0);
 	vector<ParticleAnalysisReport_struct> *report = particleImage->GetOrderedParticleAnalysisReports();
 	if(report->size() == 0)
 		return ret;

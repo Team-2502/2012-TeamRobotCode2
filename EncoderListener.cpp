@@ -1,5 +1,5 @@
 #include "EncoderListener.h"
-#include "GyroAngleEvent.h"
+#include "EncoderEvent.h"
 #include "WPILib.h"
 #include "config.h"
 
@@ -17,6 +17,10 @@ EncoderListener::~EncoderListener()
 
 bool EncoderListener::update()
 {
-	lastCount = lift->Get();
+	if(lift->Get() != lastCount)
+	{
+		lastCount = lift->Get();
+		parent->sendEvent(new EncoderEvent(lastCount,this));
+	}
 	return true;
 }
