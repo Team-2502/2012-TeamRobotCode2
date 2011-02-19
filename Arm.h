@@ -3,6 +3,7 @@
 
 #include "WPILib.h"
 #include "VisionRoutines.h"
+#include "PIDCamera.h"
 
 typedef enum Level {
 	sideFirst=29375,
@@ -18,36 +19,51 @@ typedef enum Shape {
 	circle=1250
 };
 
+struct ErrorReport
+{
+	double vertical;
+	double horizontal;
+	double distance;
+};
 class Arm
 {
-	public:
-		Arm(float armHeight, float clawWidth);
-		void snapToPeg();
-		void grab();
-		void ungrab();
-		void toggle();
-		void setHeight(float armHeight);
-		void setCenter(float center);
-		void setWidth(float width);
-		void setShape(Shape shape);
-		void setLeftRod(float left);
-		void setRightRod(float right);
-		bool getClawState();
-		float getHeight();
-		float getCenter();
-		float getWidth();
-		float getShape();
-	private:
-		Vision* camera;
-		Encoder* liftEnc;
-		Encoder* rightClawEnc;
-		Encoder* leftClawEnc;
-		Jaguar* liftJag;
-		Jaguar* rightClawJag;
-		Jaguar* leftClawJag;
-		Shape shape;
-		float leftClawPos, rightClawPos, height;
-		void updatePID();
+public:
+	Arm(float armHeight, float clawWidth);
+	~Arm();
+	ErrorReport snapToPeg();
+	void grab();
+	void ungrab();
+	void toggle();
+	void setHeight(float armHeight);
+	void setCenter(float center);
+	void setWidth(float width);
+	void setShape(Shape shape);
+	void setLeftRod(float left);
+	void setRightRod(float right);
+	bool getClawState();
+	float getHeight();
+	float getCenter();
+	float getWidth();
+	float getShape();
+	float getLeftRod();
+	float getRightRod();
+private:
+	Vision* camera;
+	Encoder* liftEnc;
+	Encoder* rightClawEnc;
+	Encoder* leftClawEnc;
+	Jaguar* liftJag;
+	Jaguar* rightClawJag;
+	Jaguar* leftClawJag;
+	PIDController* liftPID;
+	PIDController* rightClawPID;
+	PIDController* leftClawPID;
+	PIDCamera* pidCameraHorizontal;
+	PIDCamera* pidCameraVertical;
+	PIDCamera* pidCameraDistance;
+	Shape shape;
+	float leftClawPos, rightClawPos, height;
+	void updatePID();
 };
 
 #endif // ARM

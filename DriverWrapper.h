@@ -33,6 +33,7 @@ private:
 	DriveType type;
 	
 	void MecanumDrive(float x, float y, float rotation, float gyroAngle);
+	void TankDrive(float x, float y, float rotation);
 	bool useFOD;
 };
 

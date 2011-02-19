@@ -1,4 +1,6 @@
-#include <math.h>
+#include <cmath>
+
+#include "config.h"
 #include "JoystickWrapper.h"
 #include "config.h"
 using namespace std;
@@ -12,16 +14,11 @@ JoystickWrapper::JoystickWrapper(int port, StickType type)
 	SetSnapPoints(8);
 }
 
-JoystickWrapper::~JoystickWrapper()
-{
-	delete joystick;
-}
-
 float JoystickWrapper::GetAngle() const
 {
 	float x, y;
 	GetRawAxis(&x, &y);
-	return (180.0 / acos(-1.0)) * atan2(x, -1.0 * y);
+	return ((180.0 / 4 / atan(1.0)) * atan2(x, -1.0 * y)) + 180.0;
 }
 
 float JoystickWrapper::GetMagnitude() const
@@ -93,27 +90,30 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 	float angle = GetAngle();
 	
 	//Calculate the angle that we will snap to:
-	float snapAngle = floor((angle / 360.0) * (float)this->snapPoints) * (360.0 / (float)this->snapPoints);
-	snapAngle += 360.0 / (2.0 * (float)this->snapPoints);
-	if( snapAngle > 360.0 )
-		snapAngle -= 360.0;
-	snapAngle *= (4.0 * atan(1.0)) / 180.0; // convert back to radians
-	
+	angle = round(angle/(360/snapPoints))*(360/snapPoints) * PIE / 180;
+
 	//Snap the magnitude to an exponential filter
 	float magnitude = this->joystick->GetMagnitude();
-	magnitude = pow(2.0,magnitude)-1;
+	magnitude = (pow(MAG_EXPONENTIAL,magnitude)-1)/(MAG_EXPONENTIAL-1);
+	
 	//Create a new axis based on the new angle and the magnitude of the previous axis vector	
-	*xaxis = cos(snapAngle) * magnitude;
-	*yaxis = sin(snapAngle) * magnitude;
+	*xaxis = cos(angle) * magnitude;
+	*yaxis = sin(angle) * magnitude;
 }
 
 void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const
 {
-	*xaxis = this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
-	*yaxis = -1.0*this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
+	*yaxis = this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
+	*xaxis = this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
 }
 
 float JoystickWrapper::GetRotation() const
+{
+	float rotation=GetRawRotation();
+	return (pow(ROT_EXPONENTIAL,rotation)-1)/(ROT_EXPONENTIAL-1);
+}
+
+float JoystickWrapper::GetRawRotation() const
 {
 	switch( this->type )
 	{

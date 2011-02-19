@@ -1,8 +1,10 @@
-#include <math.h>
-#include <stdio.h>
-#include <stdarg.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdarg>
 
 #include "DisplayWrapper.h"
+
+DisplayWrapper* DisplayWrapper::instance = new DisplayWrapper();
 
 DisplayWrapper::DisplayWrapper()
 {
@@ -19,6 +21,11 @@ void DisplayWrapper::Clear()
 		this->buffer[i].clear();
 	}
 	this->bufferLocation = 0;
+}
+
+DisplayWrapper* DisplayWrapper::GetInstance()
+{
+	return instance;
 }
 
 void DisplayWrapper::Output()
@@ -91,7 +98,7 @@ void DisplayWrapper::SetBufferSize(unsigned size)
 
 void DisplayWrapper::SetScrollLocation(float location)
 {
-	this->outputLocation = (unsigned)floor(((location + 1.0) / 2.0) * (float)(this->bufferSize - 7));
+	this->outputLocation = (unsigned)std::floor(((location + 1.0) / 2.0) * (float)(this->bufferSize - 7));
 }
 
 void DisplayWrapper::Shift()

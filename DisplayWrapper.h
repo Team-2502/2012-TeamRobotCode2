@@ -12,12 +12,15 @@
 class DisplayWrapper
 {
 public:
-	DisplayWrapper();
-	
 	/**
 	 * Clear the display buffer.
 	 */
 	void Clear();
+	
+	/**
+	 * Get the instance of the display wrapper.
+	 */
+	static DisplayWrapper* GetInstance();
 	
 	/**
 	 * Update the display with any changes.
@@ -45,11 +48,13 @@ public:
 	void SetBufferSize(unsigned size);
 	
 private:
+	DisplayWrapper();
 	std::vector<std::string> buffer;
 	unsigned bufferSize;
 	unsigned bufferLocation;
 	unsigned outputLocation;
 	DriverStationLCD* display;
+	static DisplayWrapper* instance;
 	
 	void Shift();
 };

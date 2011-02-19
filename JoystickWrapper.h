@@ -67,7 +67,6 @@ class JoystickWrapper
 {
 public:
 	JoystickWrapper(int port, StickType type);
-	~JoystickWrapper();
 	
 	/**
 	 * Get the angle of the joystick in degrees.
@@ -109,6 +108,11 @@ public:
 	 * This returns the rotation value of the joystick.
 	 */
 	float GetRotation() const;
+	
+	/**
+	 * This returns the raw rotation value of the joystick without filtering.
+	 */
+	float GetRawRotation() const;
 	
 	/**
 	 * Get the value of the throttle. It goes from -1.0 at the bottom to 1.0 at the top.

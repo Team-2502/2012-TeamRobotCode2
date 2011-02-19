@@ -1,5 +1,9 @@
-#include <math.h>
+#include <cmath>
+#include "DisplayWrapper.h"
 #include "DriverWrapper.h"
+#include "config.h"
+
+using namespace std;
 
 void Normalize(double *wheelSpeeds)
 {
@@ -21,8 +25,8 @@ void Normalize(double *wheelSpeeds)
 
 void RotateVector(double &x, double &y, double angle)
 {
-	double cosA = cos(angle * (3.14159 / 180.0));
-	double sinA = sin(angle * (3.14159 / 180.0));
+	double cosA = cos(angle * (PIE/ 180.0));
+	double sinA = sin(angle * (PIE/ 180.0));
 	double xOut = x * cosA - y * sinA;
 	double yOut = x * sinA + y * cosA;
 	x = xOut;
@@ -60,7 +64,7 @@ void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
 		break;
 		
 	case Tank:
-		/// :TODO: Implement this if we need it
+		TankDrive(x, y, rotation);
 		break;
 	}
 }
@@ -82,8 +86,22 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 
 	Normalize(wheelSpeeds);
 
-	frontLeft->Set(-1*wheelSpeeds[RobotDrive::kFrontLeftMotor]);
+	frontLeft->Set(wheelSpeeds[RobotDrive::kFrontLeftMotor]);
 	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
-	rearLeft->Set(-1*wheelSpeeds[RobotDrive::kRearLeftMotor]);
+	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
+	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
+}
+void DriverWrapper::TankDrive(float x, float y, float rotation)
+{
+	double wheelSpeeds[4];
+
+	wheelSpeeds[RobotDrive::kFrontLeftMotor] = wheelSpeeds[RobotDrive::kRearLeftMotor] = x + y + rotation;
+	wheelSpeeds[RobotDrive::kFrontRightMotor] = wheelSpeeds[RobotDrive::kRearRightMotor] = -x + y - rotation;
+
+	Normalize(wheelSpeeds);
+
+	frontLeft->Set(wheelSpeeds[RobotDrive::kFrontLeftMotor]);
+	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
+	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
 }

@@ -3,23 +3,52 @@
 
 Arm::Arm(float armHeight, float clawWidth)
 {
-	camera= Vision::GetInstance();
-	liftEnc=new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
+	camera = Vision::GetInstance();
+	pidCameraDistance = new PIDCamera(camera, distanceAxis);
+	pidCameraVertical = new PIDCamera(camera, verticalAxis);
+	pidCameraHorizontal = new PIDCamera(camera, horizontalAxis);
+	
+	liftEnc = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL, RIGHT_CLAW_ENCODER_B_CHANNEL);
 	leftClawEnc = new Encoder(LEFT_CLAW_ENCODER_A_CHANNEL, LEFT_CLAW_ENCODER_B_CHANNEL);
-	liftJag = new Jaguar((UINT32)WINCH_CHANNEL);
-	rightClawJag = new Jaguar((UINT32)RIGHT_CLAW_CHANNEL);
-	leftClawJag = new Jaguar((UINT32)LEFT_CLAW_CHANNEL);
+	
+	liftJag = new Jaguar(WINCH_CHANNEL);
+	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
+	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
+	
+	liftPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftEnc,liftJag);
+	rightClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
+	leftClawPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
+	
+	liftPID->Enable();		//Do I need these Enable calls?
+	rightClawPID->Enable();
+	leftClawPID->Enable();
+	
 	setShape(circle);
 	setHeight(armHeight);
 	setRightRod(-circle/100./2);
 	setLeftRod(circle/100./2);
-	//start PID
 }
-
-void Arm::snapToPeg()
+Arm::~Arm()
 {
-	//implement
+	delete liftPID;
+	delete rightClawPID;
+	delete leftClawPID;
+	delete pidCameraDistance;
+	delete pidCameraVertical;
+	delete pidCameraHorizontal;
+	delete camera;
+	delete liftEnc;
+	delete rightClawEnc;
+	delete leftClawEnc;
+	delete liftJag;
+	delete rightClawJag;
+	delete leftClawJag;
+}
+ErrorReport Arm::snapToPeg()
+{
+	ErrorReport error;
+	return error;
 }
 void Arm::grab()
 {
@@ -38,7 +67,9 @@ void Arm::toggle()
 }
 void Arm::updatePID()
 {
-	//implement
+	liftPID->SetSetpoint(getHeight());
+	rightClawPID->SetSetpoint(getLeftRod());
+	leftClawPID->SetSetpoint(getRightRod());
 }
 void Arm::setHeight(float armHeight)
 {
@@ -92,4 +123,13 @@ float Arm::getWidth()
 float Arm::getShape()
 {
 	return shape;
+}
+float Arm::getLeftRod()
+{
+	return leftClawPos;
+}
+float Arm::getRightRod()
+{
+	return rightClawPos;
+
 }
