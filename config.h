@@ -43,8 +43,8 @@
 #define PID_I 0
 #define PID_D 0
 
-#define XRESOLUTION 320
-#define YRESOLUTION 240
+#define XRESOLUTION 160
+#define YRESOLUTION 120
 
 #define ROT_EXPONENTIAL 50 // Tweak this
 #define MAG_EXPONENTIAL 10

@@ -22,8 +22,8 @@ public:
 	void DisabledContinuous(void) {}
 
 	void AutonomousInit(void);
-	void AutonomousPeriodic(void) {}
-	void AutonomousContinuous(void) {}
+	void AutonomousPeriodic(void);
+	void AutonomousContinuous(void);
 
 	void TeleopInit(void);
 	void TeleopPeriodic(void);
