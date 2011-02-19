@@ -12,7 +12,7 @@ TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 	drive = new DriverWrapper(type);
 	myError = RobotError::NoError();
 	lastGyroReading = 0.0;
-	servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL);
+	servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL_START);
 	servo->SetSafetyEnabled(false);
 }
 
