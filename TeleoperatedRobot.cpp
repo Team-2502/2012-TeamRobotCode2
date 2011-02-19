@@ -21,6 +21,7 @@ TeleoperatedRobot::~TeleoperatedRobot()
 {
 	delete drive; drive = 0;
 	delete myError; myError = 0;
+	delete servo; servo = 0;
 }
 
 bool TeleoperatedRobot::handle(Event *e)
@@ -33,7 +34,7 @@ bool TeleoperatedRobot::handle(Event *e)
 	float vis_y = 0.0;
 	int encoderValue = 0;
 	if(!e) {
-		if(myError) delete myError;
+		if(myError) { delete myError; myError = 0; }
 		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
 		return false;
 	}

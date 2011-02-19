@@ -4,7 +4,7 @@
 
 #include "DisplayWrapper.h"
 
-DisplayWrapper* DisplayWrapper::instance = new DisplayWrapper();
+DisplayWrapper* DisplayWrapper::instance = NULL;
 
 DisplayWrapper::DisplayWrapper()
 {
@@ -12,6 +12,11 @@ DisplayWrapper::DisplayWrapper()
 	this->outputLocation = 0;
 	this->display = DriverStationLCD::GetInstance();
 	SetBufferSize(12);
+}
+
+DisplayWrapper::~DisplayWrapper()
+{
+	instance = NULL;
 }
 
 void DisplayWrapper::Clear()
@@ -25,6 +30,8 @@ void DisplayWrapper::Clear()
 
 DisplayWrapper* DisplayWrapper::GetInstance()
 {
+	if(!instance)
+		instance = new DisplayWrapper();
 	return instance;
 }
 

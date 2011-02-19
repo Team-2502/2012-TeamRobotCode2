@@ -13,6 +13,13 @@ Minibot::Minibot()
 	deployed=false;
 }
 
+Minibot::~Minibot()
+{
+	delete servo1;
+	delete servo2;
+	delete servo3;
+}
+
 void Minibot::Deploy()
 {
 	servo1->Set(1);

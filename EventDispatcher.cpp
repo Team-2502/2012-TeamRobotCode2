@@ -39,17 +39,19 @@ void EventDispatcher::AutonomousContinuous()
 {
 	static bool active = true;
 	if(active) {
-		for(unsigned int i = 0; i < listeners.size(); i++) {
+		for(unsigned int i = 0; i < listeners.size(); i++) { //Ask for events
 			EventListener* listener = listeners[i];
-			listener->update();
+			if(listener)
+				listener->update();
 		}
-		for(unsigned int i = 0; i < events.size(); i++) {
+		for(unsigned int i = 0; i < events.size(); i++) { //Process events
 			if(!robot->handle(events[i])) {
 				RobotError* err = robot->lastError();
 				if(err->getErrorLevel() == Fatal)
 					active = false;
 			}
-			delete events[i];
+			delete events[i]; //Clean up
+			events[i] = 0;
 		}
 		events.clear();
 	}
@@ -77,17 +79,19 @@ void EventDispatcher::TeleopContinuous(void)
 {
 	static bool active = true;
 	if(active) {
-		for(unsigned int i = 0; i < listeners.size(); i++) {
+		for(unsigned int i = 0; i < listeners.size(); i++) { //Ask for events
 			EventListener* listener = listeners[i];
-			listener->update();
+			if(listener)
+				listener->update();
 		}
-		for(unsigned int i = 0; i < events.size(); i++) {
+		for(unsigned int i = 0; i < events.size(); i++) { //Process events
 			if(!robot->handle(events[i])) {
 				RobotError* err = robot->lastError();
 				if(err->getErrorLevel() == Fatal)
 					active = false;
 			}
-			delete events[i];
+			delete events[i]; //Clean up
+			events[i] = 0;
 		}
 		events.clear();
 	}
@@ -103,7 +107,8 @@ void EventDispatcher::deleteAllListeners()
 
 void EventDispatcher::sendEvent(Event *e)
 {
-	events.push_back(e);
+	if(e)
+		events.push_back(e);
 }
 
 START_ROBOT_CLASS(EventDispatcher);

@@ -4,7 +4,7 @@
 #include "EventListener.h"
 #include "EventDispatcher.h"
 
-class Enocoder;
+class Encoder;
 
 class EncoderListener : public EventListener
 {

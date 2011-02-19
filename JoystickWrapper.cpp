@@ -13,6 +13,11 @@ JoystickWrapper::JoystickWrapper(int port, StickType type)
 	SetSnapPoints(8);
 }
 
+JoystickWrapper::~JoystickWrapper()
+{
+	delete joystick; joystick = 0;
+}
+
 float JoystickWrapper::GetAngle() const
 {
 	float x, y;

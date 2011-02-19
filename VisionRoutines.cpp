@@ -25,6 +25,7 @@ Vision::~Vision()
 		delete constantImage;
 	if(particleImage)
 		delete particleImage;
+	visionInstance = NULL;
 }
 
 TargetReport Vision::getNearestPeg()

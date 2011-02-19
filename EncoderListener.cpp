@@ -6,7 +6,7 @@
 EncoderListener::EncoderListener(EventDispatcher *e)
 {
 	parent = e;
-	lift = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);;
+	lift = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	lastCount = lift->Get();
 }
 
