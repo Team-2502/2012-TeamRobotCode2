@@ -2,7 +2,7 @@
 #define ROBOTS_H
 
 #include "DisabledRobot.h"
-//#include "AutonomousRobot.h"
+#include "AutonomousRobot.h"
 #include "TeleoperatedRobot.h"
 
 #endif

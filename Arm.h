@@ -19,6 +19,7 @@ struct ErrorReport
 	double horizontal;
 	double distance;
 };
+
 class Arm
 {
 public:
