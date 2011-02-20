@@ -66,11 +66,12 @@ enum Button
 	shapeShifter=2,
 	sideFirstButton=3,
 	middleFirstButton=4,
-	loadingLevelButton=12,
+	highResButton=12,
 	sideSecondButton=5,
 	middleSecondButton=6,
 	deployButton=7,
-	gyroResetButton=8
+	gyroResetButton=8,
+	targetSnapButton=11
 };
 
 /**

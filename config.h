@@ -42,7 +42,9 @@
 #define ROT_EXPONENTIAL 50 // Tweak this
 #define MAG_EXPONENTIAL 10
 
-#define CLAW_SPACE 324259
+#define MANUAL_ARM_SHIFT_X 10
+#define MANUAL_ARM_SHIFT_Y 10
+#define HIGH_RES_MULTIPLIER 5
 
 const float PIE = 3.141592653897;
 

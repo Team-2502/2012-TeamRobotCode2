@@ -8,6 +8,7 @@ BetaRobot::BetaRobot(void)
 	lift = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL_START);
 	servo->SetSafetyEnabled(false);
+	mini = new Minibot();
 	#ifdef USE_GYRO
 	gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
 	#endif
@@ -18,6 +19,10 @@ BetaRobot::BetaRobot(void)
 	time = new Timer();
 	shapeLockStart=-9001;
 	triggerLockStart=-9001;
+	POVStart=-9001;
+	miniStart=0;
+	triggerRelease=false;
+	shapeRelease=false;
 }
 
 void BetaRobot::AutonomousPeriodic(void)
@@ -57,10 +62,6 @@ void BetaRobot::TeleopInit(void)
 
 void BetaRobot::TeleopPeriodic(void)
 {
-	//Drive
-	float x, y;
-	joystick->GetAxis(&x, &y);
-	drive->Drive(x, y, joystick->GetRotation());
 	
 	//IO
 	#ifdef USE_GYRO
@@ -69,15 +70,24 @@ void BetaRobot::TeleopPeriodic(void)
 	DisplayWrapper::GetInstance()->PrintfLine(1,"Clicks: %f", lift->Get());
 	DisplayWrapper::GetInstance()->Output();
 	
+	//Drive
+	float x, y;
+	joystick->GetAxis(&x, &y);
+	if (joystick->GetButton(highResButton))
+	{
+		drive->Drive(x/HIGH_RES_MULTIPLIER, y/HIGH_RES_MULTIPLIER, joystick->GetRotation()/HIGH_RES_MULTIPLIER);
+	}
+	else
+	{
+		drive->Drive(x, y, joystick->GetRotation());
+	}
+	
 	//Set Arm Height
 	if(joystick->GetButton(sideFirstButton)) {
 		arm->setHeight(sideFirst);
 	}
 	else if(joystick->GetButton(middleFirstButton)) {
 		arm->setHeight(middleFirst);
-	}
-	else if(joystick->GetButton(loadingLevelButton)) {
-		arm->setHeight(loadingLevel);
 	}
 	else if(joystick->GetButton(sideSecondButton)) {
 		arm->setHeight(sideSecond);
@@ -86,12 +96,19 @@ void BetaRobot::TeleopPeriodic(void)
 		arm->setHeight(middleSecond);
 	}
 	
-	//Claw stuff
-	if(joystick->GetButton(trigger) && time->Get()-triggerLockStart>0.7) {
+	//Claw Toggle
+	if(joystick->GetButton(trigger) && (time->Get()-triggerLockStart>1 || triggerRelease)) {
 		arm->toggle();
 		triggerLockStart=time->Get();
+		triggerRelease=false;
 	}
-	if(joystick->GetButton(shapeShifter) && time->Get()-shapeLockStart>0.3) {
+	else if (!joystick->GetButton(trigger))
+	{
+		triggerRelease=true;
+	}
+	
+	//Shape Shift
+	if(joystick->GetButton(shapeShifter) && (time->Get()-shapeLockStart>1 || shapeRelease)) {
 		switch (arm->getShape())
 		{
 		case triangle:
@@ -101,23 +118,45 @@ void BetaRobot::TeleopPeriodic(void)
 		case square:
 			arm->setShape(triangle);
 		}
+		arm->setCenter(0);
 		arm->setHeight(loadingLevel);
 		shapeLockStart=time->Get();
+		shapeRelease=false;
+	}
+	else if (!joystick->GetButton(shapeShifter))
+	{
+		shapeRelease=true;
 	}
 	
-	//Rare buttons
+	//Reset Gyro
 	#ifdef USE_GYRO
 	if(joystick->GetButton(gyroResetButton)) {
 		gyro->Reset();
 	}
 	#endif
 	
+	//Deploy
 	if(joystick->GetButton(deployButton) && time->Get()>115) {
-		servo->Set(1.0);
+		mini->Deploy();
 	}
 	else
 	{
-		servo->Set(0.0);
+		mini->StopDeploy();
+	}
+	
+	//Vision Snapper
+	if(joystick->GetButton(targetSnapButton)) {
+		arm->snapToPeg();
+	}
+	
+	//Arm Shifter
+	float xpov,ypov;
+	if (time->Get()-POVStart>0.03)
+	{
+		joystick->GetPov(&xpov,&ypov);
+		arm->setCenter(arm->getCenter() + MANUAL_ARM_SHIFT_X * (int)xpov);
+		arm->setHeight(arm->getHeight() + MANUAL_ARM_SHIFT_Y * (int)ypov);
+		POVStart=time->Get();
 	}
 }
 
