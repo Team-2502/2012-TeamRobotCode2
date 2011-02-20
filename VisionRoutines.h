@@ -17,7 +17,6 @@ class Vision
 		TargetReport getNearestPeg();
 		~Vision();
 
-		
 	private:
 		Vision();
 		static Vision* visionInstance;

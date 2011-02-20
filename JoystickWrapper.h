@@ -62,11 +62,15 @@ enum Direction
 
 enum Button
 {
+	trigger=1,
+	shapeShifter=2,
 	sideFirstButton=3,
 	middleFirstButton=4,
 	loadingLevelButton=12,
 	sideSecondButton=5,
-	middleSecondButton=6
+	middleSecondButton=6,
+	deployButton=7,
+	gyroResetButton=8
 };
 
 /**
