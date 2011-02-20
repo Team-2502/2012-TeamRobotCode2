@@ -60,11 +60,26 @@ bool TeleoperatedRobot::handle(Event *e)
 	case JoystickButton:
 		jbe = static_cast<JoystickButtonEvent*>(e);
 		button = jbe->button();
-		if(button.button == 11 && button.state) {
-			servo->Set(1.0);
+		if(button.button == sideFirstButton && button.state) {
+					servo->Set(1.0);
+				}
+		else if(button.button == middleFirstButton && button.state) {
+			Arm::GetInstance()->setHeight(middleFirst);
+		}
+		else if(button.button == loadingLevelButton && button.state) {
+			Arm::GetInstance()->setHeight(middleFirst);
+		}
+		else if(button.button == sideSecondButton && button.state) {
+			Arm::GetInstance()->setHeight(middleFirst);
+		}
+		else if(button.button == middleSecondButton && button.state) {
+			Arm::GetInstance()->setHeight(middleFirst);
+		}
+		else if(button.button == 11 && button.state) {
+			Arm::GetInstance()->setHeight(middleFirst);
 		}
 		else if(button.button == 12 && button.state) {
-			servo->Set(0.0);
+			Arm::GetInstance()->setHeight(middleFirst);
 		}
 		break;
 	case TargetEvent:
