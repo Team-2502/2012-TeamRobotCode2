@@ -44,12 +44,6 @@ Arm::~Arm()
 	delete liftEncoderPID;
 	delete rightClawEncoderPID;
 	delete leftClawEncoderPID;
-	delete liftCameraPID;
-	delete rightClawCameraPID;
-	delete leftClawCameraPID;
-	delete leftPIDVisionSource;
-	delete liftPIDVisionSource;
-	delete rightPIDVisionSource;
 	delete liftEnc;
 	delete rightClawEnc;
 	delete leftClawEnc;
@@ -97,12 +91,6 @@ void Arm::updatePID()
 	liftEncoderPID->SetSetpoint(getHeight()-heightOffset);
 	rightClawEncoderPID->SetSetpoint(getLeftRod()-rightOffset);
 	leftClawEncoderPID->SetSetpoint(getRightRod()-leftOffset);
-	liftCameraPID->Disable();
-	rightClawCameraPID->Disable();
-	leftClawCameraPID->Disable();
-	liftEncoderPID->Enable();
-	rightClawEncoderPID->Enable();
-	leftClawEncoderPID->Enable();
 }
 
 void Arm::setHeight(int armHeight)
@@ -132,8 +120,6 @@ void Arm::setWidth(int width)
 void Arm::setShape(Shape newShape)
 {
 	shape=newShape;
-	leftPIDVisionSource->SetShape(shape);
-	rightPIDVisionSource->SetShape(shape);
 }
 
 void Arm::setLeftRod(int left)

@@ -62,9 +62,6 @@ private:
 	PIDController* liftEncoderPID;
 	PIDController* rightClawEncoderPID;
 	PIDController* leftClawEncoderPID;
-	PIDController* liftCameraPID;
-	PIDController* rightClawCameraPID;
-	PIDController* leftClawCameraPID;
 	Shape shape;
 	int leftClawPos, rightClawPos, height, rightOffset, leftOffset, heightOffset;
 	void updatePID();
