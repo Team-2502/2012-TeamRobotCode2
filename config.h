@@ -35,6 +35,8 @@
 #define PID_P 20
 #define PID_I 0
 #define PID_D 0
+#define MAX_WIDTH 314159 //dummy
+#define MAX_LIFT_HEIGHT 314159 //dummy
 
 #define XRESOLUTION 320
 #define YRESOLUTION 240
@@ -45,6 +47,8 @@
 #define MANUAL_ARM_SHIFT_X 10
 #define MANUAL_ARM_SHIFT_Y 10
 #define HIGH_RES_MULTIPLIER 5
+#define HORIZONTAL_SNAP_MULTIPLIER 100
+#define VERTICAL_SNAP_MULTIPLIER 100
 
 const float PIE = 3.141592653897;
 

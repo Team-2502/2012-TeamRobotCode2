@@ -3,7 +3,6 @@
 
 #include "WPILib.h"
 #include "VisionRoutines.h"
-#include "PIDCamera.h"
 
 typedef enum Level {
 	sideFirst=29375,
@@ -11,6 +10,12 @@ typedef enum Level {
 	loadingLevel=54600,
 	sideSecond=64625,
 	middleSecond=72625
+};
+
+typedef enum Shape {
+	triangle=950,
+	square=1000,
+	circle=1250
 };
 
 struct ErrorReport
@@ -60,9 +65,6 @@ private:
 	PIDController* liftCameraPID;
 	PIDController* rightClawCameraPID;
 	PIDController* leftClawCameraPID;
-	PIDCamera* leftPIDVisionSource;
-	PIDCamera* liftPIDVisionSource;
-	PIDCamera* rightPIDVisionSource;
 	Shape shape;
 	int leftClawPos, rightClawPos, height, rightOffset, leftOffset, heightOffset;
 	void updatePID();
