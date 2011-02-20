@@ -60,6 +60,15 @@ enum Direction
 	NORTHWEST = 315,
 };
 
+enum Button
+{
+	sideFirstButton=3,
+	middleFirstButton=4,
+	loadingLevelButton=12,
+	sideSecondButton=5,
+	middleSecondButton=6
+};
+
 /**
  * This wraps around the Joystick to provide additional functionality.
  */

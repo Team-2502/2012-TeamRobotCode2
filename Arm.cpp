@@ -68,14 +68,6 @@ Arm::~Arm()
 	delete liftJag;
 	delete rightClawJag;
 	delete leftClawJag;
-	instance = NULL;
-}
-
-Arm* Arm::GetInstance()
-{
-	if(!instance)
-		instance = new Arm(0,-circle/2,circle/2);
-	return instance;
 }
 
 ErrorReport Arm::snapToPeg()

@@ -3,17 +3,6 @@
 
 #include "WPILib.h"
 
-/*typedef enum Region {
-	NorthWest, North,  NorthEast,
-	West,      Center, East,
-	SouthWest, South,  SouthEast
-};
-
-struct TargetReport
-{
-	Region region;
-	double area;
-};*/
 struct TargetReport
 {
 	float x;
