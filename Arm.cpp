@@ -14,18 +14,7 @@ Arm::Arm(int initHeight, int initWidth)
 Arm::Arm(int initHeight, int initLeft, int initRight)
 {
 	camera = Vision::GetInstance();
-	leftPIDVisionSource = new PIDCamera(camera, leftShift);
-	liftPIDVisionSource = new PIDCamera(camera, verticalAxis);
-	rightPIDVisionSource = new PIDCamera(camera, rightShift);
-	
-	liftCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftPIDVisionSource,liftJag);
-	rightClawCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightPIDVisionSource,rightClawJag);
-	leftClawCameraPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftPIDVisionSource,leftClawJag);
-	
-	liftCameraPID->Disable();
-	rightClawCameraPID->Disable();
-	leftClawCameraPID->Disable();
-	
+
 	liftEnc = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
 	rightClawEnc = new Encoder(RIGHT_CLAW_ENCODER_A_CHANNEL, RIGHT_CLAW_ENCODER_B_CHANNEL);
 	leftClawEnc = new Encoder(LEFT_CLAW_ENCODER_A_CHANNEL, LEFT_CLAW_ENCODER_B_CHANNEL);
@@ -34,7 +23,6 @@ Arm::Arm(int initHeight, int initLeft, int initRight)
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
 	
-	//keep these.
 	liftJag->SetSafetyEnabled(false);
 	rightClawJag->SetSafetyEnabled(false);
 	leftClawJag->SetSafetyEnabled(false);
@@ -73,29 +61,17 @@ Arm::~Arm()
 ErrorReport Arm::getError()
 {
 	ErrorReport error;
-	if (liftCameraPID->IsEnabled())
-	{
-		error.vertical=liftCameraPID->GetError();
-		error.horizontal=(rightClawCameraPID->GetError()+leftClawCameraPID->GetError())/2;
-		error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
-	}
-	else
-	{
-		error.vertical=liftEncoderPID->GetError();
-		error.horizontal=(rightClawEncoderPID->GetError()+leftClawCameraPID->GetError())/2;
-		error.distance=rightClawEncoderPID->GetError()-leftClawCameraPID->GetError();
-	}
+	error.vertical=liftEncoderPID->GetError();
+	error.horizontal=(rightClawEncoderPID->GetError()+leftClawEncoderPID->GetError())/2;
+	error.distance=rightClawEncoderPID->GetError()-leftClawEncoderPID->GetError();
 	return error;
 }
 
 void Arm::snapToPeg()
 {
-	liftEncoderPID->Disable();
-	rightClawEncoderPID->Disable();
-	leftClawEncoderPID->Disable();
-	liftCameraPID->Enable();
-	rightClawCameraPID->Enable();
-	leftClawCameraPID->Enable();
+	TargetReport target=camera->getNearestPeg();
+	setHeight(getHeight()+(int)target.y/YRESOLUTION*(int)target.area/XRESOLUTION/YRESOLUTION*VERTICAL_SNAP_MULTIPLIER);
+	setCenter((int)target.x/XRESOLUTION*(int)target.area/XRESOLUTION/YRESOLUTION*HORIZONTAL_SNAP_MULTIPLIER);
 }
 
 void Arm::grab()
@@ -131,6 +107,8 @@ void Arm::updatePID()
 
 void Arm::setHeight(int armHeight)
 {
+	if (armHeight>MAX_LIFT_HEIGHT) armHeight=MAX_LIFT_HEIGHT;
+	else if (armHeight<0) armHeight=0;
 	height=armHeight;
 	updatePID();
 }
@@ -160,12 +138,16 @@ void Arm::setShape(Shape newShape)
 
 void Arm::setLeftRod(int left)
 {
+	if (left<-MAX_WIDTH/2) left=-MAX_WIDTH/2;
+	if (left>MAX_WIDTH/2) left=MAX_WIDTH/2;
 	leftClawPos=left;
 	updatePID();
 }
 
 void Arm::setRightRod(int right)
 {
+	if (right<-MAX_WIDTH/2) right=-MAX_WIDTH/2;
+	if (right>MAX_WIDTH/2) right=MAX_WIDTH/2;
 	rightClawPos=right;
 	updatePID();
 }
