@@ -70,19 +70,32 @@ Arm::~Arm()
 	delete leftClawJag;
 }
 
-ErrorReport Arm::snapToPeg()
+ErrorReport Arm::getError()
 {
 	ErrorReport error;
+	if (liftCameraPID->IsEnabled())
+	{
+		error.vertical=liftCameraPID->GetError();
+		error.horizontal=(rightClawCameraPID->GetError()+leftClawCameraPID->GetError())/2;
+		error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
+	}
+	else
+	{
+		error.vertical=liftEncoderPID->GetError();
+		error.horizontal=(rightClawEncoderPID->GetError()+leftClawCameraPID->GetError())/2;
+		error.distance=rightClawEncoderPID->GetError()-leftClawCameraPID->GetError();
+	}
+	return error;
+}
+
+void Arm::snapToPeg()
+{
 	liftEncoderPID->Disable();
 	rightClawEncoderPID->Disable();
 	leftClawEncoderPID->Disable();
 	liftCameraPID->Enable();
 	rightClawCameraPID->Enable();
 	leftClawCameraPID->Enable();
-	error.vertical=liftCameraPID->GetError();
-	error.horizontal=(rightClawCameraPID->GetError()+leftClawCameraPID->GetError())/2;
-	error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
-	return error;
 }
 
 void Arm::grab()

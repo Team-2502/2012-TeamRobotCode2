@@ -27,7 +27,8 @@ public:
 	Arm(int initHeight, int initWidth);
 	Arm(int initHeight, int initLeft, int initRight);
 	~Arm();
-	ErrorReport snapToPeg();
+	ErrorReport getError();
+	void snapToPeg();
 	void grab();
 	void ungrab();
 	void toggle();
