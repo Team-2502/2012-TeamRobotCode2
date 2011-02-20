@@ -7,6 +7,7 @@
 #include "DisplayWrapper.h"
 #include "EncoderEvent.h"
 #include "config.h"
+#include "Arm.h"
 
 TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 {
@@ -61,25 +62,25 @@ bool TeleoperatedRobot::handle(Event *e)
 		jbe = static_cast<JoystickButtonEvent*>(e);
 		button = jbe->button();
 		if(button.button == sideFirstButton && button.state) {
-					servo->Set(1.0);
-				}
+			Arm::GetInstance()->setHeight(sideFirst);
+		}
 		else if(button.button == middleFirstButton && button.state) {
 			Arm::GetInstance()->setHeight(middleFirst);
 		}
 		else if(button.button == loadingLevelButton && button.state) {
-			Arm::GetInstance()->setHeight(middleFirst);
+			Arm::GetInstance()->setHeight(loadingLevel);
 		}
 		else if(button.button == sideSecondButton && button.state) {
-			Arm::GetInstance()->setHeight(middleFirst);
+			Arm::GetInstance()->setHeight(sideSecond);
 		}
 		else if(button.button == middleSecondButton && button.state) {
-			Arm::GetInstance()->setHeight(middleFirst);
+			Arm::GetInstance()->setHeight(middleSecond);
 		}
 		else if(button.button == 11 && button.state) {
-			Arm::GetInstance()->setHeight(middleFirst);
+			servo->Set(1.0);
 		}
 		else if(button.button == 12 && button.state) {
-			Arm::GetInstance()->setHeight(middleFirst);
+			servo->Set(0);
 		}
 		break;
 	case TargetEvent:

@@ -12,6 +12,14 @@ struct ButtonEvent {
 	bool state;
 };
 
+typedef enum ButtonLevel {
+	sideFirstButton=3,
+	middleFirstButton=4,
+	loadingLevelButton=12,
+	sideSecondButton=5,
+	middleSecondButton=6
+};
+
 class JoystickButtonEvent : public Event
 {
 	public:
