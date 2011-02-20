@@ -4,7 +4,11 @@ Arm::Arm()
 {
 	Arm(0,circle);
 }
-Arm::Arm(int armHeight, int clawWidth)
+Arm::Arm(int initHeight, int initWidth)
+{
+	Arm(initHeight, -initWidth/2, initWidth/2);
+}
+Arm::Arm(int initHeight, int initLeft, int initRight)
 {
 	camera = Vision::GetInstance();
 	leftPIDVisionSource = new PIDCamera(camera, leftShift);
@@ -31,14 +35,12 @@ Arm::Arm(int armHeight, int clawWidth)
 	rightClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
 	leftClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
 	
-	liftEncoderPID->Enable();
-	rightClawEncoderPID->Enable();
-	leftClawEncoderPID->Enable();
-	
 	setShape(circle);
-	setHeight(armHeight);
-	setRightRod(-circle/2);
-	setLeftRod(circle/2);
+	
+	rightOffset = initHeight;
+	leftOffset = initRight;
+	heightOffset = initLeft;
+	updatePID();
 }
 Arm::~Arm()
 {
@@ -90,9 +92,9 @@ void Arm::toggle()
 }
 void Arm::updatePID()
 {
-	liftEncoderPID->SetSetpoint(getHeight());
-	rightClawEncoderPID->SetSetpoint(getLeftRod());
-	leftClawEncoderPID->SetSetpoint(getRightRod());
+	liftEncoderPID->SetSetpoint(getHeight()-heightOffset);
+	rightClawEncoderPID->SetSetpoint(getLeftRod()-rightOffset);
+	leftClawEncoderPID->SetSetpoint(getRightRod()-leftOffset);
 	liftCameraPID->Disable();
 	rightClawCameraPID->Disable();
 	leftClawCameraPID->Disable();

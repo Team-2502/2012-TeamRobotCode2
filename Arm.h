@@ -24,7 +24,8 @@ class Arm
 {
 public:
 	Arm();
-	Arm(int armHeight, int clawWidth);
+	Arm(int initHeight, int initWidth);
+	Arm::Arm(int initHeight, int initLeft, int initRight);
 	~Arm();
 	ErrorReport snapToPeg();
 	void grab();
@@ -61,7 +62,7 @@ private:
 	PIDCamera* liftPIDVisionSource;
 	PIDCamera* rightPIDVisionSource;
 	Shape shape;
-	int leftClawPos, rightClawPos, height;
+	int leftClawPos, rightClawPos, height, rightOffset, leftOffset, heightOffset;
 	void updatePID();
 };
 
