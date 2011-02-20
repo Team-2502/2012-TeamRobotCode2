@@ -1,4 +1,4 @@
-/*#ifndef ARMCLASS_H
+#ifndef ARMCLASS_H
 #define ARMCLASS_H
 
 #include "WPILib.h"
@@ -20,12 +20,11 @@ struct ErrorReport
 	double distance;
 };
 
+class Arm;
+
 class Arm
 {
 public:
-	Arm();
-	Arm(int initHeight, int initWidth);
-	Arm::Arm(int initHeight, int initLeft, int initRight);
 	~Arm();
 	ErrorReport snapToPeg();
 	void grab();
@@ -44,7 +43,13 @@ public:
 	int getShape();
 	int getLeftRod();
 	int getRightRod();
+	static Arm* GetInstance() {return instance;}
 private:
+	Arm();
+	Arm(int initHeight, int initWidth);
+	Arm(int initHeight, int initLeft, int initRight);
+	
+	static Arm* instance;
 	Vision* camera;
 	Encoder* liftEnc;
 	Encoder* rightClawEnc;
@@ -67,4 +72,4 @@ private:
 };
 
 #endif // ARM
-*/
+

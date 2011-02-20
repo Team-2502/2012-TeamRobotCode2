@@ -1,5 +1,8 @@
-/*#include "Arm.h"
+#include "Arm.h"
 #include "config.h"
+
+Arm* Arm::instance = new Arm();
+
 Arm::Arm()
 {
 	Arm(0,circle);
@@ -171,4 +174,4 @@ int Arm::getRightRod()
 	return rightClawPos;
 
 }
-*/
+
