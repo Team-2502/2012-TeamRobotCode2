@@ -43,10 +43,10 @@ public:
 	int getShape();
 	int getLeftRod();
 	int getRightRod();
-	static Arm* GetInstance() {return instance;}
+	static Arm* GetInstance();
 private:
-	Arm();
-	Arm(int initHeight, int initWidth);
+	/*Arm();
+	Arm(int initHeight, int initWidth); */
 	Arm(int initHeight, int initLeft, int initRight);
 	
 	static Arm* instance;

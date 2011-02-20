@@ -1,16 +1,18 @@
 #include "Arm.h"
 #include "config.h"
 
-Arm* Arm::instance = new Arm();
-
+Arm* Arm::instance = NULL;
+/*
 Arm::Arm()
 {
 	Arm(0,circle);
 }
+
 Arm::Arm(int initHeight, int initWidth)
 {
 	Arm(initHeight, -initWidth/2, initWidth/2);
 }
+*/
 Arm::Arm(int initHeight, int initLeft, int initRight)
 {
 	camera = Vision::GetInstance();
@@ -34,6 +36,7 @@ Arm::Arm(int initHeight, int initLeft, int initRight)
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
 	
+	//keep these.
 	liftJag->SetSafetyEnabled(false);
 	rightClawJag->SetSafetyEnabled(false);
 	leftClawJag->SetSafetyEnabled(false);
@@ -67,6 +70,14 @@ Arm::~Arm()
 	delete liftJag;
 	delete rightClawJag;
 	delete leftClawJag;
+	instance = NULL;
+}
+
+Arm* Arm::GetInstance()
+{
+	if(!instance)
+		instance = new Arm(0,-circle/2,circle/2);
+	return instance;
 }
 
 ErrorReport Arm::snapToPeg()
@@ -83,14 +94,17 @@ ErrorReport Arm::snapToPeg()
 	error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
 	return error;
 }
+
 void Arm::grab()
 {
 	setHeight(shape);
 }
+
 void Arm::ungrab()
 {
 	setHeight(0);
 }
+
 void Arm::toggle()
 {
 	if (getClawState())
@@ -98,6 +112,7 @@ void Arm::toggle()
 	else
 		grab();
 }
+
 void Arm::updatePID()
 {
 	liftEncoderPID->SetSetpoint(getHeight()-heightOffset);
@@ -110,11 +125,13 @@ void Arm::updatePID()
 	rightClawEncoderPID->Enable();
 	leftClawEncoderPID->Enable();
 }
+
 void Arm::setHeight(int armHeight)
 {
 	height=armHeight;
 	updatePID();
 }
+
 void Arm::setCenter(int center)
 {
 	int width=getWidth();
@@ -122,6 +139,7 @@ void Arm::setCenter(int center)
 	setRightRod(center+width/2);
 	updatePID();
 }
+
 void Arm::setWidth(int width)
 {
 	int center=getCenter();
@@ -129,49 +147,58 @@ void Arm::setWidth(int width)
 	setRightRod(center+width/2);
 	updatePID();
 }
+
 void Arm::setShape(Shape newShape)
 {
 	shape=newShape;
 	leftPIDVisionSource->SetShape(shape);
 	rightPIDVisionSource->SetShape(shape);
 }
+
 void Arm::setLeftRod(int left)
 {
 	leftClawPos=left;
 	updatePID();
 }
+
 void Arm::setRightRod(int right)
 {
 	rightClawPos=right;
 	updatePID();
 }
+
 bool Arm::getClawState()
 {
 	return getWidth()>500;
 }
+
 int Arm::getHeight()
 {
 	return height;
 }
+
 int Arm::getCenter()
 {
 	return rightClawPos+getWidth()/2;
 }
+
 int Arm::getWidth()
 {
 	return rightClawPos-leftClawPos;
 }
+
 int Arm::getShape()
 {
 	return shape;
 }
+
 int Arm::getLeftRod()
 {
 	return leftClawPos;
 }
+
 int Arm::getRightRod()
 {
 	return rightClawPos;
 
 }
-
