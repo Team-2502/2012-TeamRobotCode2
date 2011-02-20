@@ -9,7 +9,7 @@ AutonomousRobot::AutonomousRobot()
 	drive = new DriverWrapper(Tank);
 	myError = RobotError::NoError();
 	lastGyroReading = 0.0;
-	myArm = new Arm;
+	//myArm = new Arm;
 	l = LeftLine;
 	myState = PlaceTube;
 }
@@ -18,7 +18,7 @@ AutonomousRobot::~AutonomousRobot()
 {
 	delete drive;
 	delete myError;
-	delete myArm;
+	//delete myArm;
 }
 
 bool AutonomousRobot::handle(Event *e)
@@ -34,11 +34,11 @@ bool AutonomousRobot::handle(Event *e)
 			if(e->type() == TargetEvent)
 			{
 				ve = static_cast<VisionEvent*>(e);
-				if(ve->report().y > (int)(2.0*YRESOLUTION/3.0)) {
+				if(ve->report().y > (int)(2.0*YRESOLUTION/3.0)) { //top third
 					//myArm->setHeight(sideSecond);
 					DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Arm up.");
 					DisplayWrapper::GetInstance()->Output();
-				} else if(ve->report().y < (int)(YRESOLUTION/3.0)) {
+				} else if(ve->report().y < (int)(YRESOLUTION/3.0)) { //bottom third
 					//myArm->setHeight(sideFirst);
 					DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Arm down.");
 					DisplayWrapper::GetInstance()->Output();

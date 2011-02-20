@@ -17,6 +17,8 @@ public:
 	 */
 	void Clear();
 	
+	~DisplayWrapper();
+	
 	/**
 	 * Get the instance of the display wrapper.
 	 */

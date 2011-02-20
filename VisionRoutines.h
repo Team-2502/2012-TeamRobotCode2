@@ -14,6 +14,7 @@ struct TargetReport
 	Region region;
 	double area;
 };*/
+
 struct TargetReport
 {
 	float x;

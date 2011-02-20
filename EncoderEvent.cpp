@@ -1,6 +1,6 @@
 #include "EncoderEvent.h"
 
-EncoderEvent::EncoderEvent(float height, EventListener* l)
+EncoderEvent::EncoderEvent(int height, EventListener* l)
 {
 	m_height = height;
 	listen = l;

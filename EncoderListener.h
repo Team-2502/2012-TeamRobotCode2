@@ -4,7 +4,7 @@
 #include "EventListener.h"
 #include "EventDispatcher.h"
 
-class Enocoder;
+class Encoder;
 
 class EncoderListener : public EventListener
 {
@@ -16,7 +16,7 @@ class EncoderListener : public EventListener
 		
 	private:
 		Encoder* lift;
-		float lastCount;
+		int lastCount;
 		EventDispatcher *parent;
 };
 

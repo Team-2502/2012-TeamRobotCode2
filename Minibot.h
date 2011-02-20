@@ -7,6 +7,7 @@ class Minibot
 {
 public:
 	Minibot();
+	~Minibot();
 	
 	void Deploy();
 	void StopDeploy();

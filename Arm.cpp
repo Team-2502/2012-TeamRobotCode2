@@ -1,4 +1,4 @@
-#include "Arm.h"
+/*#include "Arm.h"
 #include "config.h"
 Arm::Arm()
 {
@@ -31,6 +31,10 @@ Arm::Arm(int initHeight, int initLeft, int initRight)
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
 	
+	liftJag->SetSafetyEnabled(false);
+	rightClawJag->SetSafetyEnabled(false);
+	leftClawJag->SetSafetyEnabled(false);
+	
 	liftEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftEnc,liftJag);
 	rightClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
 	leftClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
@@ -42,6 +46,7 @@ Arm::Arm(int initHeight, int initLeft, int initRight)
 	heightOffset = initLeft;
 	updatePID();
 }
+
 Arm::~Arm()
 {
 	delete liftEncoderPID;
@@ -53,7 +58,6 @@ Arm::~Arm()
 	delete leftPIDVisionSource;
 	delete liftPIDVisionSource;
 	delete rightPIDVisionSource;
-	delete camera;
 	delete liftEnc;
 	delete rightClawEnc;
 	delete leftClawEnc;
@@ -61,6 +65,7 @@ Arm::~Arm()
 	delete rightClawJag;
 	delete leftClawJag;
 }
+
 ErrorReport Arm::snapToPeg()
 {
 	ErrorReport error;
@@ -166,3 +171,4 @@ int Arm::getRightRod()
 	return rightClawPos;
 
 }
+*/

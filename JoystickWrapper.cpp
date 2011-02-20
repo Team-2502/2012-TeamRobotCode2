@@ -1,4 +1,4 @@
-#include <cmath>
+#include <math.h>
 #include "config.h"
 #include "JoystickWrapper.h"
 #include "config.h"
@@ -11,6 +11,11 @@ JoystickWrapper::JoystickWrapper(int port, StickType type)
 	
 	this->type = type;
 	SetSnapPoints(8);
+}
+
+JoystickWrapper::~JoystickWrapper()
+{
+	delete joystick; joystick = 0;
 }
 
 float JoystickWrapper::GetAngle() const
@@ -89,7 +94,7 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 	float angle = GetAngle();
 	
 	//Calculate the angle that we will snap to:
-	angle = round(angle/(360/snapPoints))*(360/snapPoints) * PIE / 180;
+	angle = floor(angle/(360/snapPoints))*(360/snapPoints) * PIE / 180;
 
 	//Snap the magnitude to an exponential filter
 	float magnitude = this->joystick->GetMagnitude();
