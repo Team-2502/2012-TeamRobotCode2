@@ -2,10 +2,11 @@
 
 PIDCamera::PIDCamera(Vision* cam, Axis dimension)
 {
-	camera=cam;
-	axis=dimension;
-	width=circle;
+	camera = cam;
+	axis = dimension;
+	width = circle;
 }
+
 double PIDCamera::PIDGet()
 {
 	TargetReport target=camera->getNearestPeg();
@@ -19,6 +20,7 @@ double PIDCamera::PIDGet()
 		return (2*target.y-YRESOLUTION)/YRESOLUTION;
 	}
 }
+
 void PIDCamera::SetShape(Shape shape)
 {
 	width=shape;

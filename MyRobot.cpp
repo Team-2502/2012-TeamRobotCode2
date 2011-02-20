@@ -5,90 +5,61 @@
 #include "DisplayWrapper.h"
 #include "DriverWrapper.h"
 #include "JoystickWrapper.h"
-#include "VisionRoutines.h"
-#include "Vision/PCVideoServer.h"
 
 class BetaRobot : public IterativeRobot
 {
 	public:
 		BetaRobot(void)
 		{
-			joystick[0] = new JoystickWrapper(1, Extreme3DPro);
-			joystick[1] = new JoystickWrapper(2, Attack3);
-			joystick[2] = new JoystickWrapper(3, DualAction);
-			joy = 0;
-			for(int i = 0; i < 3; i++)
-			{
-				joystick[i]->SetSnapPoints(8);
-			}
-			//vis = Vision::GetInstance();
-			//display = new DisplayWrapper();
+			joystick = new JoystickWrapper(1, Extreme3DPro);
+			joystick->SetSnapPoints(8);
 			driver = new DriverWrapper(Mecanum);
-			//pcvs = new PCVideoServer;
+			lift = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
+			servo = new Servo(DIGITAL_SIDECAR_PORT,SERVO_CHANNEL_START);
+			servo->SetSafetyEnabled(false);
+			gyro = new Gyro(GYRO_SLOT,GYRO_CHANNEL);
+			arm = new Arm();
 		}
 	
 		void RobotInit(void) {}
-		void DisabledInit(void) {/*pcvs->Stop();*/}
+		void DisabledInit(void) {pcvs->Stop();}
 		void AutonomousInit(void) {}
-		void TeleopInit(void) {/*pcvs->Start();*/}
+		void TeleopInit(void) {pcvs->Start();}
 		void AutonomousPeriodic(void) {}
 		
 		void TeleopPeriodic(void)
 		{
 			float x, y;
 			joystick[joy]->GetAxis(&x, &y);
-			
-			DisplayWrapper::GetInstance()->PrintfLine(0, "Joystick Angle:     %f", joystick[joy]->GetAngle());
-			DisplayWrapper::GetInstance()->PrintfLine(1, "Joystick Throttle:  %f", joystick[joy]->GetThrottle());
-			DisplayWrapper::GetInstance()->PrintfLine(2, "Joystick X: %f", x);
-			DisplayWrapper::GetInstance()->PrintfLine(3, "Joystick Y: %f", y);
-			DisplayWrapper::GetInstance()->PrintfLine(4, "Joystick Magnitude: %f", joystick[joy]->GetMagnitude());
-			DisplayWrapper::GetInstance()->PrintfLine(5, "Joystick Rotation:  %f", joystick[joy]->GetRotation());
-			if(joystick[0]->GetJoystick()->GetRawButton(7))
-				joy = 0;
-			else if(joystick[0]->GetJoystick()->GetRawButton(9))
-				joy = 1;
-			else if(joystick[0]->GetJoystick()->GetRawButton(11))
-				joy = 2;
-			/*
-			TargetReport target = vis->getNearestPeg();
-			switch(target.region) {
-				case NorthWest:
-					display->PrintfLine(8, "Target region:      NW");
-					break;
-				case North:
-					display->PrintfLine(8, "Target region:       N");
-					break;
-				case NorthEast:
-					display->PrintfLine(8, "Target region:      NE");
-					break;
-				case West:
-					display->PrintfLine(8, "Target region:       W");
-					break;
-				case Center:
-					display->PrintfLine(8, "Target region:       C");
-					break;
-				case East:
-					display->PrintfLine(8, "Target region:       E");
-					break;
-				case SouthWest:
-					display->PrintfLine(8, "Target region:      SW");
-					break;
-				case South:
-					display->PrintfLine(8, "Target region:       S");
-					break;
-				case SouthEast:
-					display->PrintfLine(8, "Target region:       E");
-					break;
-				default:
-					display->PrintfLine(8, "Target region:     ERR");
-			}
-			display->PrintfLine(9, "Target area:        %f", (float)target.area);
-			*/
-			float t = -1.0 * joystick[0]->GetThrottle();
-			DisplayWrapper::GetInstance()->SetScrollLocation(t);
 			driver->Drive(x, y, joystick[0]->GetRotation());
+			
+			DisplayWrapper::GetInstance()->PrintfLine(0,"Gyro Angle: %f", gyro->GetAngle());
+			DisplayWrapper::GetInstance()->PrintfLine(1,"Clicks: %f", lift->Get());
 			DisplayWrapper::GetInstance()->Output();
+			
+			if(joystick->GetButton(sideFirstButton)) {
+				arm->setHeight(sideFirst);
+			}
+			else if(joystick->GetButton(middleFirstButton)) {
+				arm->setHeight(middleFirst);
+			}
+			else if(joystick->GetButton(loadingLevelButton)) {
+				arm->setHeight(loadingLevel);
+			}
+			else if(joystick->GetButton(sideSecondButton)) {
+				arm->setHeight(sideSecond);
+			}
+			else if(joystick->GetButton(middleSecondButton)) {
+				arm->setHeight(middleSecond);
+			}
+			
+			if(joystick->GetButton(11)) {
+				servo->Set(1.0);
+			}
+			else if(joystick->GetButton(12)) {
+				servo->Set(0);
+			}
+
 		}
 		
 		/** Unused functions */
@@ -98,12 +69,12 @@ class BetaRobot : public IterativeRobot
 		void TeleopContinuous(void) {}
 		
 	private:
-		int joy;
-		//DisplayWrapper* display;
-		JoystickWrapper* joystick[3];
-		//Vision* vis;
+		JoystickWrapper* joystick;
 		DriverWrapper* driver;
-		//PCVideoServer* pcvs;
+		Encoder* lift;
+		Servo* servo;
+		Gyro* gyro;
+		Arm *arm
 };
 
 START_ROBOT_CLASS(BetaRobot);

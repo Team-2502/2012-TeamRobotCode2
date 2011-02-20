@@ -1,7 +1,17 @@
 #include "Arm.h"
 #include "config.h"
 
-Arm::Arm(float armHeight, float clawWidth)
+Arm::Arm()
+{
+	Arm(0,circle);
+}
+
+Arm::Arm(int initHeight, int initWidth)
+{
+	Arm(initHeight, -initWidth/2, initWidth/2);
+}
+
+Arm::Arm(int initHeight, int initLeft, int initRight)
 {
 	camera = Vision::GetInstance();
 	leftPIDVisionSource = new PIDCamera(camera, leftShift);
@@ -24,19 +34,23 @@ Arm::Arm(float armHeight, float clawWidth)
 	rightClawJag = new Jaguar(RIGHT_CLAW_CHANNEL);
 	leftClawJag = new Jaguar(LEFT_CLAW_CHANNEL);
 	
+	//keep these.
+	liftJag->SetSafetyEnabled(false);
+	rightClawJag->SetSafetyEnabled(false);
+	leftClawJag->SetSafetyEnabled(false);
+	
 	liftEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,liftEnc,liftJag);
 	rightClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,rightClawEnc,rightClawJag);
 	leftClawEncoderPID = new PIDController(PID_P/10.,PID_I/10.,PID_D/10.,leftClawEnc,leftClawJag);
 	
-	liftEncoderPID->Enable();
-	rightClawEncoderPID->Enable();
-	leftClawEncoderPID->Enable();
-	
 	setShape(circle);
-	setHeight(armHeight);
-	setRightRod(-circle/100./2);
-	setLeftRod(circle/100./2);
+	
+	rightOffset = initHeight;
+	leftOffset = initRight;
+	heightOffset = initLeft;
+	updatePID();
 }
+
 Arm::~Arm()
 {
 	delete liftEncoderPID;
@@ -48,14 +62,22 @@ Arm::~Arm()
 	delete leftPIDVisionSource;
 	delete liftPIDVisionSource;
 	delete rightPIDVisionSource;
-	delete camera;
 	delete liftEnc;
 	delete rightClawEnc;
 	delete leftClawEnc;
 	delete liftJag;
 	delete rightClawJag;
 	delete leftClawJag;
+	instance = NULL;
 }
+
+Arm* Arm::GetInstance()
+{
+	if(!instance)
+		instance = new Arm(0,-circle/2,circle/2);
+	return instance;
+}
+
 ErrorReport Arm::snapToPeg()
 {
 	ErrorReport error;
@@ -70,14 +92,17 @@ ErrorReport Arm::snapToPeg()
 	error.distance=rightClawCameraPID->GetError()-leftClawCameraPID->GetError();
 	return error;
 }
+
 void Arm::grab()
 {
 	setHeight(shape);
 }
+
 void Arm::ungrab()
 {
 	setHeight(0);
 }
+
 void Arm::toggle()
 {
 	if (getClawState())
@@ -85,11 +110,12 @@ void Arm::toggle()
 	else
 		grab();
 }
+
 void Arm::updatePID()
 {
-	liftEncoderPID->SetSetpoint(getHeight());
-	rightClawEncoderPID->SetSetpoint(getLeftRod());
-	leftClawEncoderPID->SetSetpoint(getRightRod());
+	liftEncoderPID->SetSetpoint(getHeight()-heightOffset);
+	rightClawEncoderPID->SetSetpoint(getLeftRod()-rightOffset);
+	leftClawEncoderPID->SetSetpoint(getRightRod()-leftOffset);
 	liftCameraPID->Disable();
 	rightClawCameraPID->Disable();
 	leftClawCameraPID->Disable();
@@ -97,66 +123,79 @@ void Arm::updatePID()
 	rightClawEncoderPID->Enable();
 	leftClawEncoderPID->Enable();
 }
-void Arm::setHeight(float armHeight)
+
+void Arm::setHeight(int armHeight)
 {
 	height=armHeight;
 	updatePID();
 }
-void Arm::setCenter(float center)
+
+void Arm::setCenter(int center)
 {
-	float width=getWidth();
+	int width=getWidth();
 	setLeftRod(center-width/2);
 	setRightRod(center+width/2);
 	updatePID();
 }
-void Arm::setWidth(float width)
+
+void Arm::setWidth(int width)
 {
-	float center=getCenter();
+	int center=getCenter();
 	setLeftRod(center-width/2);
 	setRightRod(center+width/2);
 	updatePID();
 }
+
 void Arm::setShape(Shape newShape)
 {
 	shape=newShape;
 	leftPIDVisionSource->SetShape(shape);
 	rightPIDVisionSource->SetShape(shape);
 }
-void Arm::setLeftRod(float left)
+
+void Arm::setLeftRod(int left)
 {
 	leftClawPos=left;
 	updatePID();
 }
-void Arm::setRightRod(float right)
+
+void Arm::setRightRod(int right)
 {
 	rightClawPos=right;
 	updatePID();
 }
+
 bool Arm::getClawState()
 {
 	return getWidth()>500;
 }
-float Arm::getHeight()
+
+int Arm::getHeight()
 {
 	return height;
 }
-float Arm::getCenter()
+
+int Arm::getCenter()
 {
 	return rightClawPos+getWidth()/2;
 }
-float Arm::getWidth()
+
+int Arm::getWidth()
 {
 	return rightClawPos-leftClawPos;
 }
-float Arm::getShape()
+
+int Arm::getShape()
 {
 	return shape;
 }
-float Arm::getLeftRod()
+
+int Arm::getLeftRod()
 {
 	return leftClawPos;
 }
-float Arm::getRightRod()
+
+int Arm::getRightRod()
 {
 	return rightClawPos;
 

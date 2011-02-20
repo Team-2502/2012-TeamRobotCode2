@@ -126,6 +126,11 @@ public:
 	 */
 	void SetSnapPoints(int snapPoints) {this->snapPoints = snapPoints;}
 	
+	/**
+	 * Get the status of button # i.
+	 */
+	bool GetButton(int i) const;
+	
 private:
 	Joystick* joystick;
 	int snapPoints;

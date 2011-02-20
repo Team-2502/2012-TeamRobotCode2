@@ -127,6 +127,11 @@ float JoystickWrapper::GetRawRotation() const
 	}
 }
 
+bool JoystickWrapper::GetButton(int i) const
+{
+	return joystick->GetRawButton(i);
+}
+
 float JoystickWrapper::GetThrottle() const
 {
 	switch( this->type )
