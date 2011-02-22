@@ -2,25 +2,42 @@
 #include "VisionRoutines.h"
 #include "VisionEvent.h"
 
+EventDispatcher* VisionListener::parent = NULL;
+
 VisionListener::VisionListener(EventDispatcher* e)
 {
-	vis = Vision::GetInstance();
+	visionTask = new Task("2502Vn",(FUNCPTR)loop);
 	parent = e;
-	lastReport = vis->getNearestPeg();
 }
 
 VisionListener::~VisionListener()
 {
-	delete vis;
+	visionTask->Stop();
+	delete visionTask;
 }
 
-bool VisionListener::update()
+void VisionListener::start()
 {
-	TargetReport rpt = vis->getNearestPeg();
-	if(rpt.area != lastReport.area || rpt.x != lastReport.x || rpt.y != lastReport.y)
+	if(parent)
+		visionTask->Start();
+}
+
+void VisionListener::stop()
+{
+	visionTask->Stop();
+}
+
+void VisionListener::loop()
+{
+	TargetReport lastReport = Vision::GetInstance()->getNearestPeg();
+	while(parent)
 	{
-		lastReport = rpt;
-		parent->sendEvent(new VisionEvent(rpt,this));
+		TargetReport rpt = Vision::GetInstance()->getNearestPeg();
+		if(rpt.area != lastReport.area || rpt.x != lastReport.x || rpt.y != lastReport.y)
+		{
+			lastReport = rpt;
+			parent->sendEvent(new VisionEvent(rpt,0));
+		}
+		Wait(0.03);
 	}
-	return true;
 }

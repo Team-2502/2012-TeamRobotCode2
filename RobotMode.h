@@ -10,6 +10,7 @@ public:
 	virtual ~RobotMode() {}
 	virtual bool handle(Event *) = 0;
 	virtual RobotError* lastError() = 0;
+	virtual void disable() = 0;
 };
 
 #endif

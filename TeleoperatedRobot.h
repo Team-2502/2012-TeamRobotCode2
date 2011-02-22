@@ -5,6 +5,24 @@
 #include "Event.h"
 #include "DriverWrapper.h"
 
+class Timer;
+class Minibot;
+class Arm;
+
+enum Button
+{
+	trigger=1,
+	shapeShifter=2,
+	sideFirstButton=3,
+	middleFirstButton=4,
+	highResButton=12,
+	sideSecondButton=5,
+	middleSecondButton=6,
+	deployButton=7,
+	gyroResetButton=8,
+	targetSnapButton=11
+};
+
 class TeleoperatedRobot : public RobotMode
 {
 	public:
@@ -14,12 +32,17 @@ class TeleoperatedRobot : public RobotMode
 		bool handle(Event *e);
 		RobotError* lastError();
 		
+		void disable();
+		
 	private:
 		DriverWrapper *drive;
 		RobotError *myError;
 		float lastGyroReading;
+		float gyroCorrection;
 		int encoderValue;
-		Servo* servo;
+		Timer* minibotTimer;
+		Minibot* minibot;
+		Arm* arm;
 };
 
 #endif

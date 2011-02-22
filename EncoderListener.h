@@ -9,14 +9,17 @@ class Encoder;
 class EncoderListener : public EventListener
 {
 	public:
-		EncoderListener(EventDispatcher* e);
+		EncoderListener(EventDispatcher* e, int chanA, int chanB);
 		~EncoderListener();
 		void setParent(EventDispatcher *par) { parent = par; }
 		bool update();
+		int getAChannel() { return cA; }
+		int getBChannel() { return cB; }
 		
 	private:
 		Encoder* lift;
 		int lastCount;
+		int cA,cB;
 		EventDispatcher *parent;
 };
 

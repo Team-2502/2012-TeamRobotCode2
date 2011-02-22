@@ -9,30 +9,32 @@
 
 EventDispatcher::EventDispatcher(void)
 {
-	robot = new DisabledRobot();
+	crippleBot = new DisabledRobot();
+	teleBot = new TeleoperatedRobot();
+	autoBot = new AutonomousRobot();
+	robot = crippleBot;
+	
+	visList = new VisionListener(this);
+	listeners.push_back(new GyroListener(this));
+	listeners.push_back(new JoystickListener(this, Extreme3DPro));
+	listeners.push_back(new EncoderListener(this, 
+											ARM_CHAIN_ENCODER_A_CHANNEL, 
+											ARM_CHAIN_ENCODER_B_CHANNEL));
+	listeners.push_back(visList);
 }
 
 void EventDispatcher::DisabledInit(void)
 {
-	if(robot)
-		delete robot;
-	robot = new DisabledRobot();
+	robot = crippleBot;
+	teleBot->disable();
+	autoBot->disable();
 }
 
 void EventDispatcher::AutonomousInit(void)
 {
-	if(robot)
-		delete robot;
-	robot = new AutonomousRobot();
-	deleteAllListeners();
-	visList = new VisionListener(this);
-	listeners.push_back(new GyroListener(this));
-	listeners.push_back(visList);
-}
-
-void EventDispatcher::AutonomousPeriodic()
-{
-	visList->update();
+	robot = autoBot;
+	visList->start();
+	teleBot->disable();
 }
 
 void EventDispatcher::AutonomousContinuous()
@@ -59,20 +61,9 @@ void EventDispatcher::AutonomousContinuous()
 
 void EventDispatcher::TeleopInit(void)
 {
-	if(robot)
-		delete robot;
-	robot = new TeleoperatedRobot();
-	deleteAllListeners();
-	visList = new VisionListener(this);
-	listeners.push_back(new JoystickListener(this, Extreme3DPro));
-	listeners.push_back(new GyroListener(this));
-	listeners.push_back(visList);
-	listeners.push_back(new EncoderListener(this));
-}
-
-void EventDispatcher::TeleopPeriodic()
-{
-	visList->update();
+	robot = teleBot;
+	visList->start();
+	autoBot->disable();
 }
 
 void EventDispatcher::TeleopContinuous(void)

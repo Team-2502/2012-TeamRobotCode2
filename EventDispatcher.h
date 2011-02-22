@@ -9,6 +9,9 @@ class Event;
 class EventListener;
 class VisionListener;
 class RobotMode;
+class TeleoperatedRobot;
+class DisabledRobot;
+class AutonomousRobot;
 
 class EventDispatcher : public IterativeRobot
 {
@@ -22,11 +25,11 @@ public:
 	void DisabledContinuous(void) {}
 
 	void AutonomousInit(void);
-	void AutonomousPeriodic(void);
+	void AutonomousPeriodic(void) {}
 	void AutonomousContinuous(void);
 
 	void TeleopInit(void);
-	void TeleopPeriodic(void);
+	void TeleopPeriodic(void) {}
 	void TeleopContinuous(void);
 	
 	void deleteAllListeners();
@@ -34,6 +37,9 @@ public:
 
 private:
 	RobotMode *robot;
+	AutonomousRobot *autoBot; //lol
+	TeleoperatedRobot *teleBot; //decepticon?
+	DisabledRobot *crippleBot;
 	VisionListener* visList;
 	vector<EventListener*> listeners;
 	vector<Event*> events;

@@ -114,12 +114,13 @@ void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const
 float JoystickWrapper::GetRotation() const
 {
 	float rotation=GetRawRotation();
-	return (pow(ROT_EXPONENTIAL,rotation)-1)/(ROT_EXPONENTIAL-1);
+	int sign = (rotation < 0) ? -1 : 1;
+	return sign*(pow(ROT_EXPONENTIAL,rotation)-1)/(ROT_EXPONENTIAL-1);
 }
 
 float JoystickWrapper::GetRawRotation() const
 {
-	switch( this->type )
+	switch(this->type)
 	{
 	case Extreme3DPro:
 	case DualAction:

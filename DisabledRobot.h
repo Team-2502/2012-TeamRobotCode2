@@ -11,6 +11,7 @@ public:
 	~DisabledRobot();
 	bool handle(Event *);
 	RobotError* lastError();
+	void disable() {}
 	
 private:
 	RobotError* err;

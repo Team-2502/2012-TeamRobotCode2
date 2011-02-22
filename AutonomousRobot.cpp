@@ -2,6 +2,8 @@
 #include "RobotError.h"
 #include "AutonomousRobot.h"
 #include "DisplayWrapper.h"
+#include "DriverStationLCD.h"
+#include "LineEvent.h"
 #include "config.h"
 
 AutonomousRobot::AutonomousRobot()
@@ -16,19 +18,40 @@ AutonomousRobot::AutonomousRobot()
 
 AutonomousRobot::~AutonomousRobot()
 {
+	drive->Drive(0,0,0);
 	delete drive;
 	delete myError;
 	//delete myArm;
 }
 
+void AutonomousRobot::disable()
+{
+	drive->Drive(0,0,0);
+}
+
 bool AutonomousRobot::handle(Event *e)
 {
 	VisionEvent *ve = 0;
+	int ltState = 0;
+	ForkSide side = DriverStation::GetInstance()->GetDigitalIn(1) ? Right : Left; //off = left, on = right
 	switch(myState)
 	{
 		case TrackLine:
-			DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Implement LT.");
-			DisplayWrapper::GetInstance()->Output();
+			if(e->type() == LineTracking) {
+				DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Tracking Line.");
+				DisplayWrapper::GetInstance()->Output();
+				ltState = static_cast<LineTrackingEvent*>(e)->state();
+				if(ltState == Opposite) {
+					drive->Drive(0.5*side,0,0);
+				} else if(ltState == Straight) {
+					drive->Drive(0,0,5,0);
+				} else if(ltState == AtTheT) {
+					drive->Drive(0,0,0);
+					myState = PlaceTube;
+				} else {
+					drive->Drive(-0.5*side,0,0);
+				}
+			}
 			break;
 		case PlaceTube:
 			if(e->type() == TargetEvent)
@@ -40,6 +63,9 @@ bool AutonomousRobot::handle(Event *e)
 					DisplayWrapper::GetInstance()->Output();
 				} else if(ve->report().y < (int)(YRESOLUTION/3.0)) { //bottom third
 					//myArm->setHeight(sideFirst);
+					DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Arm down.");
+					DisplayWrapper::GetInstance()->Output();
+				} else { //In middle third
 					DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Arm down.");
 					DisplayWrapper::GetInstance()->Output();
 				}

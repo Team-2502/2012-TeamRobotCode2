@@ -3,10 +3,10 @@
 #include "WPILib.h"
 #include "config.h"
 
-EncoderListener::EncoderListener(EventDispatcher *e)
+EncoderListener::EncoderListener(EventDispatcher *e, int chanA, int chanB)
 {
 	parent = e;
-	lift = new Encoder(ARM_CHAIN_ENCODER_A_CHANNEL, ARM_CHAIN_ENCODER_B_CHANNEL);
+	lift = new Encoder(cA = chanA, cB = chanB);
 	lastCount = lift->Get();
 }
 

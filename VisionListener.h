@@ -11,12 +11,14 @@ class VisionListener : public EventListener
 		VisionListener(EventDispatcher* e);
 		~VisionListener();
 		void setParent(EventDispatcher *par) { parent = par; }
-		bool update();
+		bool update() { return true; }
+		void start();
+		void stop();
 		
 	private:
-		TargetReport lastReport;
-		EventDispatcher *parent;
-		Vision *vis;
+		static void loop();
+		static EventDispatcher *parent;
+		Task *visionTask;
 };
 
 #endif

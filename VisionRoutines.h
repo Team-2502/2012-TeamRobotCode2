@@ -2,6 +2,7 @@
 #define VISION_H
 
 #include "WPILib.h"
+#include "Vision/PCVideoServer.h"
 
 /*typedef enum Region {
 	NorthWest, North,  NorthEast,
@@ -36,6 +37,7 @@ class Vision
 		HSLImage *constantImage;
 		BinaryImage *particleImage;
 		AxisCamera *camera;
+		PCVideoServer *pcvs;
 };
 
 #endif

@@ -17,6 +17,8 @@ Vision::Vision()
 	camera->WriteResolution(AxisCameraParams::kResolution_160x120);
 	camera->WriteBrightness(0);
 	constantImage = new HSLImage;
+	pcvs = new PCVideoServer;
+	pcvs->Start();
 }
 
 Vision::~Vision()
@@ -26,6 +28,8 @@ Vision::~Vision()
 	if(particleImage)
 		delete particleImage;
 	visionInstance = NULL;
+	pcvs->Stop();
+	delete pcvs;
 }
 
 TargetReport Vision::getNearestPeg()
