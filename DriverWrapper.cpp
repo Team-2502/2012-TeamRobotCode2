@@ -1,4 +1,5 @@
 #include <cmath>
+#include <DriverStation.h>
 #include "DisplayWrapper.h"
 #include "DriverWrapper.h"
 #include "config.h"
@@ -44,7 +45,8 @@ DriverWrapper::DriverWrapper(DriveType type)
 	this->frontRight->SetSafetyEnabled(false);
 	this->rearRight->SetSafetyEnabled(false);
 	useFOD = true;
-	this->type = type; //If you delete this line, you will die of egregious ass-wounds with absolutely no dignity.
+	this->type = type;
+	invertControls = false;
 }
 
 DriverWrapper::~DriverWrapper()
@@ -71,8 +73,15 @@ void DriverWrapper::Drive(float x, float y, float rotation, float gyroAngle)
 
 void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAngle)
 {
-	double xIn = x;
-	double yIn = y;
+	double xIn = -x;
+	double yIn = -y;
+	if(DriverStation::GetInstance()->GetDigitalIn(3)) {
+		xIn = -xIn;
+	}
+	if(invertControls) {
+		xIn = -xIn;
+		yIn = -yIn;
+	}
 	
 	// Compenstate for gyro angle.
 	RotateVector(xIn, yIn, gyroAngle);
@@ -90,6 +99,11 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
 	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
+}
+
+void DriverWrapper::toggleInversion()
+{
+	invertControls = !invertControls;
 }
 
 void DriverWrapper::TankDrive(float x, float y, float rotation)

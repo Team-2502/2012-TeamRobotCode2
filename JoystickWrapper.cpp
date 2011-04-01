@@ -107,12 +107,13 @@ void JoystickWrapper::GetAxis(float* xaxis, float* yaxis) const
 
 void JoystickWrapper::GetRawAxis(float* xaxis, float* yaxis) const
 {
-	*yaxis = this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
-	*xaxis = this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
+	*xaxis = this->joystick->GetRawAxis(Joystick::kDefaultXAxis);
+	*yaxis = -1*this->joystick->GetRawAxis(Joystick::kDefaultYAxis);
 }
 
 float JoystickWrapper::GetRotation() const
 {
+	return GetRawRotation();
 	float rotation=GetRawRotation();
 	int sign = (rotation < 0) ? -1 : 1;
 	return sign*(pow(ROT_EXPONENTIAL,rotation)-1)/(ROT_EXPONENTIAL-1);

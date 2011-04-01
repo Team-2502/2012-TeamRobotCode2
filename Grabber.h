@@ -11,11 +11,18 @@ class Grabber
 		void pinch();
 		void expand();
 		void stop();
+		void enforceSafetyHack(); //Hack.
 		
 	private:
+		enum Rail { Top, Bottom };
 		Grabber();
-		Jaguar* GrabberJag1;
-		Jaguar* GrabberJag2;
+		void safeSetSpeed(Rail r, float speed);
+		Victor* GrabberVicT;
+		Victor* GrabberVicB;
+		DigitalInput *topStopperL;
+		DigitalInput *topStopperR;
+		DigitalInput *bottomStopperL;
+		DigitalInput *bottomStopperR;
 		static Grabber* instance;
 };
 

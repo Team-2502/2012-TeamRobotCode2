@@ -24,6 +24,7 @@ public:
 	 */
 	void Drive(float x, float y, float rotation, float gyroAngle = 0.0);
 	void setFieldOrientedDrive(bool b) { useFOD = b; }
+	void toggleInversion();
 	
 private:
 	Jaguar* frontLeft;
@@ -31,6 +32,8 @@ private:
 	Jaguar* rearLeft;
 	Jaguar* rearRight;
 	DriveType type;
+	
+	bool invertControls;
 	
 	void MecanumDrive(float x, float y, float rotation, float gyroAngle);
 	void TankDrive(float x, float y, float rotation);

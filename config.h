@@ -2,11 +2,11 @@
 #define CONFIG_H
 
 #define JOYSTICK_PORT                     1
-#define FRONT_LEFT_CHANNEL                3
-#define REAR_LEFT_CHANNEL                 1
-#define FRONT_RIGHT_CHANNEL               4
-#define REAR_RIGHT_CHANNEL                2
-#define WINCH_CHANNEL                    10
+#define FRONT_LEFT_CHANNEL                2
+#define REAR_LEFT_CHANNEL                 4
+#define FRONT_RIGHT_CHANNEL               1
+#define REAR_RIGHT_CHANNEL                3
+#define WINCH_CHANNEL                     7
 #define LEFT_CLAW_CHANNEL                 6 //tentative
 #define RIGHT_CLAW_CHANNEL           314159 //tentative
 #define TWO_CHANNEL_ACCEL_SLOT            1 //tentative
@@ -24,6 +24,7 @@
 
 #define USE_GYRO
 
+#define ANALOG_SLOT        1
 #define GYRO_SLOT          1
 #define GYRO_CHANNEL       1
 #define GYRO_HEAT_CHANNEL  2
@@ -54,6 +55,18 @@
 #define LEFT_LINE_CHANNEL   3 
 #define CENTER_LINE_CHANNEL 4
 #define RIGHT_LINE_CHANNEL  5
+
+#define TOP_STOPPER_PORT_L     5
+#define TOP_STOPPER_PORT_R     7
+#define BOTTOM_STOPPER_PORT_L  4
+#define BOTTOM_STOPPER_PORT_R  6
+
+#define MAGNETIC_ENCODER_TOP_CHANNEL    7
+#define MAGNETIC_ENCODER_BOTTOM_CHANNEL 8
+
+//correct
+#define TOP_GRABBER_CHANNEL    5
+#define BOTTOM_GRABBER_CHANNEL 8
 
 const float PIE = 3.141592653897;
 

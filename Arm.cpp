@@ -32,5 +32,7 @@ Arm::~Arm()
 
 void Arm::setSpeed(float speed)
 {
-	armJag->SetSpeed(speed);
+	armJag->SetSpeed(-1*speed);
 }
+
+

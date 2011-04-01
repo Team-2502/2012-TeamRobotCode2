@@ -13,33 +13,69 @@ Grabber* Grabber::GetInstance()
 
 Grabber::Grabber()
 {
-	GrabberJag1 = new Jaguar(5);
-	GrabberJag2 = new Jaguar(6);
-	GrabberJag1->SetSafetyEnabled(false);
-	GrabberJag2->SetSafetyEnabled(false);
+	GrabberVicT = new Victor(TOP_GRABBER_CHANNEL);
+	GrabberVicB = new Victor(BOTTOM_GRABBER_CHANNEL);
+	GrabberVicT->SetSafetyEnabled(false);
+	GrabberVicB->SetSafetyEnabled(false);
+	topStopperL = new DigitalInput(TOP_STOPPER_PORT_L);
+	topStopperR = new DigitalInput(TOP_STOPPER_PORT_R);
+	bottomStopperL = new DigitalInput(BOTTOM_STOPPER_PORT_L);
+	bottomStopperR = new DigitalInput(BOTTOM_STOPPER_PORT_R);
 }
 
 Grabber::~Grabber()
 {
-	delete GrabberJag1;
-	delete GrabberJag2;
+	delete GrabberVicT;
+	delete GrabberVicB;
 	instance = NULL;
 }
 
-void Grabber::pinch()
+void Grabber::enforceSafetyHack()
 {
-	GrabberJag1->Set(0.5);
-	GrabberJag2->Set(-0.5);
+	safeSetSpeed(Top,GrabberVicT->Get());
+	safeSetSpeed(Bottom,GrabberVicB->Get());
 }
 
+void Grabber::safeSetSpeed(Rail r, float speed)
+{
+	if(r == Top) {
+		if(speed > 0 && !topStopperL->Get())
+			GrabberVicT->Set(speed);
+		else if(speed < 0 && !topStopperR->Get())
+			GrabberVicT->Set(speed);
+		else
+			GrabberVicT->Set(0.0);
+	} else if(r == Bottom) {
+		if(speed > 0 && !bottomStopperL->Get())
+			GrabberVicB->Set(speed);
+		else if(speed < 0 && !bottomStopperR->Get())
+			GrabberVicB->Set(speed);
+		else
+			GrabberVicT->Set(0.0);
+	}
+}
+
+//Moves top to left.
+void Grabber::pinch()
+{
+	safeSetSpeed(Top,0.5);
+	safeSetSpeed(Bottom,-0.5);
+	if(!topStopperL->Get())
+		GrabberVicT->Set(0.5);
+	if(!bottomStopperR->Get())
+		GrabberVicB->Set(-0.5);
+}
+
+
+//Moves top to right.
 void Grabber::expand()
 {
-	GrabberJag1->Set(-0.5);
-	GrabberJag2->Set(0.5);
+	safeSetSpeed(Top,-0.5);
+	safeSetSpeed(Bottom,0.5);
 }
 
 void Grabber::stop()
 {
-	GrabberJag1->Set(0.0);
-	GrabberJag2->Set(0.0);
+	GrabberVicT->Set(0.0);
+	GrabberVicB->Set(0.0);
 }

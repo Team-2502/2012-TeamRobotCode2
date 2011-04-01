@@ -8,7 +8,9 @@
 
 enum AutonomousState {
 	TrackLine,
-	PlaceTube
+	PlaceTube,
+	DropTube,
+	Done,
 };
 
 enum LineDirection {

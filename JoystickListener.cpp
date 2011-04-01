@@ -18,7 +18,7 @@ JoystickListener::~JoystickListener()
 bool JoystickListener::update()
 {
 	float x,y;
-	stick->GetAxis(&x,&y);
+	stick->GetRawAxis(&x,&y);
 	parent->sendEvent(new JoystickPositionEvent(x,y,stick->GetRotation(), this));
 	for(int i = 1; i <= 12; i++)
 	{

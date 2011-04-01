@@ -2,6 +2,7 @@
 #include "JoystickPositionEvent.h"
 #include "JoystickButtonEvent.h"
 #include "GyroAngleEvent.h"
+#include "GrabberPositionEvent.h"
 #include "VisionEvent.h"
 #include "RobotError.h"
 #include "DisplayWrapper.h"
@@ -57,19 +58,25 @@ bool TeleoperatedRobot::handle(Event *e)
 	char l,r,c;
 	l=r=c=' ';
 
+	DisplayWrapper::GetInstance()->PrintfLine(0,"TeleoperatedRobot initialized.");
+	DisplayWrapper::GetInstance()->Output();
 	if(!e) {
 		if(myError) { delete myError; myError = 0; }
 		myError = new RobotError(Warning, "TeleoperatedRobot received null ptr.");
 		return false;
 	}
+	
+	Grabber::GetInstance()->enforceSafetyHack();
+	
 	switch(static_cast<int>(e->type()))
 	{
 	case JoystickPosition:
 		jpe = static_cast<JoystickPositionEvent*>(e);
 		drive->Drive(jpe->x(),
 				jpe->y(),
-				jpe->twist(), 0
-		/*lastGyroReading+gyroCorrection*/);
+				jpe->twist(), 0);
+		DisplayWrapper::GetInstance()->PrintfLine(1,"X: %f, Y: %f.",jpe->x(),jpe->y());
+		
 		break;
 	case GyroAngle:
 		lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle() + gyroCorrection;
@@ -94,10 +101,14 @@ bool TeleoperatedRobot::handle(Event *e)
 			Arm::GetInstance()->setSpeed(0.0);
 		}
 		
+		if(button.button == 11 && !button.state) {
+			drive->toggleInversion();
+		}
+		
 		if(button.button == 6 && button.state) {
-			Grabber::GetInstance()->pinch();
-		} else if(button.button == 4 && button.state) {
 			Grabber::GetInstance()->expand();
+		} else if(button.button == 4 && button.state) {
+			Grabber::GetInstance()->pinch();
 		} else if(button.button == 6 && !button.state) {
 			Grabber::GetInstance()->stop();
 		} else if(button.button == 4 && !button.state) {
@@ -119,6 +130,8 @@ bool TeleoperatedRobot::handle(Event *e)
 		c = (lte->state() & Forward)    ? 'C' : ' ';
 		DisplayWrapper::GetInstance()->PrintfLine(3,"Line State: %c%c%c",l,r,c);
 		DisplayWrapper::GetInstance()->Output();
+		break;
+	case GrabberEvent:
 		break;
 	default:
 		if(myError) {

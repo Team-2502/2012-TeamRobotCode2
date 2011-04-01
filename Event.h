@@ -8,7 +8,8 @@ enum EventType {
 	JoystickButton,
 	TargetEvent,
 	EncoderUpdate,
-	LineTracking
+	LineTracking,
+	GrabberEvent
 };
 
 class EventListener;

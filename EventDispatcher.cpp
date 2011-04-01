@@ -5,6 +5,7 @@
 #include "GyroListener.h"
 #include "VisionListener.h"
 #include "EncoderListener.h"
+#include "MagneticEncoder.h"
 #include "config.h"
 
 EventDispatcher::EventDispatcher(void)
@@ -20,6 +21,7 @@ EventDispatcher::EventDispatcher(void)
 	listeners.push_back(new EncoderListener(this, 
 											ARM_CHAIN_ENCODER_A_CHANNEL, 
 											ARM_CHAIN_ENCODER_B_CHANNEL));
+// 	listeners.push_back(new MagneticEncoder(this));
 	listeners.push_back(visList);
 }
 
@@ -32,13 +34,14 @@ void EventDispatcher::DisabledInit(void)
 
 void EventDispatcher::AutonomousInit(void)
 {
-	robot = autoBot;
+	robot = crippleBot;
 	visList->start();
 	teleBot->disable();
 }
 
 void EventDispatcher::AutonomousContinuous()
 {
+	return;
 	static bool active = true;
 	if(active) {
 		for(unsigned int i = 0; i < listeners.size(); i++) { //Ask for events
