@@ -12,6 +12,8 @@ class Grabber
 		void expand();
 		void stop();
 		void enforceSafetyHack(); //Hack.
+		void shiftLeft();
+		void shiftRight();
 		
 	private:
 		enum Rail { Top, Bottom };
