@@ -20,11 +20,6 @@ enum LineDirection {
 
 class AutonomousRobot : public RobotMode
 {
-	enum LineTrackingState {
-		Opposite=0,
-		Straight=1,
-		AtTheT=7,
-	};
 	enum ForkSide {
 		Left=1,
 		Right=-1

@@ -5,15 +5,25 @@
 #include "DriverStationLCD.h"
 #include "LineEvent.h"
 #include "Arm.h"
+#include "Grabber.h"
 #include "config.h"
 
 AutonomousRobot::AutonomousRobot()
 {
-	drive = new DriverWrapper(Tank);
+	drive = new DriverWrapper(Mecanum);
 	myError = RobotError::NoError();
 	lastGyroReading = 0.0;
 	l = LeftLine;
-	myState = PlaceTube;
+	myState = TrackLine;
+	DisplayWrapper::GetInstance()->PrintfLine(0,"Auto: Initialized.");
+	DisplayWrapper::GetInstance()->Output();
+	
+	Solenoid* power1 = new Solenoid(8,1);
+	Solenoid* power2 = new Solenoid(8,2);
+	Solenoid* power3 = new Solenoid(8,3);
+	power1->Set(true);
+	power2->Set(true);
+	power3->Set(true);
 }
 
 AutonomousRobot::~AutonomousRobot()
@@ -30,30 +40,35 @@ void AutonomousRobot::disable()
 
 bool AutonomousRobot::handle(Event *e)
 {
-	VisionEvent *ve = 0;
+	//VisionEvent *ve = 0;
 	int ltState = 0;
-	ForkSide side = DriverStation::GetInstance()->GetDigitalIn(1) ? Right : Left; //off = left, on = right
-	bool moveToDrop = false;
+	ForkSide side = DriverStation::GetInstance()->GetDigitalIn(1) ? Right : Left; //off = left fork, on = right fork
+	//bool moveToDrop = false;
 	switch(myState)
 	{
 		case TrackLine:
 			if(e->type() == LineTracking) {
-				DisplayWrapper::GetInstance()->PrintfLine(4,"Auto: Tracking Line.");
-				DisplayWrapper::GetInstance()->Output();
 				ltState = static_cast<LineTrackingEvent*>(e)->state();
-				if(ltState == Opposite) {
-					drive->Drive(0.5*side,0,0);
-				} else if(ltState == Straight) {
-					drive->Drive(0,0,5,0);
-				} else if(ltState == AtTheT) {
+				DisplayWrapper::GetInstance()->PrintfLine(0,"Auto: Tracking Line.");
+				DisplayWrapper::GetInstance()->PrintfLine(1,"Auto: LT: %i%i%i.",ltState|LeftFork,ltState|Forward,ltState|RightFork);
+				DisplayWrapper::GetInstance()->Output();
+				
+				int sign = static_cast<int>(side);
+				if(ltState == 0) {
+					drive->Drive(0.5*sign,0,0);
+				} else if(ltState == 1 && side == Left) {
+					drive->Drive(0,0.5,0);
+				} else if(ltState == 4 && side == Right) {
+					drive->Drive(0,0.5,0);
+				} else if(ltState == 7) {
 					drive->Drive(0,0,0);
-					myState = PlaceTube;
+					myState = DropTube;
 				} else {
-					drive->Drive(-0.5*side,0,0);
+					drive->Drive(-0.5*sign,0,0);
 				}
 			}
 			break;
-		case PlaceTube:
+		/*case PlaceTube:
 			moveToDrop = false;
 			if(e->type() == TargetEvent)
 			{
@@ -74,19 +89,14 @@ bool AutonomousRobot::handle(Event *e)
 				if(moveToDrop)
 					myState = DropTube;
 			}
-			break;
+			break;*/
 		case DropTube:
-			Arm::GetInstance()->setSpeed(0.0);
-			Wait(0.5);
+			Grabber::GetInstance()->pinch();
+			Wait(1.0);
 			drive->Drive(0,-0.4,0);
 			myState = Done;
 			break;
 		default:
-			if(myError) {
-				delete myError; myError = 0;
-			}
-			myError = new RobotError(Warning, "AutonomousRobot received unknown event.");
-			return false;
 			break;
 	}
 	return true;

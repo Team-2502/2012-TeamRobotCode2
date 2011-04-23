@@ -38,7 +38,7 @@ void Grabber::enforceSafetyHack()
 
 void Grabber::safeSetSpeed(Rail r, float speed)
 {
-	if(r == Top) {
+	if(r == Top) { //Good
 		if(speed > 0 && !topStopperL->Get())
 			GrabberVicT->Set(speed);
 		else if(speed < 0 && !topStopperR->Get())
@@ -46,12 +46,12 @@ void Grabber::safeSetSpeed(Rail r, float speed)
 		else
 			GrabberVicT->Set(0.0);
 	} else if(r == Bottom) {
-		if(speed > 0 && !bottomStopperL->Get())
+		if(speed > 0 && !bottomStopperR->Get())
 			GrabberVicB->Set(speed);
-		else if(speed < 0 && !bottomStopperR->Get())
+		else if(speed < 0 && !bottomStopperL->Get())
 			GrabberVicB->Set(speed);
 		else
-			GrabberVicT->Set(0.0);
+			GrabberVicB->Set(0.0);
 	}
 }
 
@@ -60,12 +60,19 @@ void Grabber::pinch()
 {
 	safeSetSpeed(Top,0.5);
 	safeSetSpeed(Bottom,-0.5);
-	if(!topStopperL->Get())
-		GrabberVicT->Set(0.5);
-	if(!bottomStopperR->Get())
-		GrabberVicB->Set(-0.5);
 }
 
+void Grabber::shiftLeft()
+{
+	GrabberVicT->SetSpeed(0.5);
+	GrabberVicB->SetSpeed(0.5);
+}
+
+void Grabber::shiftRight()
+{
+	GrabberVicT->SetSpeed(-0.5);
+	GrabberVicB->SetSpeed(-0.5);
+}
 
 //Moves top to right.
 void Grabber::expand()

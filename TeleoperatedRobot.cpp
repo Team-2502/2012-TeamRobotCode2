@@ -22,14 +22,6 @@ TeleoperatedRobot::TeleoperatedRobot(DriveType type)
 	minibot = new Minibot;
 	minibotTimer = new Timer;
 	minibotTimer->Reset();
-
-	//Power the line trackers.
-	Solenoid* power1 = new Solenoid(7,1);
-	Solenoid* power2 = new Solenoid(7,2);
-	Solenoid* power3 = new Solenoid(7,3);
-	power1->Set(true);
-	power2->Set(true);
-	power3->Set(true);
 }
 
 TeleoperatedRobot::~TeleoperatedRobot()
@@ -66,17 +58,14 @@ bool TeleoperatedRobot::handle(Event *e)
 		return false;
 	}
 	
-	Grabber::GetInstance()->enforceSafetyHack();
-	
 	switch(static_cast<int>(e->type()))
 	{
 	case JoystickPosition:
 		jpe = static_cast<JoystickPositionEvent*>(e);
-		drive->Drive(jpe->x(),
-				jpe->y(),
-				jpe->twist(), 0);
+		drive->Drive(jpe->x(), jpe->y(), jpe->twist(), lastGyroReading);
+		DisplayWrapper::GetInstance()->SetScrollLocation(jpe->throttle());
 		DisplayWrapper::GetInstance()->PrintfLine(1,"X: %f, Y: %f.",jpe->x(),jpe->y());
-		
+		DisplayWrapper::GetInstance()->Output();
 		break;
 	case GyroAngle:
 		lastGyroReading = static_cast<GyroAngleEvent*>(e)->angle() + gyroCorrection;
@@ -90,7 +79,7 @@ bool TeleoperatedRobot::handle(Event *e)
 		if(button.button == deployButton && button.state && minibotTimer->Get() > 114/*seconds*/) {
 			minibot->Deploy();
 		} else if(button.button == gyroResetButton && button.state) {
-			//gyroCorrection = -1*lastGyroReading;
+			gyroCorrection = -1*lastGyroReading;
 		} else if(button.button == 5 && button.state) {
 			Arm::GetInstance()->setSpeed(0.75);
 		} else if(button.button == 3 && button.state) {
@@ -101,8 +90,14 @@ bool TeleoperatedRobot::handle(Event *e)
 			Arm::GetInstance()->setSpeed(0.0);
 		}
 		
-		if(button.button == 11 && !button.state) {
+		if(button.button == 11 && button.state) {
 			drive->toggleInversion();
+		}
+		if(button.button == 9 && button.state) {
+			Grabber::GetInstance()->shiftLeft();
+		}
+		if(button.button == 10 && button.state) {
+			Grabber::GetInstance()->shiftRight();
 		}
 		
 		if(button.button == 6 && button.state) {

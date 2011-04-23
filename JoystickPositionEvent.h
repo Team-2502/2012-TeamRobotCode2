@@ -8,17 +8,18 @@ class EventListener;
 class JoystickPositionEvent : public Event
 {
 	public:
-		JoystickPositionEvent(float x, float y, float twist, EventListener* l);
+		JoystickPositionEvent(float x, float y, float twist, float throttle, EventListener* l);
 		~JoystickPositionEvent() {}
 		
 		EventType type() { return JoystickPosition; }
 		EventListener* sender();
-		float x();
-		float y();
-		float twist();
+		float x() const;
+		float y() const;
+		float twist() const;
+		float throttle() const;
 		
 	private:
-		float m_x,m_y,m_twist;
+		float m_x,m_y,m_twist,m_throttle;
 		EventListener *listen;
 };
 

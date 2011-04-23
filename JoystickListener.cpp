@@ -19,7 +19,7 @@ bool JoystickListener::update()
 {
 	float x,y;
 	stick->GetRawAxis(&x,&y);
-	parent->sendEvent(new JoystickPositionEvent(x,y,stick->GetRotation(), this));
+	parent->sendEvent(new JoystickPositionEvent(x,y,stick->GetRotation(), stick->GetThrottle(), this));
 	for(int i = 1; i <= 12; i++)
 	{
 		if(stick->GetJoystick()->GetRawButton(i) != lastButtonStates[i-1].state) {

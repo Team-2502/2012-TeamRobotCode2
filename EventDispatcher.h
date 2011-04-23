@@ -36,6 +36,8 @@ public:
 	void sendEvent(Event *e);
 
 private:
+	void callSafetyFunctions();
+	
 	RobotMode *robot;
 	AutonomousRobot *autoBot; //lol
 	TeleoperatedRobot *teleBot; //decepticon?

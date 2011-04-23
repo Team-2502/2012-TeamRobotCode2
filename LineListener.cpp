@@ -2,6 +2,7 @@
 #include "LineEvent.h"
 #include "WPILib.h"
 #include "config.h"
+#include "DisplayWrapper.h"
 
 LineListener::LineListener(EventDispatcher *e)
 {
@@ -23,12 +24,24 @@ LineListener::~LineListener()
 
 bool LineListener::update()
 {
-	int leftValue = leftSensor->Get() ? 1 : 0; int oldLeftValue = leftState ? 1 : 0;
-	int rightValue = rightSensor->Get() ? 1 : 0; int oldRightValue = rightState ? 1 : 0;
-	int centerValue = centerSensor->Get() ? 1 : 0; int oldCenterValue = centerState ? 1 : 0;
-	if(leftValue != oldLeftValue || rightValue != oldRightValue || centerValue != oldCenterValue)
+	bool leftValue   = leftSensor->Get();
+	bool rightValue  = rightSensor->Get();
+	bool centerValue = centerSensor->Get();
+	if(leftValue != leftState || rightValue != rightState || centerValue != centerState)
 	{
-		parent->sendEvent(new LineTrackingEvent(LeftFork*leftValue+Forward*rightValue+RightFork*rightValue,this));
+		int ret = 0;
+		if(leftValue)
+			ret |= LeftFork;
+		if(rightValue)
+			ret |= RightFork;
+		if(centerValue)
+			ret |= Forward;
+		parent->sendEvent(new LineTrackingEvent(ret,this));
+		DisplayWrapper::GetInstance()->PrintfLine(5,"Auto: LT: %i%i%i%i.",leftValue,centerValue,rightValue,ret);
+		DisplayWrapper::GetInstance()->Output();
 	}
+	leftState    = leftSensor->Get();
+	rightState   = rightSensor->Get();
+	centerState  = centerSensor->Get();
 	return true;
 }

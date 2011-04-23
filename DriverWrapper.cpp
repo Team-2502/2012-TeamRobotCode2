@@ -99,6 +99,12 @@ void DriverWrapper::MecanumDrive(float x, float y, float rotation, float gyroAng
 	frontRight->Set(-1*wheelSpeeds[RobotDrive::kFrontRightMotor]);
 	rearLeft->Set(wheelSpeeds[RobotDrive::kRearLeftMotor]);
 	rearRight->Set(-1*wheelSpeeds[RobotDrive::kRearRightMotor]);
+	
+#ifdef DEBUG_OUTPUT
+	DisplayWrapper::GetInstance()->PrintfLine(7,"FL: %1.2f FR: %1.2f",frontLeft->Get(),frontRight->Get());
+	DisplayWrapper::GetInstance()->PrintfLine(8,"BL: %1.2f BR: %1.2f",rearLeft->Get(),rearRight->Get());
+	DisplayWrapper::GetInstance()->Output();
+#endif
 }
 
 void DriverWrapper::toggleInversion()
