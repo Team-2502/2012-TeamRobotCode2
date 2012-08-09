@@ -4,116 +4,135 @@
 
 #include "DisplayWrapper.h"
 
-DisplayWrapper* DisplayWrapper::instance = NULL;
+#include "DriverStationLCD.h"
+
+
+DisplayWrapper* DisplayWrapper::Instance = NULL;
 
 DisplayWrapper::DisplayWrapper()
 {
-	this->bufferSize = 0;
-	this->outputLocation = 0;
-	this->display = DriverStationLCD::GetInstance();
-	SetBufferSize(12);
+	bufferSize = 0;
+	outputLocation = 0;
+	setBufferSize(0);
+	display = DriverStationLCD::GetInstance();
+	displayDirty = true;
 }
 
 DisplayWrapper::~DisplayWrapper()
 {
-	instance = NULL;
+	Instance = NULL;
 }
 
-void DisplayWrapper::Clear()
+bool DisplayWrapper::isLineVisible(unsigned line)
 {
-	for(unsigned i = 0; i < this->bufferSize; i++)
+	return (outputLocation <= line && line < outputLocation + 6);
+}
+
+void DisplayWrapper::clear(unsigned start, unsigned count)
+{
+	for (unsigned i = 0; i < count; i++)
 	{
-		this->buffer[i].clear();
+		buffer[start+i].clear();
+		if (isLineVisible(start+i))
+			displayDirty = true;
 	}
-	this->bufferLocation = 0;
+}
+
+void DisplayWrapper::clear()
+{
+	clear(0, bufferSize);
+	bufferLocation = 0;
 }
 
 DisplayWrapper* DisplayWrapper::GetInstance()
 {
-	if(!instance)
-		instance = new DisplayWrapper();
-	return instance;
+	if (!Instance)
+		Instance = new DisplayWrapper();
+	return Instance;
 }
 
 void DisplayWrapper::Output()
 {
-	for(unsigned i = this->outputLocation; i < this->outputLocation + 6; i++)
+	if (false == displayDirty)
+		return;
+
+	displayDirty = false;
+	for (unsigned i = outputLocation; i < outputLocation + 6; i++)
 	{
-		if(i >= this->bufferSize)
+		if (i >= bufferSize)
 			break;
 		else
 		{
-			switch(i - this->outputLocation)
+			switch(i - outputLocation)
 			{
 			case 0:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line1, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line1, buffer[i].c_str());
 				break;
 			case 1:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line2, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line2, buffer[i].c_str());
 				break;
 			case 2:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line3, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line3, buffer[i].c_str());
 				break;
 			case 3:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line4, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line4, buffer[i].c_str());
 				break;
 			case 4:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line5, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line5, buffer[i].c_str());
 				break;
 			case 5:
-				this->display->PrintfLine(DriverStationLCD::kUser_Line6, this->buffer[i].c_str());
+				display->PrintfLine(DriverStationLCD::kUser_Line6, buffer[i].c_str());
 				break;
 			}
 		}
 	}
-	this->display->UpdateLCD();
+	display->UpdateLCD();
 }
 
-void DisplayWrapper::Printf(const char* format, ...)
+void DisplayWrapper::puts(unsigned int line, const char* buf)
 {
-	char buf[256];
-	va_list args;
-	va_start (args, format);
-	vsnprintf ( buf, 256, format, args );
-	va_end (args);
-	this->buffer[this->bufferLocation] = buf;
-	this->bufferLocation++;
-	if(this->bufferLocation >= this->bufferSize)
-		Shift();
+	buffer[line] = buf;
+	if (isLineVisible(line))
+		displayDirty = true;
 }
 
-void DisplayWrapper::PrintfLine(unsigned int line, const char* format, ...)
+void DisplayWrapper::setBufferSize(unsigned size)
 {
-	if(line < this->bufferSize)
-	{
-		char buf[256];
-		va_list args;
-		va_start (args, format);
-		vsnprintf ( buf, 256, format, args);
-		va_end (args);
-		this->buffer[line] = buf;
-	}
+	clear();
+	bufferSize = size;
+	buffer.clear();
+	buffer.resize(size);
 }
 
-void DisplayWrapper::SetBufferSize(unsigned size)
+unsigned DisplayWrapper::growBufferSize(unsigned count)
 {
-	Clear();
-	this->bufferSize = size;
-	this->buffer.clear();
-	this->buffer.resize(size);
+	unsigned priorSize = bufferSize;
+	bufferSize += count;
+	buffer.resize(bufferSize);
+	return priorSize;
 }
 
 void DisplayWrapper::SetScrollLocation(float location)
 {
-	this->outputLocation = (unsigned)std::floor(((location + 1.0) / 2.0) * (float)(this->bufferSize - 7));
+	outputLocation = (unsigned)std::floor(((location + 1.0) / 2.0) * (float)(bufferSize - 7));
 }
 
-void DisplayWrapper::Shift()
+void DisplayWrapper::shift(unsigned int start, unsigned int count)
 {
-	for(unsigned i = 0; i < this->bufferSize - 1; i++)
+	for (unsigned i = start; i < count - 1; i++)
 	{
-		this->buffer[i] = this->buffer[i + 1];
+		buffer[i] = buffer[i + 1];
+		if (isLineVisible(i))
+			displayDirty = true;
 	}
-	this->buffer[this->bufferSize - 1].clear();
-	this->bufferLocation--;
+	buffer[count - 1].clear();
+	if (isLineVisible(count - 1))
+		displayDirty = true;
 }
+
+void DisplayWrapper::shift()
+{
+	shift(0, bufferSize);
+	bufferLocation--;
+}
+
