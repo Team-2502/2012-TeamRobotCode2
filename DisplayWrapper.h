@@ -1,22 +1,20 @@
 #ifndef DISPLAYWRAPPER_H
 #define DISPLAYWRAPPER_H
 
+#include <cstdarg>
 #include <string>
 #include <vector>
 
-#include "WPILib.h"
+class DriverStationLCD;
 
 /**
  * This wraps around the LCD Display for the driver station.
+ * The only class that should call this is the DriverWriter.
  */
 class DisplayWrapper
 {
 public:
-	/**
-	 * Clear the display buffer.
-	 */
-	void Clear();
-	
+	DisplayWrapper();
 	~DisplayWrapper();
 	
 	/**
@@ -25,40 +23,65 @@ public:
 	static DisplayWrapper* GetInstance();
 	
 	/**
-	 * Update the display with any changes.
-	 */
-	void Output();
-	
-	/**
-	 * Printf to the display.
-	 */
-	void Printf(const char* format, ...);
-	
-	/**
-	 * Printf at a specific line.
-	 */
-	void PrintfLine(unsigned line, const char* format, ...);
-	
-	/**
-	 * Set the scroll location of the buffer to display. 0.0 is the top and 1.0 is the bottom.
+	 * Set the scroll location of the buffer to display.
+	 * 0.0 is the top and 1.0 is the bottom.
 	 */
 	void SetScrollLocation(float location);
 	
 	/**
+	 * Send changes to the display
+	 */
+	void Output();
+	
+	/****************************************************************************/
+	// Only the DisplayWriter should be using the following methods
+
+	/**
+	 * Clear part of the display buffer
+	 */
+	void clear(unsigned start, unsigned size);
+
+	/**
+	 * Clear ALL of the display buffer
+	 */
+	void clear();
+	
+	/**
+	 * Write buffer to the display.
+	 */
+	void puts(unsigned line, const char* buffer);
+	
+	/**
 	 * Set the size of the buffer (in lines).
 	 */
-	void SetBufferSize(unsigned size);
+	void setBufferSize(unsigned size);
 	
+	/**
+	 * Grow the size of the buffer (in lines).
+	 */
+	unsigned growBufferSize(unsigned size);
+	
+	/**
+	 * shift a section of the lines up
+	 */
+	void shift(unsigned start, unsigned size);
+
+	/**
+	 * answers true if the specified line is displayed on the LCD screen
+	 */
+	bool isLineVisible(unsigned line);
+
 private:
-	DisplayWrapper();
+	void shift();
+
 	std::vector<std::string> buffer;
 	unsigned bufferSize;
 	unsigned bufferLocation;
 	unsigned outputLocation;
 	DriverStationLCD* display;
-	static DisplayWrapper* instance;
-	
-	void Shift();
+	bool displayDirty;
+
+	static DisplayWrapper* Instance;
 };
 
 #endif // DISPLAY

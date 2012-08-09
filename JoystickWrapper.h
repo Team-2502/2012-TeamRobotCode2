@@ -41,6 +41,7 @@
  *	Rightstick Forward 	4	Tw		-
  *	Rightstick Backward 4	Tw		+
  */
+
 enum StickType
 {
 	Extreme3DPro,
@@ -69,63 +70,19 @@ public:
 	JoystickWrapper(int port, StickType type);
 	~JoystickWrapper();
 	
-	/**
-	 * Get the angle of the joystick in degrees.
-	 */
-	float GetAngle() const;
-	
-	/**
-	 * Get the instance of the Joystick that it wraps around.
-	 */
+	float GetAngle() const; //In Degrees.
 	Joystick* GetJoystick() {return this->joystick;}
-	
-	/**
-	 * Get the magnitude of the joystick.
-	 */
 	float GetMagnitude() const;
-	
-	/**
-	 * Get the pov values from the joystick.
-	 */
 	void GetPov(float* xaxis, float* yaxis) const;
-	
-	/**
-	 * Get the angle of the pov from the joystick. North is zero and it progresses clockwise.
-	 */
 	int GetPovAngle() const;
-	
-	/**
-	 * Get a value of both Joystick axis from -1.0 to 1.0. This uses the snapping
-	 * feature and also only works for the x and y axis.
-	 */
 	void GetAxis(float* xaxis, float* yaxis) const;
-	
-	/**
-	 * This gets the raw axis from the joystick without snapping.
-	 */
 	void GetRawAxis(float* xaxis, float* yaxis) const;
-	
-	/**
-	 * This returns the rotation value of the joystick.
-	 */
 	float GetRotation() const;
-	
-	/**
-	 * This returns the raw rotation value of the joystick without filtering.
-	 */
 	float GetRawRotation() const;
-	
-	/**
-	 * Get the value of the throttle. It goes from -1.0 at the bottom to 1.0 at the top.
-	 */
 	float GetThrottle() const;
-	
-	/**
-	 * Set the number of snap points on the joystick. The higher the number,
-	 * the more precise that it will be, but the more sensitive it will
-	 * be as well.
-	 */
+	StickType GetType() const { return this->type; }
 	void SetSnapPoints(int snapPoints) {this->snapPoints = snapPoints;}
+	bool GetButton(int buttonID);
 	
 private:
 	Joystick* joystick;
